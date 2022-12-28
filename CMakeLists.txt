@@ -17,5 +17,11 @@ add_definitions(-DUNICODE -D_UNICODE)
 ## 忽略4819警告
 add_definitions(/wd"4819")
 
-# 添加子项目路径
+# 添加数据结构和算法学习子项目路径
 add_subdirectory(${PROJECT_SOURCE_DIR}/AlgorithmWork/0.HelloAlgorithm)
+
+# 添加LeetCode练习子项目路径
+add_subdirectory(${PROJECT_SOURCE_DIR}/LeetCode/1.TwoSum)
+add_subdirectory(${PROJECT_SOURCE_DIR}/LeetCode/2.AddTwoNumbers)
+add_subdirectory(${PROJECT_SOURCE_DIR}/LeetCode/3.LongestSubstringWithoutRepeatingCharacters)
+add_subdirectory(${PROJECT_SOURCE_DIR}/LeetCode/4.MedianOfTwoSortedArrays)
