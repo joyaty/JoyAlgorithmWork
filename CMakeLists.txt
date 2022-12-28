@@ -19,6 +19,7 @@ add_definitions(/wd"4819")
 
 # 添加数据结构和算法学习子项目路径
 add_subdirectory(${PROJECT_SOURCE_DIR}/AlgorithmWork/0.HelloAlgorithm)
+add_subdirectory(${PROJECT_SOURCE_DIR}/AlgorithmWork/1.ADT)
 
 # 添加LeetCode练习子项目路径
 add_subdirectory(${PROJECT_SOURCE_DIR}/LeetCode/1.TwoSum)
