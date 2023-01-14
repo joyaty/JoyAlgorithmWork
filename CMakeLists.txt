@@ -15,7 +15,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 ## 添加UNICODE/_UNICODE宏 使用unicode字符集
 add_definitions(-DUNICODE -D_UNICODE)
 ## 忽略4819警告
-add_definitions(/wd"4819")
+## add_definitions(/wd"4819")
 
 # 添加数据结构和算法学习子项目路径
 add_subdirectory(${PROJECT_SOURCE_DIR}/AlgorithmWork/0.HelloAlgorithm)
