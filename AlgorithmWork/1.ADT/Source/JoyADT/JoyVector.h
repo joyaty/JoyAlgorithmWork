@@ -38,18 +38,18 @@ public:
 	/// <summary>
 	/// 获取向量容量
 	/// </summary>
-    int Capacity() const { return m_Capacity; }
+    inline int Capacity() const { return m_Capacity; }
 	/// <summary>
 	/// 获取向量
 	/// </summary>
-	int Size() const { return m_Size; }
+	inline int Size() const { return m_Size; }
 	/// <summary>
 	/// 向量是否为空
 	/// </summary>
-	bool Empty() const { return Size() == 0; }
+	inline bool Empty() const { return Size() == 0; }
     
     // 清空向量
-    void Clear()
+    inline void Clear()
     {
         m_Size = 0;
     }
@@ -77,9 +77,14 @@ public:
         return m_Data[m_Size - 1];
     }
     
+    const T& Front() const
+    {
+        return m_Data[0];
+    }
+    
     void Resize(int newSize)
     {
-        if(newSize > m_Capacity)
+        if (newSize > m_Capacity)
         {
             Reserve(m_Capacity * 2 + 1);
         }
@@ -89,7 +94,7 @@ public:
     // 重新预定向量的容量
     void Reserve(int newCapacity)
     {
-        if(m_Capacity >= newCapacity)
+        if (m_Capacity >= newCapacity)
         {
             return;
         }
@@ -97,7 +102,7 @@ public:
         int* pOldData = m_Data;
         m_Capacity = newCapacity;
         m_Data = new T[m_Capacity];
-        for(int i = 0; i < m_Size; ++i)
+        for (int i = 0; i < m_Size; ++i)
         {
             m_Data[i] = pOldData[i];
         }
@@ -152,12 +157,12 @@ private:
 	/// <summary>
 	/// vector的容量
 	/// </summary>
-    size_t m_Capacity{ 0 };
+    int m_Capacity{ 0 };
 
 	/// <summary>
 	/// vector中的数据数量
 	/// </summary>
-	size_t m_Size{ 0 };
+	int m_Size{ 0 };
 
 	/// <summary>
 	/// 数据头指针
