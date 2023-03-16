@@ -144,11 +144,8 @@ public:
             // 从输入向量中拷贝数据
             m_Capacity = rhs.Capacity();
             m_Size = rhs.Size();
-            m_Data = new T[m_Size];
-            for(int i = 0; i < m_Size; ++i)
-            {
-                m_Data[i] = rhs[i];
-            }
+            m_Data = new T[m_Capacity];
+            memcpy(m_Data, rhs.m_Data, m_Size);
         }
         return *this;
     }
