@@ -18,7 +18,7 @@ void TestFunc1(const int x)
     TestClass<FivePlus(5)> c2{};
 }
 
-long long total = 0;
+std::atomic<long long> total = 0;
 
 void ThreadFunc()
 {
@@ -35,8 +35,8 @@ int main()
     std::thread firstThread(ThreadFunc);
     std::thread secondThread(ThreadFunc);
 
-    //firstThread.join();
-    //secondThread.join();
+    firstThread.join();
+    secondThread.join();
 
     std::cout << total << std::endl;
 //    const char* strHello1 = "Hello Algorithm char";
