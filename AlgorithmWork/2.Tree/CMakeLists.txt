@@ -15,8 +15,8 @@ set(SUB_PROJECT_NAME 2.Tree)
 # 将所有源码设置到ALL_FILES变量上
 set(ALL_FILES 
 Source/Main.cpp
-Source/JoyTree/JoyTree.cpp
-Source/JoyTree/JoyTree.h
+Source/JoyTree/JoyBinarySearchTree.cpp
+Source/JoyTree/JoyBinarySearchTree.h
 )
 
 ## 调用外部cmake定义的宏，将源文件按文件加分组

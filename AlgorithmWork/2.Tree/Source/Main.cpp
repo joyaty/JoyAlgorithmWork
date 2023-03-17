@@ -1,8 +1,11 @@
 
 #include <iostream>
-#include "JoyTree/JoyTree.h"
+#include "JoyTree/JoyBinarySearchTree.h"
 
-int main()
+/// <summary>
+/// 测试二叉搜索树
+/// </summary>
+void TestJoyBinarySearchTree()
 {
 	std::cout << "Initialize BinarySearchTree" << std::endl;
 	Joy::BinarySearchTree<int> tree;
@@ -14,7 +17,6 @@ int main()
 	tree.Insert(8);
 	tree.Insert(7);
 	tree.Insert(10);
-
 	tree.PrintTree();
 
 	std::cout << "Clone BinarySearchTree:" << std::endl;
@@ -47,6 +49,11 @@ int main()
 	std::cout << "Remove CopyTree: 6" << std::endl;
 	copyTree.Remove(6);
 	copyTree.PrintTree();
+}
 
+
+int main()
+{
+	TestJoyBinarySearchTree();
 	std::cin.get();
 }
