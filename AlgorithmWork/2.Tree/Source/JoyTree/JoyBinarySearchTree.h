@@ -4,6 +4,8 @@
  * 特殊性质：对于树中的每个节点X，左子树上的每个节点都比节点X小，右子树上的每个节点都比节点X大。即，中序遍历下，节点元素是有序的。
  */
 
+#pragma once
+
 #include <iostream>
 
 namespace Joy
