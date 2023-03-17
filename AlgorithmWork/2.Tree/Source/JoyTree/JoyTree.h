@@ -1,5 +1,7 @@
 /**
  * 自定义ADT - 二叉搜索树
+ * 二叉搜索树的定义：二叉搜索树是有特殊性质的二叉树
+ * 特殊性质：对于树中的每个节点X，左子树上的每个节点都比节点X小，右子树上的每个节点都比节点X大。即，中序遍历下，节点元素是有序的。
  */
 
 #include <iostream>
@@ -13,11 +15,18 @@ namespace Joy
 	template<typename T> class BinarySearchTree
 	{
 	public:
+		/// <summary>
+		/// 默认构造函数
+		/// </summary>
 		BinarySearchTree()
 			: m_Root(nullptr)
 		{
 		}
 
+		/// <summary>
+		/// 拷贝构造函数
+		/// </summary>
+		/// <param name="rhs"></param>
 		BinarySearchTree(const BinarySearchTree& rhs)
 		{
 			operator=(rhs);
@@ -28,25 +37,46 @@ namespace Joy
 			MakeEmpty();
 		}
 
+		/// <summary>
+		/// 查找二叉搜索树的最大元素，有空树异常
+		/// </summary>
+		/// <returns></returns>
 		const T& FindMax() const
 		{
 			return FindMax(m_Root)->elementData;
 		}
 
-		const T& FindMin() const
+		/// <summary>
+		/// 查找二叉搜索树的最小元素，有空树异常
+		/// </summary>
+		/// <returns></returns>
+		const T& FindMin() const noexcept
 		{
 			return FindMin(m_Root)->elementData;
 		}
 
+		/// <summary>
+		/// 二叉搜索树是否包含指定元素
+		/// </summary>
+		/// <param name="element"></param>
+		/// <returns></returns>
 		bool Contain(const T& element) const
 		{
 			return Contain(element, m_Root);
 		}
+
+		/// <summary>
+		/// 二叉搜索树是否为空
+		/// </summary>
+		/// <returns></returns>
 		bool IsEmpty() const
 		{
 			return m_Root == nullptr;
 		}
 
+		/// <summary>
+		/// 打印二叉搜索树
+		/// </summary>
 		void PrintTree() const
 		{
 			std::cout << "InOrder==========" << std::endl;
@@ -57,24 +87,41 @@ namespace Joy
 			PrintTreePostOrder(m_Root);
 		}
 
+		/// <summary>
+		/// 清空二叉搜索树
+		/// </summary>
 		void MakeEmpty()
 		{
 			MakeEmpty(m_Root);
 		}
 
+		/// <summary>
+		/// 向二叉搜索树添加一个元素节点
+		/// </summary>
+		/// <param name="element"></param>
 		void Insert(const T& element)
 		{
 			Insert(element, m_Root);
 		}
 
+		/// <summary>
+		/// 从二叉搜索树删除元素节点
+		/// </summary>
+		/// <param name="element"></param>
 		void Remove(const T& element)
 		{
 			Remove(element, m_Root);
 		}
-
+		
+		/// <summary>
+		/// 重写赋值操作符
+		/// </summary>
+		/// <param name="rhs"></param>
+		/// <returns></returns>
 		const BinarySearchTree& operator=(const BinarySearchTree& rhs)
 		{
-			// TODO 深拷贝树
+			MakeEmpty(m_Root);
+			m_Root = Clone(rhs.m_Root);
 			return *this;
 		}
 
@@ -167,7 +214,7 @@ namespace Joy
 		/// 插入新元素节点到二叉搜索树
 		/// </summary>
 		/// <param name="element">新元素数据</param>
-		/// <param name="pNode">当前位置节点的引用</param>
+		/// <param name="pNode">当前位置节点的引用，即是当前节点，也是父节点的子节点引用</param>
 		void Insert(const T& element, BinaryTreeNode*& pNode)
 		{
 			if (pNode == nullptr)
@@ -188,7 +235,7 @@ namespace Joy
 		/// 移除二叉搜索树的某个元素节点
 		/// </summary>
 		/// <param name="element">待删除的元素</param>
-		/// <param name="pNode">当前节点</param>
+		/// <param name="pNode">即是当前节点引用，也是父节点的子节点引用</param>
 		void Remove(const T& element, BinaryTreeNode*& pNode)
 		{
 			if (pNode == nullptr)
@@ -206,6 +253,7 @@ namespace Joy
 			}
 			else
 			{
+				// 有左右两个子树
 				if (pNode->leftChild != nullptr && pNode->rightChild != nullptr)
 				{
 					// 右子树最小节点上提到删除节点，然后删除右子树的最小节点
@@ -213,9 +261,11 @@ namespace Joy
 				}
 				else
 				{
+					// 叶子节点或者只有一个子树，保留子树关联到父节点上，移除当前节点
 					BinaryTreeNode* pTempNode = pNode;
 					pNode = pNode->leftChild != nullptr ? pNode->leftChild : pNode->rightChild;
 					delete pTempNode;
+					pTempNode = nullptr;
 				}
 			}
 		}
@@ -223,8 +273,8 @@ namespace Joy
 		/// <summary>
 		/// 删除二叉搜索树最小节点，返回最小节点的元素
 		/// </summary>
-		/// <param name="pNode"></param>
-		/// <returns></returns>
+		/// <param name="pNode">即是当前节点引用，也是父节点的子节点引用</param>
+		/// <returns>返回删除的节点元素</returns>
 		T RemoveMin(BinaryTreeNode*& pNode)
 		{
 			// 找到最小节点
@@ -234,10 +284,12 @@ namespace Joy
 			}
 			else
 			{
+				// 移除最小节点，返回最小节点的元素
 				BinaryTreeNode* pTempNode = pNode;
 				T element = pTempNode->elementData;
 				pNode = pNode->rightChild;
 				delete pTempNode;
+				pTempNode = nullptr;
 
 				return element;
 			}
@@ -246,7 +298,7 @@ namespace Joy
 		/// <summary>
 		/// 清空二叉搜索树
 		/// </summary>
-		/// <param name="pNode"></param>
+		/// <param name="pNode">即是当前节点引用，也是父节点的子节点引用</param>
 		void MakeEmpty(BinaryTreeNode*& pNode)
 		{
 			if (pNode == nullptr)
@@ -259,6 +311,7 @@ namespace Joy
 			MakeEmpty(pNode->leftChild);
 			// 移除自身节点
 			delete pNode;
+			pNode = nullptr;
 		}
 
 		/// <summary>
@@ -272,6 +325,7 @@ namespace Joy
 			std::cout << pNode->elementData << std::endl;
 			PrintTreeInOrder(pNode->rightChild);
 		}
+
 		/// <summary>
 		/// 打印二叉搜索树 - 前序遍历
 		/// </summary>
@@ -283,6 +337,7 @@ namespace Joy
 			PrintTreePreOrder(pNode->leftChild);
 			PrintTreePreOrder(pNode->rightChild);
 		}
+
 		/// <summary>
 		/// 打印二叉搜索树 - 后序遍历
 		/// </summary>
@@ -293,6 +348,16 @@ namespace Joy
 			PrintTreePostOrder(pNode->leftChild);
 			PrintTreePostOrder(pNode->rightChild);
 			std::cout << pNode->elementData << std::endl;
+		}
+
+		/// <summary>
+		/// 克隆二叉搜索树
+		/// </summary>
+		/// <param name="pNode"></param>
+		BinaryTreeNode* Clone(BinaryTreeNode* pSrcNode) const
+		{
+			if (pSrcNode == nullptr) { return nullptr; }
+			return new BinaryTreeNode(pSrcNode->elementData, Clone(pSrcNode->leftChild), Clone(pSrcNode->rightChild));
 		}
 
 	private:

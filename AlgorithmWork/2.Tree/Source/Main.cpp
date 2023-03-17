@@ -17,6 +17,10 @@ int main()
 
 	tree.PrintTree();
 
+	std::cout << "Clone BinarySearchTree:" << std::endl;
+	Joy::BinarySearchTree<int> copyTree(tree);
+	copyTree.PrintTree();
+
 	std::cout << "Add new TreeNode: 9" << std::endl;
 	tree.Insert(9);
 	tree.PrintTree();
@@ -37,6 +41,12 @@ int main()
 	std::cout << "Remove TreeNode: 4" << std::endl;
 	tree.Remove(4);
 	tree.PrintTree();
+
+	std::cout << "Print Copy BinarySearchTree:" << std::endl;
+	copyTree.PrintTree();
+	std::cout << "Remove CopyTree: 6" << std::endl;
+	copyTree.Remove(6);
+	copyTree.PrintTree();
 
 	std::cin.get();
 }
