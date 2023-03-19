@@ -17,6 +17,8 @@ set(ALL_FILES
 Source/Main.cpp
 Source/JoyTree/JoyBinarySearchTree.cpp
 Source/JoyTree/JoyBinarySearchTree.h
+Source/JoyTree/AVLTree.cpp
+Source/JoyTree/AVLTree.h
 )
 
 ## 调用外部cmake定义的宏，将源文件按文件加分组
