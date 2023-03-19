@@ -3,8 +3,8 @@
  */
 
 #include <iostream>
-#include "JoyADT/JoyVector.h"
-#include "JoyADT/JoyList.hpp"
+#include "JoyList/JoyVector.h"
+#include "JoyList/JoyList.hpp"
 #include <vector>
 #include <list>
 

@@ -1,7 +1,7 @@
 
 #include <iostream>
 #include "JoyTree/JoyBinarySearchTree.h"
-#include "JoyTree/AVLTree.h"
+#include "JoyTree/JoyAVLTree.h"
 
 /// <summary>
 /// 测试二叉搜索树

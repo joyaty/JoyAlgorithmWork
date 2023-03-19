@@ -10,17 +10,13 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Source/)
 # set(STDAFX_PCH_H ${CMAKE_CURRENT_SOURCE_DIR}/Source/stdafx.h)
 # set(STDAFX_PCH_C ${CMAKE_CURRENT_SOURCE_DIR}/Source/stdafx.cpp)
 
-set(SUB_PROJECT_NAME 2.Tree)
+set(SUB_PROJECT_NAME 5.Sorting)
 
 # 将所有源码设置到ALL_FILES变量上
 set(ALL_FILES 
 Source/Main.cpp
-Source/JoyTree/JoyBinarySearchTree.cpp
-Source/JoyTree/JoyBinarySearchTree.h
-Source/JoyTree/JoyAVLTree.cpp
-Source/JoyTree/JoyAVLTree.h
-Source/JoyTree/JoySplayTree.cpp
-Source/JoyTree/JoySplayTree.h
+Source/JoySorting/JoyQuickSorting.cpp
+Source/JoySorting/JoyQuickSorting.h
 )
 
 ## 调用外部cmake定义的宏，将源文件按文件加分组

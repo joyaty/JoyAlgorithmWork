@@ -10,13 +10,13 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Source/)
 # set(STDAFX_PCH_H ${CMAKE_CURRENT_SOURCE_DIR}/Source/stdafx.h)
 # set(STDAFX_PCH_C ${CMAKE_CURRENT_SOURCE_DIR}/Source/stdafx.cpp)
 
-set(SUB_PROJECT_NAME 1.ADT)
+set(SUB_PROJECT_NAME 4.PriorityQueue)
 
 # 将所有源码设置到ALL_FILES变量上
 set(ALL_FILES 
 Source/Main.cpp
-Source/JoyADT/JoyVector.cpp
-Source/JoyADT/JoyVector.h
+Source/JoyPriorityQueue/JoyPriorityQueue.cpp
+Source/JoyPriorityQueue/JoyPriorityQueue.h
 )
 
 ## 调用外部cmake定义的宏，将源文件按文件加分组
