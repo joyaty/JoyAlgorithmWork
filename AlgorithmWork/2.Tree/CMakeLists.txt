@@ -21,6 +21,8 @@ Source/JoyTree/JoyAVLTree.cpp
 Source/JoyTree/JoyAVLTree.h
 Source/JoyTree/JoySplayTree.cpp
 Source/JoyTree/JoySplayTree.h
+Source/JoyTree/JoyRedBlackTree.cpp
+Source/JoyTree/JoyRedBlackTree.h
 )
 
 ## 调用外部cmake定义的宏，将源文件按文件加分组

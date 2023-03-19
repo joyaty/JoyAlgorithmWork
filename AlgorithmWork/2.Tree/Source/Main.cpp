@@ -2,6 +2,8 @@
 #include <iostream>
 #include "JoyTree/JoyBinarySearchTree.h"
 #include "JoyTree/JoyAVLTree.h"
+#include "JoyTree/JoySplayTree.h"
+#include "JoyTree/JoyRedBlackTree.h"
 
 /// <summary>
 /// 测试二叉搜索树
@@ -108,6 +110,21 @@ void TestAVLTree()
 	copyTree.PrintTree();
 }
 
+/// <summary>
+/// 测试伸展树
+/// </summary>
+void TestSplayTree()
+{
+	// TODO
+}
+
+/// <summary>
+/// 测试红黑树
+/// </summary>
+void TestRedBlackTree()
+{
+	// TODO
+}
 
 int main()
 {
