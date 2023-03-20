@@ -15,10 +15,28 @@ namespace Joy
 	/// <typeparam name="T"></typeparam>
 	template<typename T> class JoySplayTree
 	{
+	private:
+		/// <summary>
+		/// 伸展树的节点数据结构，伸展树不需要记录节点的深度信息和平衡信息
+		/// </summary>
+		struct SplayTreeNode
+		{
+			T elementData;
+			SplayTreeNode* pLeftChild{ nullptr };
+			SplayTreeNode* pRightChild{ nullptr };
+
+			SplayTreeNode() = default;
+			SplayTreeNode(const T& element, SplayTreeNode* pLeftNode = nullptr, SplayTreeNode* pRightNode = nullptr)
+				: elementData(element), pLeftChild(pLeftNode), pRightChild(pRightNode)
+			{
+			}
+		};
 	public:
 		JoySplayTree()
-			: m_Root(nullptr)
 		{
+			m_NullNode = new SplayTreeNode();
+			m_NullNode->pLeftChild = m_NullNode->pRightChild = m_NullNode;
+			m_Root = m_NullNode;
 		}
 
 		JoySplayTree(const JoySplayTree& rhs)
@@ -28,6 +46,8 @@ namespace Joy
 		~JoySplayTree()
 		{
 			MakeEmpty(m_Root);
+			delete m_NullNode;
+			m_NullNode = nullptr;
 		}
 
 	public:
@@ -37,6 +57,14 @@ namespace Joy
 		void MakeEmpty()
 		{
 			MakeEmpty(m_Root);
+		}
+
+		/// <summary>
+		/// 伸展树是否为空
+		/// </summary>
+		void IsEmpty() const
+		{
+			return m_Root == m_NullNode;
 		}
 
 		/// <summary>
@@ -60,28 +88,12 @@ namespace Joy
 
 	private:
 		/// <summary>
-		/// 伸展树的节点数据结构，伸展树不需要记录节点的深度信息和平衡信息
-		/// </summary>
-		struct SplayTreeNode
-		{
-			T elementData;
-			SplayTreeNode* pLeftChild{ nullptr };
-			SplayTreeNode* pRightChild{ nullptr };
-
-			SplayTreeNode(const T& element, SplayTreeNode* pLeftNode = nullptr, SplayTreeNode* pRightNode = nullptr)
-				: elementData(element), pLeftChild(pLeftNode), pRightChild(pRightNode)
-			{
-			}
-		};
-
-	private:
-		/// <summary>
 		/// 清空树
 		/// </summary>
 		/// <param name="pNode"></param>
 		void MakeEmpty(SplayTreeNode*& pNode)
 		{
-			if (pNode == nullptr) { return; }
+			if (pNode == m_NullNode) { return; }
 
 			MakeEmpty(pNode->pRightChild);
 			MakeEmpty(pNode->pLeftChild);
@@ -112,11 +124,41 @@ namespace Joy
 			// TODO 插入一个新的节点
 		}
 
+		/// <summary>
+		/// 目标在左儿子下，右旋
+		/// </summary>
+		/// <param name="pNode"></param>
+		void RotateWithLeftChild(SplayTreeNode* pNode)
+		{
+		}
+
+		/// <summary>
+		/// 目标在右儿子下，左旋
+		/// </summary>
+		/// <param name="pNode"></param>
+		void RotateWithRightChild(SplayTreeNode* pNode)
+		{
+		}
+
+		/// <summary>
+		/// 伸展操作
+		/// </summary>
+		/// <param name="element"></param>
+		/// <param name="pNode"></param>
+		void Splay(const T& element, SplayTreeNode* pNode)
+		{
+		}
+
 	private:
 		/// <summary>
 		/// 伸展树根节点
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		SplayTreeNode* m_Root{ nullptr };
+
+		/// <summary>
+		/// 空节点，包含初始空左树和空右树
+		/// </summary>
+		SplayTreeNode* m_NullNode{ nullptr };
 	};
 }

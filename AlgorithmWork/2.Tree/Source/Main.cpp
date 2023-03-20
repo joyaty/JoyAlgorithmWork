@@ -116,6 +116,7 @@ void TestAVLTree()
 void TestSplayTree()
 {
 	// TODO
+	Joy::JoySplayTree<int> tree;
 }
 
 /// <summary>
@@ -129,6 +130,7 @@ void TestRedBlackTree()
 int main()
 {
 	// TestJoyBinarySearchTree();
-	TestAVLTree();
+	// TestAVLTree();
+	TestSplayTree();
 	std::cin.get();
 }
