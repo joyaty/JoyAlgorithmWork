@@ -2,15 +2,17 @@
  * 自定义ADT - 伸展树，一种二叉搜索树，保证M个对树的操作的总时间复杂度在O(MlogN)
  * 二叉搜索树的定义：二叉搜索树是有特殊性质的二叉树
  * 特殊性质：对于树中的每个节点X，左子树上的每个节点都比节点X小，右子树上的每个节点都比节点X大。即，中序遍历下，节点元素是有序的。
- * 伸展的定义，插入或查找时，对目标节点进行若干此旋转操作，将目标节点变换的根节点
+ * 伸展的定义，插入或查找时，对目标节点进行若干次旋转操作，将目标节点变换的根节点
  */
 
 #pragma once
 
+#include <iostream>
+
 namespace Joy
 {
 	/// <summary>
-	/// 伸展树实现
+	/// 自顶向下的伸展树实现
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	template<typename T> class JoySplayTree
@@ -21,7 +23,7 @@ namespace Joy
 		/// </summary>
 		struct SplayTreeNode
 		{
-			T elementData;
+			T elementData{};
 			SplayTreeNode* pLeftChild{ nullptr };
 			SplayTreeNode* pRightChild{ nullptr };
 
@@ -41,6 +43,15 @@ namespace Joy
 
 		JoySplayTree(const JoySplayTree& rhs)
 		{
+		}
+
+		JoySplayTree(const T* pHeader, int count)
+			: JoySplayTree()
+		{
+			for (int i = 0; i < count; ++i)
+			{
+				SimpleBuild(*(pHeader + i), m_Root);
+			}
 		}
 
 		~JoySplayTree()
@@ -68,13 +79,55 @@ namespace Joy
 		}
 
 		/// <summary>
+		/// 打印树结构
+		/// </summary>
+		void PrintTree() const
+		{
+			std::cout << "PreOrder =================" << std::endl;
+			PrintTreePreOrder(m_Root);
+			std::cout << "InOrder ==================" << std::endl;
+			PrintTreeInOrder(m_Root);
+			std::cout << "PostOrder ================" << std::endl;
+			PrintTreePostOrder(m_Root);
+		}
+
+		/// <summary>
+		/// 查找最大元素
+		/// </summary>
+		/// <returns></returns>
+		const T& FindMax()
+		{
+			SplayTreeNode* pNode = FindMax(m_Root);
+			if (pNode != m_NullNode)
+			{
+				Splay(pNode->elementData, m_Root);
+			}
+			return pNode->elementData;
+		}
+
+		/// <summary>
+		/// 查找最小元素
+		/// </summary>
+		/// <returns></returns>
+		const T& FindMin()
+		{
+			SplayTreeNode* pNode = FindMin(m_Root);
+			if (pNode != m_NullNode)
+			{
+				Splay(pNode->elementData, m_Root);
+			}
+			return pNode->elementData;
+		}
+
+		/// <summary>
 		/// 查询伸展树是否包含某元素
 		/// </summary>
 		/// <param name="element"></param>
 		/// <returns></returns>
-		bool Contain(const T& element) const
+		bool Contain(const T& element)
 		{
-			return Contain(element, m_Root);
+			Splay(element, m_Root);
+			return m_Root->elementData == element;
 		}
 
 		/// <summary>
@@ -83,7 +136,12 @@ namespace Joy
 		/// <param name="element"></param>
 		void Insert(const T& element)
 		{
-			Insert(element, m_Root);
+			// 空树，直接在根节点插入
+			if (m_Root == m_NullNode)
+			{
+				m_Root = new SplayTreeNode(element, m_NullNode, m_NullNode);
+				return;
+			}
 		}
 
 	private:
@@ -103,41 +161,112 @@ namespace Joy
 		}
 
 		/// <summary>
-		/// 
+		/// 前序遍历打印
 		/// </summary>
-		/// <param name="element"></param>
 		/// <param name="pNode"></param>
-		/// <returns></returns>
-		bool Contain(const T& element, SplayTreeNode* pNode)
+		void PrintTreePreOrder(SplayTreeNode* pNode) const
 		{
-			// TODO 查询伸展树是否包含某元素
-			return false;
+			if (pNode == m_NullNode) { return; }
+			std::cout << pNode->elementData << std::endl;
+			PrintTreePreOrder(pNode->pLeftChild);
+			PrintTreePreOrder(pNode->pRightChild);
 		}
 
 		/// <summary>
-		/// 向伸展树插入一个新的元素节点，递归实现
+		/// 中序遍历打印
+		/// </summary>
+		/// <param name="pNode"></param>
+		void PrintTreeInOrder(SplayTreeNode* pNode) const
+		{
+			if (pNode == m_NullNode) { return; }
+			PrintTreeInOrder(pNode->pLeftChild);
+			std::cout << pNode->elementData << std::endl;
+			PrintTreeInOrder(pNode->pRightChild);
+		}
+
+		/// <summary>
+		/// 后序遍历打印
+		/// </summary>
+		/// <param name="pNode"></param>
+		void PrintTreePostOrder(SplayTreeNode* pNode) const
+		{
+			if (pNode == m_NullNode) { return; }
+			PrintTreePostOrder(pNode->pLeftChild);
+			PrintTreePostOrder(pNode->pRightChild);
+			std::cout << pNode->elementData << std::endl;
+		}
+
+		/// <summary>
+		/// 构建一棵初始结构的二叉搜索树，不考虑伸展
 		/// </summary>
 		/// <param name="element"></param>
 		/// <param name="pNode"></param>
-		void Insert(const T& element, SplayTreeNode* pNode)
+		void SimpleBuild(const T& element, SplayTreeNode*& pNode)
 		{
-			// TODO 插入一个新的节点
+			if (pNode == m_NullNode)
+			{
+				pNode = new SplayTreeNode(element, m_NullNode, m_NullNode);
+			}
+			else if (pNode->elementData < element)
+			{
+				SimpleBuild(element, pNode->pRightChild);
+			}
+			else if (element < pNode->elementData)
+			{
+				SimpleBuild(element, pNode->pLeftChild);
+			}
+		}
+
+		/// <summary>
+		/// 常规查找二叉搜索树最大节点
+		/// </summary>
+		/// <param name="pNode"></param>
+		/// <returns></returns>
+		SplayTreeNode* FindMax(SplayTreeNode* pNode)
+		{
+			if (pNode->pRightChild == m_NullNode)
+			{
+				return pNode;
+			}
+			return FindMax(pNode->pRightChild);
+		}
+
+		/// <summary>
+		/// 常规查找二叉搜索树最小节点
+		/// </summary>
+		/// <param name="pNode"></param>
+		/// <returns></returns>
+		SplayTreeNode* FindMin(SplayTreeNode* pNode)
+		{
+			if (pNode->pLeftChild == m_NullNode)
+			{
+				return pNode;
+			}
+			return FindMin(pNode->pLeftChild);
 		}
 
 		/// <summary>
 		/// 目标在左儿子下，右旋
 		/// </summary>
 		/// <param name="pNode"></param>
-		void RotateWithLeftChild(SplayTreeNode* pNode)
+		void RotateWithLeftChild(SplayTreeNode*& pNode)
 		{
+			SplayTreeNode* pTemp = pNode->pLeftChild;
+			pNode->pLeftChild = pTemp->pRightChild;
+			pTemp->pRightChild = pNode;
+			pNode = pTemp;
 		}
 
 		/// <summary>
 		/// 目标在右儿子下，左旋
 		/// </summary>
 		/// <param name="pNode"></param>
-		void RotateWithRightChild(SplayTreeNode* pNode)
+		void RotateWithRightChild(SplayTreeNode*& pNode)
 		{
+			SplayTreeNode* pTemp = pNode->pRightChild;
+			pNode->pRightChild = pTemp->pLeftChild;
+			pTemp->pLeftChild = pNode;
+			pNode = pTemp;
 		}
 
 		/// <summary>
@@ -145,8 +274,72 @@ namespace Joy
 		/// </summary>
 		/// <param name="element"></param>
 		/// <param name="pNode"></param>
-		void Splay(const T& element, SplayTreeNode* pNode)
+		void Splay(const T& element, SplayTreeNode*& pNode)
 		{
+			// 左树的最大节点
+			SplayTreeNode* pLeftMax;
+			// 右树的最小节点
+			SplayTreeNode* pRightMin;
+			// 临时树节点，连接左树和右树的根节点，用于最后树合并，额外的O(1)的辅助空间
+			static SplayTreeNode header;
+			// 左树和右树初始为空树
+			header.pLeftChild = header.pRightChild = m_NullNode;
+			pLeftMax = pRightMin = &header;
+			// 空节点的ElementData设置为目标数据，确保叶子节点能正确索引
+			m_NullNode->elementData = element;
+			// 自顶向下伸展
+			while (true)
+			{
+				if (element < pNode->elementData)
+				{
+					if (element < pNode->pLeftChild->elementData)
+					{
+						// 左儿子的左子树下，一字型旋转(右旋)
+						RotateWithLeftChild(pNode);
+					}
+					if (pNode->pLeftChild == m_NullNode)
+					{
+						// 到了叶子节点，结束伸展
+						break;
+					}
+					// 当前节点挂载在右树最小节点的左儿子上
+					pRightMin->pLeftChild = pNode;
+					// 更新右树的最小节点
+					pRightMin = pRightMin->pLeftChild;
+					// 当前节点更新到左子节点
+					pNode = pNode->pLeftChild;
+				}
+				else if (pNode->elementData < element)
+				{
+					if (pNode->pRightChild->elementData < element)
+					{
+						// 右儿子的右子树下，一字型旋转(左旋)
+						RotateWithRightChild(pNode);
+					}
+					if (pNode->pRightChild == m_NullNode)
+					{
+						// 到了叶子节点，结束伸展
+						break;
+					}
+					// 当前节点挂载在右树最小节点的左儿子上
+					pLeftMax->pRightChild = pNode;
+					// 更新右树的最小节点
+					pLeftMax = pLeftMax->pRightChild;
+					// 当前节点更新到左子节点
+					pNode = pNode->pRightChild;
+				}
+				else
+				{
+					// 匹配，结束
+					break;
+				}
+			}
+			// 当前节点的左右儿子，分别挂载在左树的最大节点和右树的最小节点上
+			pRightMin->pLeftChild = pNode->pRightChild;
+			pLeftMax->pRightChild = pNode->pLeftChild;
+			// 伸展结束，目标节点转换到了伸展树的根节点上，合并左树中树和右树，注意左树在header的右儿子上，右树在header的左儿子上
+			pNode->pRightChild = header.pLeftChild;
+			pNode->pLeftChild = header.pRightChild;
 		}
 
 	private:
@@ -157,7 +350,7 @@ namespace Joy
 		SplayTreeNode* m_Root{ nullptr };
 
 		/// <summary>
-		/// 空节点，包含初始空左树和空右树
+		/// 空节点，指代nullptr，所有叶子节点都应该指向m_NullNode，定义此节点可以简化程序，避免过多的nullptr异常处理，也方便按引用返回不存在的节点
 		/// </summary>
 		SplayTreeNode* m_NullNode{ nullptr };
 	};

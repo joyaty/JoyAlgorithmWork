@@ -115,8 +115,26 @@ void TestAVLTree()
 /// </summary>
 void TestSplayTree()
 {
-	// TODO
-	Joy::JoySplayTree<int> tree;
+	std::cout << "Initialize SplayTree" << std::endl;
+	int elements[] = { 12, 5, 25, 20, 30, 15, 24, 13, 18, 16 };
+	int count = sizeof(elements) / sizeof(int);
+	Joy::JoySplayTree<int> tree(elements, count);
+	tree.PrintTree();
+	std::cout << "Contain 19 ? "<< tree.Contain(19) << std::endl;
+	tree.PrintTree();
+	std::cout << "Contain 18 ? " << tree.Contain(18) << std::endl;
+	tree.PrintTree();
+	std::cout << "Max: " << tree.FindMax() << std::endl;
+	tree.PrintTree();
+	std::cout << "Min: " << tree.FindMin() << std::endl;
+	tree.PrintTree();
+
+	std::cout << "Initialize Empty SplayTree" << std::endl;
+	Joy::JoySplayTree<int> emptyTree;
+	std::cout << "Max: " << emptyTree.FindMax() << std::endl;
+	emptyTree.PrintTree();
+	std::cout << "Min: " << emptyTree.FindMin() << std::endl;
+	emptyTree.PrintTree();
 }
 
 /// <summary>
