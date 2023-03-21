@@ -142,6 +142,21 @@ namespace Joy
 				m_Root = new SplayTreeNode(element, m_NullNode, m_NullNode);
 				return;
 			}
+			// 伸展操作，
+			Splay(element, m_Root);
+			if(m_Root->elementData < element)
+			{
+				// 新根节点比插入元素小，新根节点为插入节点的左子树，新根节点的右子树为新插入节点的右子树，新插入节点变为新根节点
+			}
+			else if (element < m_Root->elementData)
+			{
+				// 新根节点比插入元素大，新根节点为插入节点的右子树，新根节点的左子树为新插入节点的左子树，新插入节点变为新根节点
+			}
+			else
+			{
+				// Do nothing，元素已在数结构中
+			}
+			
 		}
 
 	private:
