@@ -28,9 +28,17 @@ void ThreadFunc()
     }
 }
 
+int Func(int x, int y)
+{
+    return x * y;
+}
+
+static int staticValue = Func(1, 2);
+
 int main()
 {
     int testValue = 100;
+    std::move(testValue);
     std::cout << testValue << std::endl;
     std::thread firstThread(ThreadFunc);
     std::thread secondThread(ThreadFunc);

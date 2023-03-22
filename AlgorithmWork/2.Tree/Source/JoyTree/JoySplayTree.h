@@ -42,7 +42,9 @@ namespace Joy
 		}
 
 		JoySplayTree(const JoySplayTree& rhs)
+			: JoySplayTree()
 		{
+			operator=(rhs);
 		}
 
 		JoySplayTree(const T* pHeader, int count)
@@ -144,19 +146,79 @@ namespace Joy
 			}
 			// 伸展操作，
 			Splay(element, m_Root);
-			if(m_Root->elementData < element)
+			if (m_Root->elementData < element)
 			{
-				// 新根节点比插入元素小，新根节点为插入节点的左子树，新根节点的右子树为新插入节点的右子树，新插入节点变为新根节点
+				// 新根节点比插入元素小，新根节点为插入节点的左子树，新根节点的右子树为新插入节点的右子树
+				SplayTreeNode* pNewNode = new SplayTreeNode(element, m_Root, m_Root->pRightChild);
+				// 移除旧根节点的右子树关联
+				m_Root->pRightChild = m_NullNode;
+				// 新插入节点变为新根节点
+				m_Root = pNewNode;
 			}
 			else if (element < m_Root->elementData)
 			{
-				// 新根节点比插入元素大，新根节点为插入节点的右子树，新根节点的左子树为新插入节点的左子树，新插入节点变为新根节点
+				// 新根节点比插入元素大，新根节点为插入节点的右子树，新根节点的左子树为新插入节点的左子树
+				SplayTreeNode* pNewNode = new SplayTreeNode(element, m_Root->pLeftChild, m_Root);
+				// 移除旧根节点的左子树关联
+				m_Root->pLeftChild = m_NullNode;
+				// 新插入节点变为新根节点
+				m_Root = pNewNode;
 			}
 			else
 			{
 				// Do nothing，元素已在数结构中
 			}
-			
+		}
+
+		/// <summary>
+		/// 删除伸展树的一个节点
+		/// </summary>
+		/// <param name="element"></param>
+		void Remove(const T& element)
+		{
+			// 空树，不处理
+			if (m_Root == m_NullNode) { return; }
+			// 伸展操作，将要删除的节点伸展到根节点
+			Splay(element, m_Root);
+			// 元素不存在
+			if (m_Root->elementData != element) { return; }
+			SplayTreeNode* pNewRoot;
+			if (m_Root->pLeftChild == m_NullNode)
+			{
+				// 左子树为空，直接令新根节点为右子树
+				pNewRoot = m_Root->pRightChild;
+			}
+			else if (m_Root->pRightChild == m_NullNode)
+			{
+				// 右子树为空，直接令新根节点为左子树
+				pNewRoot = m_Root->pLeftChild;
+			}
+			else
+			{
+				// 根节点左右子树都不为空
+				pNewRoot = m_Root->pLeftChild;
+				// 再次伸展，找到左子树下最大的节点，作为新根节点
+				Splay(element, pNewRoot);
+				// 根节点左子树的最大节点，右子树必然为空，令其链接根节点右子树
+				pNewRoot->pRightChild = m_Root->pRightChild;
+			}
+			// 删除目标根节点
+			delete m_Root;
+			// 新根节点
+			m_Root = pNewRoot;
+		}
+
+	public:
+		/// <summary>
+		/// 重写赋值操作符，执行深拷贝
+		/// </summary>
+		/// <param name="rhs"></param>
+		/// <returns></returns>
+		const JoySplayTree& operator=(const JoySplayTree& rhs)
+		{
+			MakeEmpty(m_Root);
+			m_Root = Clone(rhs.m_Root, rhs.m_NullNode);
+			return *this;
 		}
 
 	private:
@@ -230,6 +292,12 @@ namespace Joy
 			{
 				SimpleBuild(element, pNode->pLeftChild);
 			}
+		}
+
+		SplayTreeNode* Clone(SplayTreeNode* pCopyNode, SplayTreeNode* nullNode)
+		{
+			if (pCopyNode == nullNode) { return m_NullNode; }
+			return new SplayTreeNode(pCopyNode->elementData, Clone(pCopyNode->pLeftChild, nullNode), Clone(pCopyNode->pRightChild, nullNode));
 		}
 
 		/// <summary>

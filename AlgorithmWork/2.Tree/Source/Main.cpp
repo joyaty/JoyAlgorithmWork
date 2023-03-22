@@ -119,6 +119,7 @@ void TestSplayTree()
 	int elements[] = { 12, 5, 25, 20, 30, 15, 24, 13, 18, 16 };
 	int count = sizeof(elements) / sizeof(int);
 	Joy::JoySplayTree<int> tree(elements, count);
+	Joy::JoySplayTree<int> copyTree(tree);
 	tree.PrintTree();
 	std::cout << "Contain 19 ? "<< tree.Contain(19) << std::endl;
 	tree.PrintTree();
@@ -128,6 +129,15 @@ void TestSplayTree()
 	tree.PrintTree();
 	std::cout << "Min: " << tree.FindMin() << std::endl;
 	tree.PrintTree();
+
+	std::cout << "Copy SplayTree" << std::endl;
+	copyTree.PrintTree();
+	std::cout << "After Insert 19 To Copy SplayTree" << std::endl;
+	copyTree.Insert(19);
+	copyTree.PrintTree();
+	std::cout << "After Remove 18 From Copy SplayTree" << std::endl;
+	copyTree.Remove(18);
+	copyTree.PrintTree();
 
 	std::cout << "Initialize Empty SplayTree" << std::endl;
 	Joy::JoySplayTree<int> emptyTree;
