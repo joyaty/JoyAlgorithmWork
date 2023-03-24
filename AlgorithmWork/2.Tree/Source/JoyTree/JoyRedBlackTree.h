@@ -35,10 +35,14 @@ namespace Joy
 		/// </summary>
 		struct RedBlackNode
 		{
-			T elementData;
+			T elementData{};
 			RedBlackNode* pLeftChild{ nullptr };
 			RedBlackNode* pRightChild{ nullptr };
 			EnumColor colorTag{ EnumColor::Black };
+
+			RedBlackNode()
+			{
+			}
 
 			RedBlackNode(const T& element, RedBlackNode* pLeftNode = nullptr, RedBlackNode* pRightNode = nullptr, EnumColor color = EnumColor::BLACK)
 				: elementData(element), pLeftChild(pLeftNode), pRightChild(pRightChild), colorTag(color)
@@ -50,9 +54,13 @@ namespace Joy
 		JoyRedBlackTree()
 			: m_Root(nullptr)
 		{
+			m_NullNode = new RedBlackNode();
+			m_NullNode->pLeftChild = m_NullNode->pRightChild = m_NullNode;
+			m_Root = m_NullNode;
 		}
 
 		JoyRedBlackTree(const JoyRedBlackTree& rhs)
+			: JoyRedBlackTree()
 		{
 		}
 
@@ -63,6 +71,9 @@ namespace Joy
 
 		~JoyRedBlackTree()
 		{
+			MakeEmpty();
+			delete m_NullNode;
+			m_NullNode = nullptr;
 		}
 
 	public:
@@ -94,6 +105,14 @@ namespace Joy
 		/// <param name="element"></param>
 		void Remove(const T& element)
 		{
+		}
+
+	public:
+		const JoyRedBlackTree& operator= (const JoyRedBlackTree& rhs)
+		{
+			MakeEmpty();
+			m_Root = Clone(rhs.m_Root);
+			return *this;
 		}
 	
 	private:
@@ -135,9 +154,9 @@ namespace Joy
 		/// <param name="pNode"></param>
 		void Insert(const T& element, RedBlackNode*& pNode)
 		{
-			if (pNode == nullptr)
+			if (pNode == m_NullNode)
 			{
-				pNode = new RedBlackNode(element, nullptr, nullptr, EnumColor::RED);
+				pNode = new RedBlackNode(element, m_NullNode, m_NullNode, EnumColor::RED);
 			}
 		}
 
@@ -149,13 +168,31 @@ namespace Joy
 		void Remove(const T& element, RedBlackNode*& pNode)
 		{
 			// 不存在要删除的元素节点，直接返回，不处理
-			if (pNode == nullptr) { return; }
+			if (pNode == m_NullNode) { return; }
 		}
+
+		/// <summary>
+		/// 克隆一个节点
+		/// </summary>
+		/// <param name="pNode"></param>
+		/// <param name="pNullNode"></param>
+		/// <returns></returns>
+		RedBlackNode* Clone(const RedBlackNode* pNode, const RedBlackNode* pNullNode)
+		{
+			if (pNode == pNullNode) { return m_NullNode; }
+			return new RedBlackNode(pNode->elementData, Clone(pNode->pLeftChild, pNullNode), Clone(pNode->pRightChild, pNullNode));
+		}
+		
 
 	private:
 		/// <summary>
 		/// 红黑树根节点
 		/// </summary>
 		RedBlackNode* m_Root{ nullptr };
+
+		/// <summary>
+		/// 空节点，指代nullptr，所有叶子节点都应该指向m_NullNode，定义此节点可以简化程序，避免过多的nullptr异常处理，也方便按引用返回不存在的节点
+		/// </summary>
+		RedBlackNode* m_NullNode{ nullptr };
 	};
 }
