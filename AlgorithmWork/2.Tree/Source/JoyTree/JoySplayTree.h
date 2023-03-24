@@ -217,7 +217,7 @@ namespace Joy
 		const JoySplayTree& operator=(const JoySplayTree& rhs)
 		{
 			MakeEmpty(m_Root);
-			m_Root = Clone(rhs.m_Root, rhs.m_NullNode);
+			m_Root = Clone(rhs.m_Root);
 			return *this;
 		}
 
@@ -294,10 +294,11 @@ namespace Joy
 			}
 		}
 
-		SplayTreeNode* Clone(SplayTreeNode* pCopyNode, SplayTreeNode* nullNode)
+		SplayTreeNode* Clone(SplayTreeNode* pCopyNode)
 		{
-			if (pCopyNode == nullNode) { return m_NullNode; }
-			return new SplayTreeNode(pCopyNode->elementData, Clone(pCopyNode->pLeftChild, nullNode), Clone(pCopyNode->pRightChild, nullNode));
+			// 空节点
+			if (pCopyNode == pCopyNode->pLeftChild) { return m_NullNode; }
+			return new SplayTreeNode(pCopyNode->elementData, Clone(pCopyNode->pLeftChild), Clone(pCopyNode->pRightChild));
 		}
 
 		/// <summary>

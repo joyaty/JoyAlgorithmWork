@@ -65,8 +65,9 @@ namespace Joy
 		}
 
 		explicit JoyRedBlackTree(const T& element)
-			: m_Root(new RedBlackNode(element, nullptr, nullptr, EnumColor::BLACK))
+			:JoyRedBlackTree()
 		{
+			m_Root = new RedBlackNode(element, m_NullNode, m_NullNode);
 		}
 
 		~JoyRedBlackTree()
@@ -89,6 +90,7 @@ namespace Joy
 
 		void MakeEmpty()
 		{
+			MakeEmpty(m_Root);
 		}
 
 		/// <summary>
@@ -122,7 +124,10 @@ namespace Joy
 		/// <param name="pNode"></param>
 		void PrintTreePreOrder(RedBlackNode* pNode)
 		{
-
+			if (pNode == m_NullNode) { return; }
+			std::cout << pNode->elementData << std::endl;
+			PrintTreePreOrder(pNode->pLeftChild);
+			PrintTreePreOrder(pNode->pRightChild);
 		}
 		/// <summary>
 		/// 中序遍历打印树
@@ -130,6 +135,10 @@ namespace Joy
 		/// <param name="pNode"></param>
 		void PrintTreeInOrder(RedBlackNode* pNode)
 		{
+			if (pNode == m_NullNode) { return; }
+			PrintTreeInOrder(pNode->pLeftChild);
+			std::cout << pNode->elementData << std::endl;
+			PrintTreeInOrder(pNode->pRightChild);
 		}
 		/// <summary>
 		/// 后序遍历打印树
@@ -137,14 +146,24 @@ namespace Joy
 		/// <param name="pNode"></param>
 		void PrintTreePostOrder(RedBlackNode* pNode)
 		{
+			if (pNode == m_NullNode) { return; }
+			PrintTreePostOrder(pNode->pLeftChild);
+			PrintTreePostOrder(pNode->pRightChild);
+			std::cout << pNode->elementData << std::endl;
 		}
 
 		/// <summary>
 		/// 清空树
 		/// </summary>
 		/// <param name="pNode"></param>
-		void MakeEmpty(RedBlackNode* pNode)
+		void MakeEmpty(RedBlackNode*& pNode)
 		{
+			if (pNode == m_NullNode) { return; }
+			MakeEmpty(pNode->pLeftChild);
+			MakeEmpty(pNode->pRightChild);
+
+			delete pNode;
+			pNode = nullptr;
 		}
 
 		/// <summary>
@@ -177,13 +196,13 @@ namespace Joy
 		/// <param name="pNode"></param>
 		/// <param name="pNullNode"></param>
 		/// <returns></returns>
-		RedBlackNode* Clone(const RedBlackNode* pNode, const RedBlackNode* pNullNode)
+		RedBlackNode* Clone(const RedBlackNode* pNode)
 		{
-			if (pNode == pNullNode) { return m_NullNode; }
-			return new RedBlackNode(pNode->elementData, Clone(pNode->pLeftChild, pNullNode), Clone(pNode->pRightChild, pNullNode));
+			// 说明是空节点
+			if (pNode == pNode->pLeftChild) { return m_NullNode; }
+			return new RedBlackNode(pNode->elementData, Clone(pNode->pLeftChild), Clone(pNode->pRightChild));
 		}
 		
-
 	private:
 		/// <summary>
 		/// 红黑树根节点
