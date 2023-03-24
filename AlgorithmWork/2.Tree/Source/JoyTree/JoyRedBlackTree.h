@@ -324,6 +324,30 @@ namespace Joy
 				return theParent->pRightChild;
 			}
 		}
+
+		/// <summary>
+		/// 右单旋
+		/// </summary>
+		/// <param name="pNode"></param>
+		void RotateWithLeftChild(RedBlackNode*& pNode)
+		{
+			RedBlackNode* pTempNode = pNode->pLeftChild;
+			pNode->pLeftChild = pTempNode->pRightNode;
+			pTempNode->pRightNode = pNode;
+			pNode = pTempNode;
+		}
+
+		/// <summary>
+		/// 左单旋
+		/// </summary>
+		/// <param name="pNode"></param>
+		void RotateWithRightChild(RedBlackNode*& pNode)
+		{
+			RedBlackNode* pTempNode = pNode->pRightChild;
+			pNode->pRightChild = pTempNode->pLeftChild;
+			pTempNode->pLeftChild = pNode;
+			pNode = pTempNode;
+		}
 		
 	private:
 		/// <summary>
