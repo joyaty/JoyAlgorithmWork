@@ -153,12 +153,16 @@ void TestSplayTree()
 void TestRedBlackTree()
 {
 	// TODO
+	std::cout << "Initialize RedBlackTree" << std::endl;
+	Joy::JoyRedBlackTree<int> tree{};
+	tree.PrintTree();
 }
 
 int main()
 {
 	// TestJoyBinarySearchTree();
 	// TestAVLTree();
-	TestSplayTree();
+	// TestSplayTree();
+	TestRedBlackTree();
 	std::cin.get();
 }

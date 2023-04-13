@@ -14,7 +14,7 @@
 namespace Joy
 {
 	/// <summary>
-	/// 自定义红黑树的实现
+	/// 自定义自顶向下红黑树的实现                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	template<typename T> class JoyRedBlackTree
@@ -38,7 +38,7 @@ namespace Joy
 			T elementData{};
 			RedBlackNode* pLeftChild{ nullptr };
 			RedBlackNode* pRightChild{ nullptr };
-			EnumColor colorTag{ EnumColor::Black };
+			EnumColor colorTag{ EnumColor::BLACK };
 
 			RedBlackNode()
 			{
@@ -62,12 +62,7 @@ namespace Joy
 		JoyRedBlackTree(const JoyRedBlackTree& rhs)
 			: JoyRedBlackTree()
 		{
-		}
-
-		explicit JoyRedBlackTree(const T& element)
-			:JoyRedBlackTree()
-		{
-			m_Root = new RedBlackNode(element, m_NullNode, m_NullNode);
+			operator=(rhs);
 		}
 
 		~JoyRedBlackTree()
@@ -78,6 +73,9 @@ namespace Joy
 		}
 
 	public:
+		/// <summary>
+		/// 打印树
+		/// </summary>
 		void PrintTree() const
 		{
 			std::cout << "PreOrder  ================" << std::endl;
@@ -88,9 +86,46 @@ namespace Joy
 			PrintTreePostOrder(m_Root);
 		}
 
+		/// <summary>
+		/// 是否为空树
+		/// </summary>
+		/// <returns></returns>
+		bool IsEmpty() const
+		{
+			return m_Root == m_NullNode;
+		}
+
+		/// <summary>
+		/// 清空树
+		/// </summary>
 		void MakeEmpty()
 		{
 			MakeEmpty(m_Root);
+		}
+
+		/// <summary>
+		/// 查找树最小值
+		/// </summary>
+		/// <returns></returns>
+		const T& FindMin() const
+		{
+
+		}
+		/// <summary>
+		/// 查找树最大值
+		/// </summary>
+		/// <returns></returns>
+		const T& FindMax() const
+		{
+		}
+
+		/// <summary>
+		/// 是否包含值
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		bool Contain(const T& value) const
+		{
 		}
 
 		/// <summary>
@@ -110,10 +145,18 @@ namespace Joy
 		}
 
 	public:
+		/// <summary>
+		/// 复制操作符
+		/// </summary>
+		/// <param name="rhs"></param>
+		/// <returns></returns>
 		const JoyRedBlackTree& operator= (const JoyRedBlackTree& rhs)
 		{
-			MakeEmpty();
-			m_Root = Clone(rhs.m_Root);
+			if (this != &rhs)
+			{
+				MakeEmpty();
+				m_Root = Clone(rhs->m_Root);
+			}
 			return *this;
 		}
 	
@@ -122,7 +165,7 @@ namespace Joy
 		/// 前序遍历打印树
 		/// </summary>
 		/// <param name="pNode"></param>
-		void PrintTreePreOrder(RedBlackNode* pNode)
+		void PrintTreePreOrder(RedBlackNode* pNode) const
 		{
 			if (pNode == m_NullNode) { return; }
 			std::cout << pNode->elementData << std::endl;
@@ -133,7 +176,7 @@ namespace Joy
 		/// 中序遍历打印树
 		/// </summary>
 		/// <param name="pNode"></param>
-		void PrintTreeInOrder(RedBlackNode* pNode)
+		void PrintTreeInOrder(RedBlackNode* pNode) const
 		{
 			if (pNode == m_NullNode) { return; }
 			PrintTreeInOrder(pNode->pLeftChild);
@@ -144,7 +187,7 @@ namespace Joy
 		/// 后序遍历打印树
 		/// </summary>
 		/// <param name="pNode"></param>
-		void PrintTreePostOrder(RedBlackNode* pNode)
+		void PrintTreePostOrder(RedBlackNode* pNode) const
 		{
 			if (pNode == m_NullNode) { return; }
 			PrintTreePostOrder(pNode->pLeftChild);
@@ -200,7 +243,86 @@ namespace Joy
 		{
 			// 说明是空节点
 			if (pNode == pNode->pLeftChild) { return m_NullNode; }
-			return new RedBlackNode(pNode->elementData, Clone(pNode->pLeftChild), Clone(pNode->pRightChild));
+			return new RedBlackNode(pNode->elementData, Clone(pNode->pLeftChild), Clone(pNode->pRightChild), pNode->colorTag);
+		}
+
+		/// <summary>
+		/// 单旋转右旋
+		/// </summary>
+		/// <param name="pNode"></param>
+		void RotateWithLeftChild(RedBlackNode*& pNode)
+		{
+			RedBlackNode* pTempNode = pNode->pLeftChild;
+			pNode->pLeftChild = pTempNode->pRightChild;
+			pTempNode->pRightChild = pNode;
+			pNode = pTempNode;
+		}
+
+		/// <summary>
+		/// 单旋转左旋
+		/// </summary>
+		/// <param name="pNode"></param>
+		void RotateWithRightChild(RedBlackNode*& pNode)
+		{
+			RedBlackNode* pTempNode = pNode->pRightChild;
+			pNode->pRightChild = pTempNode->pLeftChild;
+			pTempNode->pLeftChild = pNode;
+			pNode = pTempNode;
+		}
+
+		/// <summary>
+		/// 处理红黑树的旋转和颜色翻转
+		/// </summary>
+		/// <param name="value"></param>
+		void HandelReorient(const T& value)
+		{
+			// 当前节点的左右两个子节点都是红色，或当前节点是新插入节点，则颜色翻转，当前节点为红色，子节点为黑色。
+			m_Current->colorTag = EnumColor::RED;
+			m_Current->pLeftChild->colorTag = EnumColor::BLACK;
+			m_Current->pRightChild->ColorTag = EnumColor::BLACK;
+			// 当前节点的父节点是红色，需要旋转
+			if (m_Parent->colorTag == EnumColor::RED)
+			{
+				// 旋转的祖父节点需要标记为红色
+				m_Grand->colorTag = EnumColor::RED;
+				// 当前节点与父节点到祖父节点的方向不同，需要双旋转
+				if ((value < m_Parent->elementData) != (m_Parent->elementData < m_Grand->elementData))
+				{
+					// 当前节点与父节点做一次单旋，旋转的子树根节点的父节点是祖父节点。注意，此时，m_Parent更新为旋转子树的新根节点，这里新根节点为m_Current指向的节点
+					m_Parent = Rotate(value, m_Grand);
+				}
+				// 父节点和祖父节点做一次单旋，旋转的子树的根节点的父节点是曾祖父节点。注意，此时，m_Current更新为旋转子树的新根节点，这里新根节点为m_Parent指向的节点
+				m_Current = Rotate(pCurrent->elementData, m_Great);
+				// 单旋转下，m_Current指向旧的m_Parent。双旋转下，m_Current与旧m_Current相同
+				m_Current->colorTag = EnumColor::BLACK;
+			}
+			// 根节点保证为黑色
+			m_Root->colorTag = EnumColor::BLACK;
+		}
+
+		/// <summary>
+		/// 一次单旋转操作，返回旋转子树的新根节点
+		/// 参数为目标值和旋转子树根节点的父节点，根据这两个参数可以方便的判断应该的旋转方向。
+		/// </summary>
+		/// <param name="value">目标值</param>
+		/// <param name="theParent">旋转子树根节点的父节点</param>
+		/// <returns></returns>
+		RedBlackNode* Rotate(const T& value, RedBlackNode* theParent)
+		{
+			if (value < theParent->elementData)
+			{
+				value < theParent->pLeftChild->elementData
+					? RotateWithLeftChild(theParent->pLeftChild) 
+					: RotateWithRightChild(theParent->pLeftChild);
+				return theParent->pLeftChild;
+			}
+			else
+			{
+				value < theParent->pRightChild->elementData
+					? RotateWithLeftChild(theParent->pRightChild)
+					: RotateWithRightChild(theParent->pRightChild);
+				return theParent->pRightChild;
+			}
 		}
 		
 	private:
@@ -213,5 +335,23 @@ namespace Joy
 		/// 空节点，指代nullptr，所有叶子节点都应该指向m_NullNode，定义此节点可以简化程序，避免过多的nullptr异常处理，也方便按引用返回不存在的节点
 		/// </summary>
 		RedBlackNode* m_NullNode{ nullptr };
+
+		/// <summary>
+		/// 当前遍历(插入)的节点
+		/// </summary>
+		RedBlackNode* m_Current{ nullptr };
+		/// <summary>
+		/// 当前遍历(插入)的父节点
+		/// </summary>
+		RedBlackNode* m_Parent{ nullptr };
+		/// <summary>
+		/// 当前遍历(插入)的祖父节点
+		/// </summary>
+		RedBlackNode* m_Grand{ nullptr };
+		/// <summary>
+		/// 当前遍历(插入)的曾祖父节点
+		/// </summary>
+		RedBlackNode* m_Great{ nullptr };
+
 	};
 }
