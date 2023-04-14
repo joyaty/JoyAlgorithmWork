@@ -45,7 +45,7 @@ namespace Joy
 			}
 
 			RedBlackNode(const T& element, RedBlackNode* pLeftNode = nullptr, RedBlackNode* pRightNode = nullptr, EnumColor color = EnumColor::BLACK)
-				: elementData(element), pLeftChild(pLeftNode), pRightChild(pRightChild), colorTag(color)
+				: elementData(element), pLeftChild(pLeftNode), pRightChild(pRightNode), colorTag(color)
 			{
 			}
 		};
@@ -129,11 +129,46 @@ namespace Joy
 		}
 
 		/// <summary>
-		/// 向红黑树新增一个元素节点
+		/// 向红黑树新增一个元素节点，自顶向下插入
 		/// </summary>
 		/// <param name="element"></param>
 		void Insert(const T& element)
 		{
+			if (m_Root == m_NullNode)
+			{
+				// 空树，直接放在根节点
+				m_Root = new RedBlackNode(element, m_NullNode, m_NullNode, EnumColor::BLACK);
+				return;
+			}
+			m_Current = m_Parent = m_Grand = m_Great = m_Root;
+			// 空节点元素标记为目标值，确保可以找到插入位置
+			m_NullNode->elementData = element;
+			while (m_Current->elementData != element)
+			{
+				m_Great = m_Grand;
+				m_Grand = m_Parent;
+				m_Parent = m_Current;
+				m_Current = element < m_Current->elementData ? m_Current->pLeftChild : m_Current->pRightChild;
+				// 当前节点的左右子节点皆为红色，需要翻转当前节点与子节点颜色，若父节点同为红色，需要再旋转
+				if (m_Current->pLeftChild->colorTag == EnumColor::RED && m_Current->pRightChild->colorTag == EnumColor::RED)
+				{
+					HandleReorient(element);
+				}
+			}
+			// 当前节点不为空节点，说明元素已在红黑树中，不处理插入
+			if (m_Current != m_NullNode) { return; }
+			// 位置在叶子(空)节点
+			m_Current = new RedBlackNode(element, m_NullNode, m_NullNode, EnumColor::RED);
+			if (element < m_Parent->elementData)
+			{
+				m_Parent->pLeftChild = m_Current;
+			}
+			else
+			{
+				m_Parent->pRightChild = m_Current;
+			}
+			// 插入新节点，检查红黑树，确认是否要翻转和旋转树结构
+			HandleReorient(element);
 		}
 
 		/// <summary>
@@ -168,7 +203,7 @@ namespace Joy
 		void PrintTreePreOrder(RedBlackNode* pNode) const
 		{
 			if (pNode == m_NullNode) { return; }
-			std::cout << pNode->elementData << std::endl;
+			std::cout << pNode->elementData << " " << static_cast<int>(pNode->colorTag) << std::endl;
 			PrintTreePreOrder(pNode->pLeftChild);
 			PrintTreePreOrder(pNode->pRightChild);
 		}
@@ -180,7 +215,7 @@ namespace Joy
 		{
 			if (pNode == m_NullNode) { return; }
 			PrintTreeInOrder(pNode->pLeftChild);
-			std::cout << pNode->elementData << std::endl;
+			std::cout << pNode->elementData << " " << static_cast<int>(pNode->colorTag) << std::endl;
 			PrintTreeInOrder(pNode->pRightChild);
 		}
 		/// <summary>
@@ -192,7 +227,20 @@ namespace Joy
 			if (pNode == m_NullNode) { return; }
 			PrintTreePostOrder(pNode->pLeftChild);
 			PrintTreePostOrder(pNode->pRightChild);
-			std::cout << pNode->elementData << std::endl;
+			std::cout << pNode->elementData << " " << static_cast<int>(pNode->colorTag) << std::endl;
+		}
+
+		/// <summary>
+		/// 克隆一个节点
+		/// </summary>
+		/// <param name="pNode"></param>
+		/// <param name="pNullNode"></param>
+		/// <returns></returns>
+		RedBlackNode* Clone(const RedBlackNode* pNode) const
+		{
+			// 说明是空节点
+			if (pNode == pNode->pLeftChild) { return m_NullNode; }
+			return new RedBlackNode(pNode->elementData, Clone(pNode->pLeftChild), Clone(pNode->pRightChild), pNode->colorTag);
 		}
 
 		/// <summary>
@@ -210,76 +258,15 @@ namespace Joy
 		}
 
 		/// <summary>
-		/// 向红黑树插入一个元素，并维持红黑树平衡
-		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="pNode"></param>
-		void Insert(const T& element, RedBlackNode*& pNode)
-		{
-			if (pNode == m_NullNode)
-			{
-				pNode = new RedBlackNode(element, m_NullNode, m_NullNode, EnumColor::RED);
-			}
-		}
-
-		/// <summary>
-		/// 删除红黑树的一个元素节点，并维持红黑树平衡
-		/// </summary>
-		/// <param name="element"></param>
-		/// <param name="pNode"></param>
-		void Remove(const T& element, RedBlackNode*& pNode)
-		{
-			// 不存在要删除的元素节点，直接返回，不处理
-			if (pNode == m_NullNode) { return; }
-		}
-
-		/// <summary>
-		/// 克隆一个节点
-		/// </summary>
-		/// <param name="pNode"></param>
-		/// <param name="pNullNode"></param>
-		/// <returns></returns>
-		RedBlackNode* Clone(const RedBlackNode* pNode)
-		{
-			// 说明是空节点
-			if (pNode == pNode->pLeftChild) { return m_NullNode; }
-			return new RedBlackNode(pNode->elementData, Clone(pNode->pLeftChild), Clone(pNode->pRightChild), pNode->colorTag);
-		}
-
-		/// <summary>
-		/// 单旋转右旋
-		/// </summary>
-		/// <param name="pNode"></param>
-		void RotateWithLeftChild(RedBlackNode*& pNode)
-		{
-			RedBlackNode* pTempNode = pNode->pLeftChild;
-			pNode->pLeftChild = pTempNode->pRightChild;
-			pTempNode->pRightChild = pNode;
-			pNode = pTempNode;
-		}
-
-		/// <summary>
-		/// 单旋转左旋
-		/// </summary>
-		/// <param name="pNode"></param>
-		void RotateWithRightChild(RedBlackNode*& pNode)
-		{
-			RedBlackNode* pTempNode = pNode->pRightChild;
-			pNode->pRightChild = pTempNode->pLeftChild;
-			pTempNode->pLeftChild = pNode;
-			pNode = pTempNode;
-		}
-
-		/// <summary>
 		/// 处理红黑树的旋转和颜色翻转
 		/// </summary>
 		/// <param name="value"></param>
-		void HandelReorient(const T& value)
+		void HandleReorient(const T& value)
 		{
 			// 当前节点的左右两个子节点都是红色，或当前节点是新插入节点，则颜色翻转，当前节点为红色，子节点为黑色。
 			m_Current->colorTag = EnumColor::RED;
 			m_Current->pLeftChild->colorTag = EnumColor::BLACK;
-			m_Current->pRightChild->ColorTag = EnumColor::BLACK;
+			m_Current->pRightChild->colorTag = EnumColor::BLACK;
 			// 当前节点的父节点是红色，需要旋转
 			if (m_Parent->colorTag == EnumColor::RED)
 			{
@@ -292,7 +279,7 @@ namespace Joy
 					m_Parent = Rotate(value, m_Grand);
 				}
 				// 父节点和祖父节点做一次单旋，旋转的子树的根节点的父节点是曾祖父节点。注意，此时，m_Current更新为旋转子树的新根节点，这里新根节点为m_Parent指向的节点
-				m_Current = Rotate(pCurrent->elementData, m_Great);
+				m_Current = Rotate(value, m_Great);
 				// 单旋转下，m_Current指向旧的m_Parent。双旋转下，m_Current与旧m_Current相同
 				m_Current->colorTag = EnumColor::BLACK;
 			}
@@ -326,19 +313,19 @@ namespace Joy
 		}
 
 		/// <summary>
-		/// 右单旋
+		/// 单旋转右旋
 		/// </summary>
 		/// <param name="pNode"></param>
 		void RotateWithLeftChild(RedBlackNode*& pNode)
 		{
 			RedBlackNode* pTempNode = pNode->pLeftChild;
-			pNode->pLeftChild = pTempNode->pRightNode;
-			pTempNode->pRightNode = pNode;
+			pNode->pLeftChild = pTempNode->pRightChild;
+			pTempNode->pRightChild = pNode;
 			pNode = pTempNode;
 		}
 
 		/// <summary>
-		/// 左单旋
+		/// 单旋转左旋
 		/// </summary>
 		/// <param name="pNode"></param>
 		void RotateWithRightChild(RedBlackNode*& pNode)
