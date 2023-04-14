@@ -154,7 +154,7 @@ void TestRedBlackTree()
 {
 	// TODO
 	std::cout << "Initialize RedBlackTree" << std::endl;
-	Joy::JoyRedBlackTree<int> tree{};
+	Joy::JoyRedBlackTree<int> tree(INT_MIN);
 	tree.Insert(10);
 	tree.Insert(85);
 	tree.Insert(15);

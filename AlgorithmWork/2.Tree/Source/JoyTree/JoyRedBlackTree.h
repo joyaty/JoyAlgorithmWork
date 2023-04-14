@@ -51,16 +51,24 @@ namespace Joy
 		};
 
 	public:
-		JoyRedBlackTree()
-			: m_Root(nullptr)
+		//JoyRedBlackTree()
+		//	: m_Root(nullptr)
+		//{
+		//	m_NullNode = new RedBlackNode();
+		//	m_NullNode->pLeftChild = m_NullNode->pRightChild = m_NullNode;
+		//	m_Root = m_NullNode;
+		//}
+
+		explicit JoyRedBlackTree(const T& negInf)
 		{
 			m_NullNode = new RedBlackNode();
 			m_NullNode->pLeftChild = m_NullNode->pRightChild = m_NullNode;
-			m_Root = m_NullNode;
+			m_Root = new RedBlackNode(negInf, m_NullNode, m_NullNode, EnumColor::BLACK);
+			m_Root->pLeftChild = m_Root->pRightChild = m_NullNode;
 		}
 
 		JoyRedBlackTree(const JoyRedBlackTree& rhs)
-			: JoyRedBlackTree()
+			: JoyRedBlackTree(rhs->m_Root->elementData)
 		{
 			operator=(rhs);
 		}
@@ -79,11 +87,11 @@ namespace Joy
 		void PrintTree() const
 		{
 			std::cout << "PreOrder  ================" << std::endl;
-			PrintTreePreOrder(m_Root);
+			PrintTreePreOrder(m_Root->pRightChild);
 			std::cout << "InOrder   ================" << std::endl;
-			PrintTreeInOrder(m_Root);
+			PrintTreeInOrder(m_Root->pRightChild);
 			std::cout << "PostOrder ================" << std::endl;
-			PrintTreePostOrder(m_Root);
+			PrintTreePostOrder(m_Root->pRightChild);
 		}
 
 		/// <summary>
@@ -92,7 +100,7 @@ namespace Joy
 		/// <returns></returns>
 		bool IsEmpty() const
 		{
-			return m_Root == m_NullNode;
+			return m_Root->pRightChild == m_NullNode;
 		}
 
 		/// <summary>
@@ -134,10 +142,10 @@ namespace Joy
 		/// <param name="element"></param>
 		void Insert(const T& element)
 		{
-			if (m_Root == m_NullNode)
+			if (m_Root->pRightChild == m_NullNode)
 			{
 				// 空树，直接放在根节点
-				m_Root = new RedBlackNode(element, m_NullNode, m_NullNode, EnumColor::BLACK);
+				m_Root->pRightChild = new RedBlackNode(element, m_NullNode, m_NullNode, EnumColor::BLACK);
 				return;
 			}
 			m_Current = m_Parent = m_Grand = m_Great = m_Root;
@@ -190,7 +198,7 @@ namespace Joy
 			if (this != &rhs)
 			{
 				MakeEmpty();
-				m_Root = Clone(rhs->m_Root);
+				m_Root->pRightChild = Clone(rhs->m_Root->pRightChild);
 			}
 			return *this;
 		}
@@ -284,7 +292,7 @@ namespace Joy
 				m_Current->colorTag = EnumColor::BLACK;
 			}
 			// 根节点保证为黑色
-			m_Root->colorTag = EnumColor::BLACK;
+			m_Root->pRightChild->colorTag = EnumColor::BLACK;
 		}
 
 		/// <summary>
