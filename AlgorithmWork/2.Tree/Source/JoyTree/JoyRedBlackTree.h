@@ -105,7 +105,18 @@ namespace Joy
 		/// <returns></returns>
 		const T& FindMin() const
 		{
-
+			if (m_Root->pRightChild == s_NullNode)
+			{
+				// 空树，直接返回极小值
+				return m_Root->elementData;
+			}
+			// 循环寻找左子树
+			m_Current = m_Root->pRightChild;
+			while (m_Current->pLeftChild != s_NullNode)
+			{
+				m_Current = m_Current->pLeftChild;
+			}
+			return m_Current->elementData;
 		}
 		/// <summary>
 		/// 查找树最大值
@@ -113,15 +124,49 @@ namespace Joy
 		/// <returns></returns>
 		const T& FindMax() const
 		{
+			if (m_Root->pRightChild == s_NullNode)
+			{
+				// 空树，直接返回极小值
+				return m_Root->elementData;
+			}
+			// 循环寻找右子树
+			m_Current = m_Root->pRightChild;
+			while (m_Current->pRightChild != s_NullNode)
+			{
+				m_Current = m_Current->pRightChild;
+			}
+			return m_Current->elementData;
 		}
 
 		/// <summary>
 		/// 是否包含值
 		/// </summary>
-		/// <param name="value"></param>
+		/// <param name="element"></param>
 		/// <returns></returns>
-		bool Contain(const T& value) const
+		bool Contain(const T& element) const
 		{
+			if (m_Root->pRightChild == s_NullNode)
+			{
+				// 空树，直接返回极小值
+				return false;
+			}
+			m_Current = m_Root->pRightChild;
+			while (m_Current != s_NullNode)
+			{
+				if (element < m_Current->elementData)
+				{
+					m_Current = m_Current->pLeftChild;
+				}
+				else if (m_Current->elementData < element)
+				{
+					m_Current = m_Current->pRightChild;
+				}
+				else
+				{
+					break;
+				}
+			}
+			return m_Current != s_NullNode;
 		}
 
 		/// <summary>
@@ -456,7 +501,7 @@ namespace Joy
 		/// <summary>
 		/// 当前遍历的节点
 		/// </summary>
-		RedBlackNode* m_Current{ nullptr };
+		mutable RedBlackNode* m_Current{ nullptr };
 		/// <summary>
 		/// 当前遍历的兄弟节点
 		/// </summary>

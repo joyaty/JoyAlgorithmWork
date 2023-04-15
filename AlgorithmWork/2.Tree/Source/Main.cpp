@@ -169,6 +169,8 @@ void TestRedBlackTree()
 	tree.Insert(5);
 	tree.Insert(55);
 	tree.PrintTree();
+	std::cout << "MinValue: "<< tree.FindMin() << " MaxValue: "<< tree.FindMax() <<std::endl;
+	std::cout << "Contain 50 ? " << tree.Contain(50) << " Contain 75 ? " << tree.Contain(75) << std::endl;
 	std::cout << "After insert 45" << std::endl;
 	tree.Insert(45);
 	tree.PrintTree();
