@@ -14,8 +14,17 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 ## 添加UNICODE/_UNICODE宏 使用unicode字符集
 add_definitions(-DUNICODE -D_UNICODE)
-## 忽略4819警告
-add_definitions(/wd"4819")
+
+# 输出一些信息
+message(STATUS "OutPut Someting Begin ===========================")
+message(STATUS "CMAKE_CXX_COMPILER_ID = ${CMAKE_CXX_COMPILER_ID}")
+message(STATUS "CMAKE_SYSTEM_NAME = ${CMAKE_SYSTEM_NAME}")
+message(STATUS "OutPut Someting End =============================")
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    ## MSVC忽略4819警告
+    add_definitions(/wd"4819")
+endif()
 
 # 添加数据结构和算法学习子项目路径
 add_subdirectory(${PROJECT_SOURCE_DIR}/AlgorithmWork/0.HelloAlgorithm)
@@ -30,3 +39,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/LeetCode/1.TwoSum)
 add_subdirectory(${PROJECT_SOURCE_DIR}/LeetCode/2.AddTwoNumbers)
 add_subdirectory(${PROJECT_SOURCE_DIR}/LeetCode/3.LongestSubstringWithoutRepeatingCharacters)
 add_subdirectory(${PROJECT_SOURCE_DIR}/LeetCode/4.MedianOfTwoSortedArrays)
+
+# 添加语言基础知识项目路径
+add_subdirectory(${PROJECT_SOURCE_DIR}/LanguageWork/0.TheBasic)
+add_subdirectory(${PROJECT_SOURCE_DIR}/LanguageWork/1.IOLibrary)
