@@ -152,7 +152,6 @@ void TestSplayTree()
 /// </summary>
 void TestRedBlackTree()
 {
-	// TODO
 	std::cout << "Initialize RedBlackTree" << std::endl;
 	Joy::JoyRedBlackTree<int> tree(INT_MIN);
 	tree.Insert(10);
@@ -169,6 +168,12 @@ void TestRedBlackTree()
 	tree.Insert(40);
 	tree.Insert(5);
 	tree.Insert(55);
+	tree.PrintTree();
+	std::cout << "After insert 45" << std::endl;
+	tree.Insert(45);
+	tree.PrintTree();
+	std::cout << "After remove 60" << std::endl;
+	tree.Remove(60);
 	tree.PrintTree();
 }
 
