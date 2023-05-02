@@ -10,6 +10,7 @@ set(SUB_PROJECT_NAME 1.IOLibrary)
 
 # 将所有源码设置到ALL_FILES变量上
 set(ALL_FILES 
+Source/CppIOLibrary/CppIOLibraryWork.cpp
 Source/Main.cpp
 )
 
