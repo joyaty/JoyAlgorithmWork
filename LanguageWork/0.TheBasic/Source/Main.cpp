@@ -3,15 +3,52 @@
 #include <string>
 #include <stdexcept>
 
+class Example
+{
+public:
+    static double rate;
+    static constexpr int vecSize = 20;
+    static std::vector<double> vec;
+};
+
+double Example::rate = 6.5;
+// 即使一个常量静态成员在类内初始化了，也应该在类的外部定义一下该成员
+constexpr int Example::vecSize;
+std::vector<double> Example::vec(Example::vecSize);
+
+
+class Debug
+{
+public:
+    constexpr Debug(bool b = true) : hw(b), io(b), other(b) {}
+    constexpr Debug(bool h, bool i, bool o) : hw(h), io(i), other(o) {}
+    constexpr bool Any() const { return hw || io || other; }
+    void Set_io(bool b) { io = b; }
+    void Set_hw(bool b) { hw = b; }
+    void Set_other(bool b) { other = b; }
+private:
+    bool hw;    // 硬件错误
+    bool io;    // IO错误
+    bool other; // 其他错误
+};
+
+
 class ClassTemp
 {
 public:
-	ClassTemp() = default;
-	ClassTemp(const char* str)
-		: m_strMember(str)
-	{
-	}
-	ClassTemp(const ClassTemp& temp)
+    explicit ClassTemp(const char* str)
+        : m_strMember(str)
+    {
+        std::cout << "Single Paramter Constractor" << std::endl;
+    }
+
+	ClassTemp()
+        : ClassTemp("")
+    {
+        std::cout << "Default Constractor" <<std::endl;
+    }
+    
+    ClassTemp(const ClassTemp& temp)
 		: m_strMember(temp.m_strMember)
 	{
 		std::cout << "Copy Constractor" << std::endl;
@@ -134,7 +171,8 @@ int main()
 	std::cout << "Hello, The Basic" << std::endl;
 
 	int size1 = sizeof(ClassTemp);
-	ClassTemp pClassTmp("123412342134");
+	ClassTemp objClassTmp("123412342134");
+    ClassTemp objClassTmp2;
 
 	int i = 108, j = 5;
 	float r = static_cast<float>(j) / i;
@@ -163,7 +201,7 @@ int main()
 
 	try
 	{
-		pClassTmp.TestThrowException();
+		objClassTmp.TestThrowException();
 	}
 	catch (const std::runtime_error& error)
 	{
@@ -183,7 +221,23 @@ int main()
 
 	std::cout << "=============================" << std::endl;
 	Func1* func = GetFunc();
-	std::cout << UseBigger("Hello", " World!", func);
+	std::cout << UseBigger("Hello", " World!", func) << std::endl;
+    
+    std::cout << "=============================" << std::endl;
+    constexpr Debug io_sub(false, true, false);
+    if (io_sub.Any())
+    {
+        std::cerr << "Print some error message." << std::endl;
+    }
+    
+    using std::swap;
+    std::string strHello{ "Hello" };
+    std::string strWorld{ "World" };
+    swap(strHello, strWorld);
+    
+    int iHello{ 10 };
+    int iWorld{ 99 };
+    swap(iHello, iWorld);
 
 	std::cin.get();
 	return 0;
