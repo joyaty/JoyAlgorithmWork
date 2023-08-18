@@ -2,6 +2,117 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
+#include <algorithm>
+
+
+class ClassX
+{
+public:
+	ClassX()
+		: m_iX(0)
+		, m_iY(0)
+	{
+	}
+
+	ClassX(const ClassX& x)
+		: m_iX(x.m_iX)
+		, m_iY(x.m_iY)
+	{
+	}
+
+private:
+	int m_iX;
+	int m_iY;
+};
+
+class ClassY
+{
+public:
+	ClassY() = default;
+	ClassY(const ClassY& y) = default;
+	ClassY(ClassY&& y) noexcept = default;
+
+private:
+	ClassX m_cX;
+};
+
+class HasPtr
+{
+	friend void swap(HasPtr&, HasPtr&);
+	friend std::ostream& operator<<(std::ostream&, const HasPtr&);
+public:
+	HasPtr(const std::string& str, int index)
+		: m_pStr(new std::string(str))
+		, m_iIndex(index)
+		, m_pUse(new std::size_t(1))
+	{
+	}
+
+	HasPtr(const HasPtr& rhs)
+		: m_pStr(rhs.m_pStr)
+		, m_iIndex(rhs.m_iIndex)
+		, m_pUse(rhs.m_pUse)
+	{
+		std::cout << "HasPtr::HasPtr(const HasPtr& rhs)" << std::endl;
+		++(*m_pUse);
+	}
+
+	HasPtr& operator=(const HasPtr& rhs)
+	{
+		std::cout << "HasPtr::operator=" << std::endl;
+		++(*rhs.m_pUse); // 优先加赋值操作符右侧的引用计数，避免自赋值时析构掉自己
+		if ((--(*m_pUse)) == 0)
+		{
+			delete m_pStr;
+			delete m_pUse;
+		}
+		m_pStr = rhs.m_pStr;
+		m_iIndex = rhs.m_iIndex;
+		m_pUse = rhs.m_pUse;
+		return *this;
+	}
+
+	//HasPtr& operator=(HasPtr rhs)
+	//{
+	//	std::cout << "HasPtr::operator=" << std::endl;
+	//	swap(*this, rhs);
+	//	return *this;
+	//}
+
+	~HasPtr()
+	{
+		std::cout << "HasPtr::~HasPtr()" << std::endl;
+		if ((--(*m_pUse)) == 0)
+		{
+			delete m_pStr;
+			delete m_pUse;
+		}
+	}
+
+	bool operator<(const HasPtr& rhs)
+	{
+		return m_iIndex < rhs.m_iIndex;
+	}
+
+private:
+	std::string* m_pStr;
+	int m_iIndex; 
+	std::size_t* m_pUse; // 用于记录有多少个对象指向m_pStr的对象
+};
+
+inline void swap(HasPtr& lhs, HasPtr& rhs)
+{
+	using std::swap;
+	swap(lhs.m_pStr, rhs.m_pStr);
+	swap(lhs.m_iIndex, rhs.m_iIndex);
+	swap(lhs.m_pUse, rhs.m_pUse);
+}
+
+std::ostream& operator<<(std::ostream& os, const HasPtr& hasPtr)
+{
+	os << *hasPtr.m_pStr << ", " << hasPtr.m_iIndex << ", useRef = " << *hasPtr.m_pUse;
+	return os;
+}
 
 class Example
 {
@@ -230,14 +341,33 @@ int main()
         std::cerr << "Print some error message." << std::endl;
     }
     
-    using std::swap;
-    std::string strHello{ "Hello" };
-    std::string strWorld{ "World" };
-    swap(strHello, strWorld);
-    
-    int iHello{ 10 };
-    int iWorld{ 99 };
-    swap(iHello, iWorld);
+	std::cout << "=============================" << std::endl;
+	HasPtr pHasPtr1("Hello", 1);
+	HasPtr pHasPtr2("World", 2);
+	HasPtr pHasPtr3("Joy", 5);
+	HasPtr pHasPtr4("Yang", 3);
+
+
+	std::cout << "=============================" << std::endl;
+	std::vector<HasPtr> vecHasPtrs = { pHasPtr2, pHasPtr4, pHasPtr1, pHasPtr3, pHasPtr4 };
+	std::cout << "=============================" << std::endl;
+	using std::sort;
+	std::cout << "=================================" << std::endl;
+	sort(vecHasPtrs.begin(), vecHasPtrs.end());
+	std::cout << "=================================" << std::endl;
+	for (const HasPtr& hasPtr : vecHasPtrs)
+	{
+		std::cout << hasPtr << std::endl;
+	}
+	std::cout << "====================================" << std::endl;
+	std::vector<int> vecs;
+	std::cout << vecs.capacity() << ", " << vecs.size() << std::endl;
+
+	ClassX x;
+	ClassX xi = std::move(x);
+
+	ClassY y;
+	ClassY yi = std::move(y);
 
 	std::cin.get();
 	return 0;
