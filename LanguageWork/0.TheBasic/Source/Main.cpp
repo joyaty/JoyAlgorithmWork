@@ -89,7 +89,7 @@ public:
 		}
 	}
 
-	bool operator<(const HasPtr& rhs)
+	bool operator<(const HasPtr& rhs) const
 	{
 		return m_iIndex < rhs.m_iIndex;
 	}
