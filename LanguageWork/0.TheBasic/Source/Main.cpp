@@ -57,32 +57,42 @@ public:
 		++(*m_pUse);
 	}
 
-	HasPtr& operator=(const HasPtr& rhs)
+	HasPtr(HasPtr&& rhs) noexcept
+		: m_pStr(rhs.m_pStr)
+		, m_iIndex(rhs.m_iIndex)
+		, m_pUse(rhs.m_pUse)
 	{
-		std::cout << "HasPtr::operator=" << std::endl;
-		++(*rhs.m_pUse); // 优先加赋值操作符右侧的引用计数，避免自赋值时析构掉自己
-		if ((--(*m_pUse)) == 0)
-		{
-			delete m_pStr;
-			delete m_pUse;
-		}
-		m_pStr = rhs.m_pStr;
-		m_iIndex = rhs.m_iIndex;
-		m_pUse = rhs.m_pUse;
-		return *this;
+		rhs.m_pStr = nullptr;
+		rhs.m_iIndex = 0;
+		rhs.m_pUse = nullptr;
 	}
 
-	//HasPtr& operator=(HasPtr rhs)
+	//HasPtr& operator=(const HasPtr& rhs)
 	//{
 	//	std::cout << "HasPtr::operator=" << std::endl;
-	//	swap(*this, rhs);
+	//	++(*rhs.m_pUse); // 优先加赋值操作符右侧的引用计数，避免自赋值时析构掉自己
+	//	if ((--(*m_pUse)) == 0)
+	//	{
+	//		delete m_pStr;
+	//		delete m_pUse;
+	//	}
+	//	m_pStr = rhs.m_pStr;
+	//	m_iIndex = rhs.m_iIndex;
+	//	m_pUse = rhs.m_pUse;
 	//	return *this;
 	//}
+
+	HasPtr& operator=(HasPtr rhs)
+	{
+		std::cout << "HasPtr::operator=" << std::endl;
+		swap(*this, rhs);
+		return *this;
+	}
 
 	~HasPtr()
 	{
 		std::cout << "HasPtr::~HasPtr()" << std::endl;
-		if ((--(*m_pUse)) == 0)
+		if (m_pUse && (--(*m_pUse)) == 0)
 		{
 			delete m_pStr;
 			delete m_pUse;
@@ -368,6 +378,10 @@ int main()
 
 	ClassY y;
 	ClassY yi = std::move(y);
+
+	std::string s1 = "Hello", s2 = "World";
+	auto n = (s1 + s2).find("o");
+	s1 + s2 = "Wow";
 
 	std::cin.get();
 	return 0;
