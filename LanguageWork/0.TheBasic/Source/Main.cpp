@@ -3,7 +3,110 @@
 #include <string>
 #include <stdexcept>
 #include <algorithm>
+#include <functional>
+#include <unordered_map>
 
+
+class Person
+{
+	friend class FriendPerson;
+public:
+	Person()
+	{
+		MemFunc();
+	}
+	Person(int id, std::string name) : m_ID(id), m_Name(name) {}
+	virtual ~Person() = default;
+
+public:
+	virtual void GetDesc() const
+	{
+		std::cout << "Id = " << m_ID << ", Name = " << m_Name << std::endl;
+	}
+
+	const std::string& GetName() const { return m_Name; }
+	int GetID() const { return m_ID; }
+
+	virtual void MemFunc() { std::cout << "Call Person::MemFunc()" << std::endl; }
+
+protected:
+	std::string m_Name;
+
+private:
+	int m_ID;
+};
+
+class Student : public Person
+{
+protected:
+	using Person::m_Name;
+	using Person::GetID;
+
+public:
+	Student()
+		: Person()
+		, m_StudentID(0)
+	{
+		MemFunc();
+	}
+
+	Student(int id, int studentID, std::string name)
+		: Person(id, name)
+		, m_StudentID(studentID) {}
+
+	void MemFunc() override { std::cout << "Call Student::MemFunc()" << std::endl; }
+	void MemFunc(int param) { std::cout << "Call Student::MemFunc(int param)" << std::endl; }
+
+public:
+	void GetDesc() const override
+	{
+		std::cout << "Id = " << GetID() << ", Name = " << m_Name << ", StudentID = " << m_StudentID << std::endl;
+	}
+
+protected:
+	int m_StudentID;
+};
+
+class Senior : public Student
+{
+public:
+	void GetDesc() const override
+	{
+		std::cout << "Id = " << GetID() << ", Name = " << m_Name << ", StudentID = " << m_StudentID << std::endl;
+	}
+};
+
+class FriendPerson
+{
+public:
+	void PrintID(const Person& person) const
+	{
+		std::cout << "Id = " << person.m_ID << std::endl;
+	}
+
+	void PrintStudentID(const Student& student) const
+	{
+		// 友元关系不可继承，由继承的各个部分各自负责
+		// FriendPerson是Person类的友元，不是Student类的友元
+		// 故Student::m_StudentID不可访问（友元关系不继承）
+		// 但Student::m_ID从基类Person继承而来，Friend是Person的友元，可以访问Student中基类Person的私有部分（继承的各个部分各自负责友元关系）
+		// std::cout << "Name = " << student.m_Name << "StudentID = " << std::endl; // student.m_ID正确，student.m_StudentID错误
+	}
+};
+
+class SmallInt
+{
+public:
+	SmallInt() : m_iValue(0) {}
+	// 转换构造函数，不加explict关键字，则可将std::size_t隐式转换为SmallInt类型。
+	SmallInt(int iValue) : m_iValue(iValue) {}
+	// 转换操作符，可以将SmallInt转换为int类型，接受隐式转换
+	operator int() const { return m_iValue; }
+	// 转换操作符，可以将SmallInt转换为bool类型，不接受隐式转换，但是在条件表达式中可以接受作为隐式转换，其他情况必须显式转换
+	explicit operator bool() const { return m_iValue; }
+private:
+	std::size_t m_iValue;
+};
 
 class ClassX
 {
@@ -39,6 +142,7 @@ private:
 class HasPtr
 {
 	friend void swap(HasPtr&, HasPtr&);
+	friend bool operator<(const HasPtr&, const HasPtr&);
 	friend std::ostream& operator<<(std::ostream&, const HasPtr&);
 public:
 	HasPtr(const std::string& str, int index)
@@ -99,11 +203,6 @@ public:
 		}
 	}
 
-	bool operator<(const HasPtr& rhs) const
-	{
-		return m_iIndex < rhs.m_iIndex;
-	}
-
 private:
 	std::string* m_pStr;
 	int m_iIndex; 
@@ -116,6 +215,11 @@ inline void swap(HasPtr& lhs, HasPtr& rhs)
 	swap(lhs.m_pStr, rhs.m_pStr);
 	swap(lhs.m_iIndex, rhs.m_iIndex);
 	swap(lhs.m_pUse, rhs.m_pUse);
+}
+
+inline bool operator<(const HasPtr& lhs, const HasPtr& rhs)
+{
+	return lhs.m_iIndex < rhs.m_iIndex;
 }
 
 std::ostream& operator<<(std::ostream& os, const HasPtr& hasPtr)
@@ -287,6 +391,8 @@ auto GetFunc6() -> FuncPtr1
 	return CompareString;
 }
 
+int Add(int lhs, int rhs) { return lhs + rhs; }
+
 int main()
 {
 	std::cout << "Hello, The Basic" << std::endl;
@@ -383,6 +489,53 @@ int main()
 	auto n = (s1 + s2).find("o");
 	s1 + s2 = "Wow";
 
+	struct Divide
+	{
+		int operator()(int lhs, int rhs) { return lhs / rhs; }
+	};
+
+	std::cout << "=========================================" << std::endl;
+	std::function<int(int, int)> funcDivide = Divide();
+	std::function<int(int, int)> funcMod = [](int lhs, int rhs) { return lhs % rhs; };
+	std::unordered_map<std::string, std::function<int(int, int)>> mapOperations;
+	mapOperations.emplace("+", Add);
+	mapOperations.emplace("%", funcMod);
+	mapOperations.emplace("/", funcDivide);
+	std::cout << mapOperations["+"](10, 5) << " " << mapOperations["/"](9, 3) << " " << mapOperations["%"](15, 4) << std::endl;
+
+	std::cout << "==============================================" << std::endl;
+	SmallInt value = 10;
+	if (value)
+	{
+		std::cout << "cast to bool" << std::endl;
+	}
+	std::cout << value + 23 << std::endl;
+
+	Person person1(1001, "Hello");
+	Person person2(1002, "World");
+	Student student1(1003, 9001, "Welcome");
+	Student student2(1004, 9002, "Student");
+
+	Person* pPer1 = &person1, * pPer2 = &student1;
+
+	pPer1->MemFunc();
+	pPer2->MemFunc();
+
+	// student1.MemFunc(); // 错误，继承与基类的MemFunc函数，由于派生类中定义了同名函数，但参数列表不一致，导致基类中的MemFunc函数被隐藏，可通过添加基类域调用。
+	student1.MemFunc(); // 正确，通过添加基类的域调用被隐藏的函数
+	student2.MemFunc(1);
+
+	std::cout << "=============================" << std::endl;
+	Person person3;
+	Student student3;
+	std::cout << "=============================" << std::endl;
+
+	FriendPerson friends;
+	friends.PrintID(person1);
+	// friends.PrintID(student2);
+	friends.PrintStudentID(student1);
+
 	std::cin.get();
+
 	return 0;
 }

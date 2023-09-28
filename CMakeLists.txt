@@ -33,6 +33,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/AlgorithmWork/2.Tree)
 add_subdirectory(${PROJECT_SOURCE_DIR}/AlgorithmWork/3.Hashing)
 add_subdirectory(${PROJECT_SOURCE_DIR}/AlgorithmWork/4.PriorityQueue)
 add_subdirectory(${PROJECT_SOURCE_DIR}/AlgorithmWork/5.Sorting)
+add_subdirectory(${PROJECT_SOURCE_DIR}/AlgorithmWork/6.MemoryPool)
 
 # 添加LeetCode练习子项目路径
 add_subdirectory(${PROJECT_SOURCE_DIR}/LeetCode/1.TwoSum)
@@ -43,3 +44,4 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/LeetCode/4.MedianOfTwoSortedArrays)
 # 添加语言基础知识项目路径
 add_subdirectory(${PROJECT_SOURCE_DIR}/LanguageWork/0.TheBasic)
 add_subdirectory(${PROJECT_SOURCE_DIR}/LanguageWork/1.IOLibrary)
+add_subdirectory(${PROJECT_SOURCE_DIR}/LanguageWork/2.TextQuery)
