@@ -19,11 +19,11 @@ public:
 	using Line_no = std::vector<std::string>::size_type;
 
 public:
-	TextGraph(const std::ifstream& iFileStream);
+	TextGraph(std::ifstream& iFileStream);
 
 public:
 	// 查询关键词出现的行，以及对应的行号
-	// QueryResult Query(const std::string& strKeyword) const;
+	QueryResult Query(const std::string& strKeyword) const;
 
 private:
 	// 记录每行的文本内容
