@@ -1,17 +1,23 @@
 
 #include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <netinet/in_var.h>
 #include <arpa/inet.h>
+#include <netdb.h>
+#include <unistd.h>
 #include <iostream>
+#include <stdio.h>
 
-int TestSocket()
+int TestSocketFunc()
 {
     int tcpSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
-    if (tcpSocket == -1) {
-        std::cout<< "Invalid socket create!" <<std::endl;
+    if (tcpSocket < 0)
+    {
+        std::cout << "Invalid socket create!" << std::endl;
     }
     
-    shutdown(tcpSocket, 1);
+    std::cout << "Create MacOS Socket Success." << std::endl;
     
-    
-    
+    close(tcpSocket);
 }
