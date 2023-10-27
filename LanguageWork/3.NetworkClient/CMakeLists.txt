@@ -17,7 +17,7 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
     set(ALL_FILES ${ALL_FILES}
         Source/Platform/Windows/TestSocket.cpp
     )
-else(CMAKE_SYSTEM_NAME MATCHES "")
+else(CMAKE_SYSTEM_NAME MATCHES "Darwin")
     set(ALL_FILES ${ALL_FILES}
         Source/Platform/MacOS/TestSocket.cpp
     )
