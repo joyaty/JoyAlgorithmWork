@@ -5,15 +5,15 @@
 #if defined(__APPLE__)
     #include <unistd.h>
     #define GetCurrentDir getcwd
-#elif defined(_MSV_VER_)
-    #include <dirct.h>
+#elif defined(WIN32)
+    #include <direct.h>
     #define GetCurrentDir _getcwd
 #endif
 
-std::string GetCurrentPath()
+std::string GetCurrentWorkPath()
 {
     char buffer[256];
-    getcwd(buffer, 256);
+    char* ret = GetCurrentDir(buffer, 256);
     std::string strCurrentPath(buffer);
     return strCurrentPath;
 }
@@ -23,7 +23,7 @@ int main()
 	std::ifstream fs("TestDocument.txt");
     TextGraph textGraph(fs);
     
-    std::cout << GetCurrentPath() << std::endl;
+    std::cout << GetCurrentWorkPath() << std::endl;
     
     std::cin.get();
 	return 0;
