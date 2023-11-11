@@ -10,6 +10,8 @@ set(SUB_PROJECT_NAME 3.NetworkClient)
 
 # 将所有源码设置到ALL_FILES变量上
 set(ALL_FILES 
+Source/Serialization/SerializationUtils.cpp
+Source/Serialization/SerializationUtils.h
 Source/Main.cpp
 )
 # 不同系统平台API差异，各自实现
