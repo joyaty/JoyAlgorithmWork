@@ -12,6 +12,7 @@ set(SUB_PROJECT_NAME 3.NetworkClient)
 set(ALL_FILES 
 Source/Serialization/SerializationUtils.cpp
 Source/Serialization/SerializationUtils.h
+Source/Serialization/ByteSwap.h
 Source/Main.cpp
 )
 # 不同系统平台API差异，各自实现
