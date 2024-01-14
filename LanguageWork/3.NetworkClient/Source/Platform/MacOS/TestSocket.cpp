@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <iostream>
-#include <stdio.h>
+#include <cstdio>
 
 #define SOCKET_ERROR (-1)
 

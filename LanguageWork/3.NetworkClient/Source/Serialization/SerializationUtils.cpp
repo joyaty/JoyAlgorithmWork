@@ -1,6 +1,5 @@
 
 #include "Serialization/SerializationUtils.h"
-
 #include <algorithm>
 
 void OutputMemoryStream::ReallocBuffer(uint32_t inNewLength)
