@@ -351,4 +351,4 @@ MigrationBackup/
 .ionide/
 
 # CMake build directory
-Build/
+[Bb]uild/
