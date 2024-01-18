@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <pthread.h>
 #include <unistd.h>
 #include <semaphore.h>
@@ -78,6 +79,7 @@ void* RunOnSubThreadA(void* pArgs)
         pthread_mutex_unlock(&g_Mutex);
         usleep(3);
     }
+    return nullptr;
 }
 
 void* RunOnSubThreadB(void* pArgs)
@@ -92,6 +94,7 @@ void* RunOnSubThreadB(void* pArgs)
         pthread_mutex_unlock(&g_Mutex);
         printf("Thread B, ID: %lu, Count: %d \n", pthread_self(), g_Number);
     }
+    return nullptr;
 }
 
 /// 线程同步 - 互斥锁
@@ -330,11 +333,15 @@ void* ProducerRunWithSemaphore(void* pArgs)
     while (true)
     {
         // 生产者线程信号量，信号量可用资源-1，可用资源为0，阻塞
+        int semValue = 0;
+        sem_getvalue(&g_Sem_Producer, &semValue);
+        printf("生产者. ID: %ld, SemValue: %d \n", pthread_self(), semValue);
         sem_wait(&g_Sem_Producer);
-//        STLListElement newElement{};
-//        newElement.m_nValue = ++g_Number;
-//        g_stlList.push_front(newElement);
-        printf("Thread Producer. ID: %ld, Value: %d \n", pthread_self(), 1);
+        sem_getvalue(&g_Sem_Producer, &semValue);
+        STLListElement newElement{};
+        newElement.m_nValue = ++g_Number;
+        g_stlList.push_front(newElement);
+        printf("生产者. ID: %ld, Value: %d, semValue: %d \n", pthread_self(), newElement.m_nValue, semValue);
         // 消费者线程信号量，信号量可用资源+1，可能被阻塞的消费者线程会被唤醒
         sem_post(&g_Sem_Consumer);
         sleep(rand() % 3);
@@ -347,10 +354,14 @@ void* ConsumerRunWithSemaphore(void* pArgs)
 {
     while (true)
     {
+        int semValue = 0;
+        sem_getvalue(&g_Sem_Consumer, &semValue);
+        printf("消费者. ID: %ld, semValue: %d \n", pthread_self(), semValue);
         sem_wait(&g_Sem_Consumer);
-//        const STLListElement& headElement = g_stlList.front();
-        printf("Thread Consumer. ID: %ld, Value: %d \n", pthread_self(), 1);
-//        g_stlList.pop_front();
+        sem_getvalue(&g_Sem_Consumer, &semValue);
+        const STLListElement& headElement = g_stlList.front();
+        printf("消费者. ID: %ld, Value: %d, semValue: %d \n", pthread_self(), headElement.m_nValue, semValue);
+        g_stlList.pop_front();
         sem_post(&g_Sem_Producer);
         sleep(rand() % 3);
     }
@@ -362,7 +373,7 @@ void TestSemaphore()
 {
     // 初始化信号量(信号量，0-线程/非0-进程，信号量初始资源量)
     sem_init(&g_Sem_Producer, 0, 5);
-    sem_init(&g_Sem_Consumer, 0, 1);
+    sem_init(&g_Sem_Consumer, 0, 0);
     
     int valueProducer;
     int retProducer = sem_getvalue(&g_Sem_Producer, &valueProducer);
@@ -374,7 +385,7 @@ void TestSemaphore()
     pthread_mutex_init(&g_Mutex, nullptr);
     
     const int kProducerCount = 5;
-    const int kConsumerCount = 3;
+    const int kConsumerCount = 5;
     pthread_t tProducers[kProducerCount];
     pthread_t tConsumers[kConsumerCount];
     
