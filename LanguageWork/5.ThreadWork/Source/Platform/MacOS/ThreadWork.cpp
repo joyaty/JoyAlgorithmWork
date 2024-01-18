@@ -1,5 +1,6 @@
 #include <pthread.h>
 #include <unistd.h>
+#include <semaphore.h>
 #include <iostream>
 #include <string>
 #include <list>
@@ -319,10 +320,97 @@ void TestCondition()
     pthread_cond_destroy(&g_Condition);
 }
 
+// 生产者信号量
+sem_t g_Sem_Producer;
+// 消费者信号量
+sem_t g_Sem_Consumer;
+
+void* ProducerRunWithSemaphore(void* pArgs)
+{
+    while (true)
+    {
+        // 生产者线程信号量，信号量可用资源-1，可用资源为0，阻塞
+        sem_wait(&g_Sem_Producer);
+//        STLListElement newElement{};
+//        newElement.m_nValue = ++g_Number;
+//        g_stlList.push_front(newElement);
+        printf("Thread Producer. ID: %ld, Value: %d \n", pthread_self(), 1);
+        // 消费者线程信号量，信号量可用资源+1，可能被阻塞的消费者线程会被唤醒
+        sem_post(&g_Sem_Consumer);
+        sleep(rand() % 3);
+    }
+    pthread_exit(nullptr);
+    return nullptr;
+}
+
+void* ConsumerRunWithSemaphore(void* pArgs)
+{
+    while (true)
+    {
+        sem_wait(&g_Sem_Consumer);
+//        const STLListElement& headElement = g_stlList.front();
+        printf("Thread Consumer. ID: %ld, Value: %d \n", pthread_self(), 1);
+//        g_stlList.pop_front();
+        sem_post(&g_Sem_Producer);
+        sleep(rand() % 3);
+    }
+    pthread_exit(nullptr);
+    return nullptr;
+}
+
+void TestSemaphore()
+{
+    // 初始化信号量(信号量，0-线程/非0-进程，信号量初始资源量)
+    sem_init(&g_Sem_Producer, 0, 5);
+    sem_init(&g_Sem_Consumer, 0, 1);
+    
+    int valueProducer;
+    int retProducer = sem_getvalue(&g_Sem_Producer, &valueProducer);
+    int valueConsumer;
+    int retConsuer = sem_getvalue(&g_Sem_Consumer, &valueConsumer);
+//    g_Sem_Producer = sem_open("Producer", O_CREAT, 0, 1);
+//    g_Sem_Consumer = sem_open("Consumer", O_CREAT, 0, 0);
+    
+    pthread_mutex_init(&g_Mutex, nullptr);
+    
+    const int kProducerCount = 5;
+    const int kConsumerCount = 3;
+    pthread_t tProducers[kProducerCount];
+    pthread_t tConsumers[kConsumerCount];
+    
+    for (int i = 0; i < kProducerCount; ++i)
+    {
+        pthread_create(&tProducers[i], nullptr, ProducerRunWithSemaphore, nullptr);
+    }
+    
+    for (int i = 0; i < kConsumerCount; ++i)
+    {
+        pthread_create(&tConsumers[i], nullptr, ConsumerRunWithSemaphore, nullptr);
+    }
+    
+    for (int i = 0; i < kProducerCount; ++i)
+    {
+        pthread_join(tProducers[i], nullptr);
+    }
+    
+    for (int i = 0; i < kConsumerCount; ++i)
+    {
+        pthread_join(tConsumers[i], nullptr);
+    }
+    
+    pthread_mutex_destroy(&g_Mutex);
+    
+//    sem_close(&g_Sem_Consumer);
+//    sem_close(&g_Sem_Producer);
+    sem_destroy(&g_Sem_Consumer);
+    sem_destroy(&g_Sem_Producer);
+}
+
 void TestThreadFunc()
 {
 //    TestThreadBase()();
 //    TestThreadAndMutex();
 //    TestRwlock();
-    TestCondition();
+//    TestCondition();
+    TestSemaphore();
 }
