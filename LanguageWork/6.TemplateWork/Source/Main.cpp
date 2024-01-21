@@ -2,54 +2,54 @@
 #include <string>
 #include <vector>
 
-// Ç°ÖÃÉùÃ÷ÀàÄ£°æ
+// å‰ç½®å£°æ˜ç±»æ¨¡ç‰ˆ
 template <typename T> class FooPtr;
-// Ç°ÖÃÉùÃ÷ÀàÄ£°å
+// å‰ç½®å£°æ˜ç±»æ¨¡æ¿
 template <typename T> class Foo;
-// Ç°ÖÃÉùÃ÷º¯ÊıÄ£°å
+// å‰ç½®å£°æ˜å‡½æ•°æ¨¡æ¿
 template <typename T> bool operator== (const FooPtr<T>&, const FooPtr<T>&);
 
 template <typename T> class Foo
 {
-	// ÓÑÔªÉùÃ÷£¬¶ÔÓ¦Ä£°å²ÎÊıÊµÀı»¯µÄÀàÄ£°åFooPtr<T>ºÍº¯ÊıÄ£°åoperator==¶¼ÊÇÏàÓ¦Ä£°å²ÎÊıÊµÀı»¯µÄFood<T>µÄÓÑÔª
+	// å‹å…ƒå£°æ˜ï¼Œå¯¹åº”æ¨¡æ¿å‚æ•°å®ä¾‹åŒ–çš„ç±»æ¨¡æ¿FooPtr<T>å’Œå‡½æ•°æ¨¡æ¿operator==éƒ½æ˜¯ç›¸åº”æ¨¡æ¿å‚æ•°å®ä¾‹åŒ–çš„Food<T>çš„å‹å…ƒ
 	friend class FooPtr<T>;
 	friend bool operator==(const FooPtr<T>&, const FooPtr<T>&);
 
-	// C++11ĞÂ±ê×¼£¡ÀàĞÍÄ£°å²ÎÊıTÒ²¿É×÷ÎªÓÑÔª
-	friend T; // ×¢Òâ£¬Ä£°å²ÎÊıT²»Ò»¶¨ÊÇÒ»¸öclass£¬ÕâÀïfriendÉêÃ÷²»ĞèÒª¼Óclass
+	// C++11æ–°æ ‡å‡†ï¼ç±»å‹æ¨¡æ¿å‚æ•°Tä¹Ÿå¯ä½œä¸ºå‹å…ƒ
+	friend T; // æ³¨æ„ï¼Œæ¨¡æ¿å‚æ•°Tä¸ä¸€å®šæ˜¯ä¸€ä¸ªclassï¼Œè¿™é‡Œfriendç”³æ˜ä¸éœ€è¦åŠ class
 
-	// ÀàÄ£°åÒ²¿ÉÓĞ¾²Ì¬º¯ÊıºÍ¾²Ì¬³ÉÔ±£¬ÓëÆÕÍ¨ÀàÒ»Ñù£¬¾²Ì¬º¯ÊıºÍ¾²Ì¬³ÉÔ±Ã¿¸öÄ£°å²ÎÊıÊµÀı»¯µÄÀà¹²Ïí£¬²»Í¬Ä£°å²ÎÊıÊµÀı»¯µÄÀà¼ä²»¹²Ïí
+	// ç±»æ¨¡æ¿ä¹Ÿå¯æœ‰é™æ€å‡½æ•°å’Œé™æ€æˆå‘˜ï¼Œä¸æ™®é€šç±»ä¸€æ ·ï¼Œé™æ€å‡½æ•°å’Œé™æ€æˆå‘˜æ¯ä¸ªæ¨¡æ¿å‚æ•°å®ä¾‹åŒ–çš„ç±»å…±äº«ï¼Œä¸åŒæ¨¡æ¿å‚æ•°å®ä¾‹åŒ–çš„ç±»é—´ä¸å…±äº«
 public:
 	static int GetSize() { return s_Count; }
 private:
 	static int s_Count;
 };
 
-// ÀàÄ£°åµÄ¾²Ì¬³ÉÔ±¶¨Òå²¢ÇÒ³õÊ¼»¯
+// ç±»æ¨¡æ¿çš„é™æ€æˆå‘˜å®šä¹‰å¹¶ä¸”åˆå§‹åŒ–
 template <typename T> int Foo<T>::s_Count = 100;
 
 template <typename T> class FooPtr
 {
-	// Àà¶¨Òå ...
+	// ç±»å®šä¹‰ ...
 };
 
 template <typename T> bool operator== (const FooPtr<T>& lhs, const FooPtr<T>& rhs)
 {
-	// º¯ÊıÌåÊµÏÖ ...
+	// å‡½æ•°ä½“å®ç° ...
 	return false;
 }
 
-// Ä£°å±ğÃû
+// æ¨¡æ¿åˆ«å
 typedef Foo<std::string> strFoo;
-// C++11 ĞÂ±ê×¼£¬ÎªÀàÄ£°å¶¨ÒåÀàĞÍ±ğÃû
+// C++11 æ–°æ ‡å‡†ï¼Œä¸ºç±»æ¨¡æ¿å®šä¹‰ç±»å‹åˆ«å
 template<typename T> using Twin = std::pair<T, T>;
-Twin<std::string> strTwin; // strTwinÊÇstd::pair<std::string, std::string>ÀàĞÍ
+Twin<std::string> strTwin; // strTwinæ˜¯std::pair<std::string, std::string>ç±»å‹
 
-// ±ğÃû¿ÉÒÔ¹Ì¶¨Ò»µ½¶à¸öÄ£°å²ÎÊı
+// åˆ«åå¯ä»¥å›ºå®šä¸€åˆ°å¤šä¸ªæ¨¡æ¿å‚æ•°
 template<typename T> using PairNo = std::pair<T, unsigned int>;
-PairNo<float> fPairNo; // fPairNoÊÇstd::pair<float, unsigned int>ÀàĞÍ
+PairNo<float> fPairNo; // fPairNoæ˜¯std::pair<float, unsigned int>ç±»å‹
 
-// Ê¹ÓÃtypename¹Ø¼ü×Ö£¬Ö¸¶¨¸úÔÚÄ£°å²ÎÊıT::Ö®ºóµÄÊÇÒ»¸öÀàĞÍ£¬¶ø²»ÊÇ¾²Ì¬±äÁ¿
+// ä½¿ç”¨typenameå…³é”®å­—ï¼ŒæŒ‡å®šè·Ÿåœ¨æ¨¡æ¿å‚æ•°T::ä¹‹åçš„æ˜¯ä¸€ä¸ªç±»å‹ï¼Œè€Œä¸æ˜¯é™æ€å˜é‡
 template <typename T> typename T::value_type Top(const T& container)
 {
 	if (!container.empty())
@@ -62,7 +62,7 @@ template <typename T> typename T::value_type Top(const T& container)
 	}
 }
 
-// Óëº¯Êı²ÎÊıÒ»Ñù£¬Ä£°å²ÎÊıÒ²¿ÉÌá¹©Ä¬ÈÏÄ£°å²ÎÊı£¬¹æÔòÒ²ÊÇÆäÓÒ²àËùÓĞµÄÄ£°å²ÎÊı¶¼ÓĞÄ¬ÈÏÄ£°å²ÎÊıÊ±£¬µ±Ç°Ä£°å²ÎÊı²ÅÔÊĞíÓĞÄ¬ÈÏ²ÎÊı
+// ä¸å‡½æ•°å‚æ•°ä¸€æ ·ï¼Œæ¨¡æ¿å‚æ•°ä¹Ÿå¯æä¾›é»˜è®¤æ¨¡æ¿å‚æ•°ï¼Œè§„åˆ™ä¹Ÿæ˜¯å…¶å³ä¾§æ‰€æœ‰çš„æ¨¡æ¿å‚æ•°éƒ½æœ‰é»˜è®¤æ¨¡æ¿å‚æ•°æ—¶ï¼Œå½“å‰æ¨¡æ¿å‚æ•°æ‰å…è®¸æœ‰é»˜è®¤å‚æ•°
 template <typename T, typename F = std::less<T>> int Compare(const T& lhs, const T& rhs, F f = F())
 {
 	if (f(lhs, rhs)) return -1;
@@ -78,9 +78,9 @@ public:
 private:
 	T m_Value;
 };
-// Ê¹ÓÃÄ¬ÈÏÄ£°å²ÎÊıÀàĞÍstd::string£¬±ØĞëÓÃ¿ÕµÄ<>À´¶¨ÒåÊ¹ÓÃÄ¬ÈÏÄ£°å²ÎÊıµÄÄ£°åÊµÀı»¯Àà
+// ä½¿ç”¨é»˜è®¤æ¨¡æ¿å‚æ•°ç±»å‹std::stringï¼Œå¿…é¡»ç”¨ç©ºçš„<>æ¥å®šä¹‰ä½¿ç”¨é»˜è®¤æ¨¡æ¿å‚æ•°çš„æ¨¡æ¿å®ä¾‹åŒ–ç±»
 TypeWrap<> strWrap("");
-// Ê¹ÓÃ×Ô¶¨ÒåÄ£°å²ÎÊı
+// ä½¿ç”¨è‡ªå®šä¹‰æ¨¡æ¿å‚æ•°
 TypeWrap<int> intWrap(1000);
 
 int main()
