@@ -13,6 +13,9 @@ set(ALL_FILES
 Source/Serialization/SerializationUtils.cpp
 Source/Serialization/SerializationUtils.h
 Source/Serialization/ByteSwap.h
+Source/Serialization/Reflection.h
+Source/Gameplay/GameObject.h
+Source/Gameplay/GameObject.h
 Source/Main.cpp
 )
 # 不同系统平台API差异，各自实现
