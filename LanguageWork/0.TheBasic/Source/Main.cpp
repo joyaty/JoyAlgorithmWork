@@ -395,6 +395,10 @@ int Add(int lhs, int rhs) { return lhs + rhs; }
 
 int main()
 {
+	class EmptyA
+	{};
+	std::cout << sizeof(EmptyA) << std::endl;
+
 	std::cout << "Hello, The Basic" << std::endl;
 
 	int size1 = sizeof(ClassTemp);
