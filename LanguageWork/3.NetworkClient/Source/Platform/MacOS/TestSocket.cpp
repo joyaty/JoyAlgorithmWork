@@ -2,13 +2,15 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
-#include <netinet/in_var.h>
+// #include <netinet/in_var.h>
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <iostream>
 #include <cstdio>
+#include <cstring>
+#include <memory>
 
 #define SOCKET_ERROR (-1)
 

@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <climits>
 #include "JoyTree/JoyBinarySearchTree.h"
 #include "JoyTree/JoyAVLTree.h"
 #include "JoyTree/JoySplayTree.h"

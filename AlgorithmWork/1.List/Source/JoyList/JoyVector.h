@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include <cstring>
+
 /// <summary>
 /// 自定义Vector
 /// </summary>

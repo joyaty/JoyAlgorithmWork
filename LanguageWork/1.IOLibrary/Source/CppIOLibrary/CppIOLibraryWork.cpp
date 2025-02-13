@@ -11,6 +11,9 @@
 #elif defined(WIN32)
 #include <direct.h>
 #define GetCurrentDir _getcwd
+#elif defined(__linux__)
+#include <unistd.h>
+#define GetCurrentDir getcwd
 #endif
 
 void TestCIOLibraryWork();
@@ -22,7 +25,11 @@ std::string GetResourcePath()
 	std::string strWorkPath(pathBuffer);
 	int index = strWorkPath.find("Build");
 	std::string strRootPath = strWorkPath.substr(0, index);
+	#if defined (WIN32)
 	return std::string(strRootPath.append("LanguageWork\\1.IOLibrary\\Resources\\"));
+	#else
+	return std::string(strRootPath.append("/LanguageWork/1.IOLibrary/Resources/"));
+	#endif
 }
 
 /// <summary>

@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <thread>
+#include <atomic>
 
 template <int N> class TestClass
 {
@@ -18,7 +19,7 @@ void TestFunc1(const int x)
     TestClass<FivePlus(5)> c2{};
 }
 
-std::atomic<long long> total = 0;
+std::atomic<long long> total;
 
 void ThreadFunc()
 {

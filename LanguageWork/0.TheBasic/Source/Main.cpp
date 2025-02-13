@@ -395,149 +395,149 @@ int Add(int lhs, int rhs) { return lhs + rhs; }
 
 int main()
 {
-	class EmptyA
-	{};
-	std::cout << sizeof(EmptyA) << std::endl;
+	std::cout << "Hello World！" << std::endl;
+	// class EmptyA {};
+	// std::cout << sizeof(EmptyA) << std::endl;
 
-	std::cout << "Hello, The Basic" << std::endl;
+	// std::cout << "Hello, The Basic" << std::endl;
 
-	int size1 = sizeof(ClassTemp);
-	ClassTemp objClassTmp("123412342134");
-    ClassTemp objClassTmp2;
+	// int size1 = sizeof(ClassTemp);
+	// ClassTemp objClassTmp("123412342134");
+    // ClassTemp objClassTmp2;
 
-	int i = 108, j = 5;
-	float r = static_cast<float>(j) / i;
-	void* p = &i;
-	int* pi = static_cast<int*>(p);
-	char* pc = reinterpret_cast<char*>(pi);
-	std::string stri = pc;
-	constexpr int k = 10;
-	const int* cpk = &k;
-	int* pk = const_cast<int*>(cpk);
-	*pk = 50;
+	// int i = 108, j = 5;
+	// float r = static_cast<float>(j) / i;
+	// void* p = &i;
+	// int* pi = static_cast<int*>(p);
+	// char* pc = reinterpret_cast<char*>(pi);
+	// std::string stri = pc;
+	// constexpr int k = 10;
+	// const int* cpk = &k;
+	// int* pk = const_cast<int*>(cpk);
+	// *pk = 50;
 
-	std::cout << stri << std::endl;
+	// std::cout << stri << std::endl;
 
-	bool bSwitchFlag = false;
-	switch (bSwitchFlag)
-	{
-	case true:
-		int value;
-		break;
-	case false:
-		value = 10;
-		std::cout << "value = " << value << std::endl;
-		break;
-	}
+	// bool bSwitchFlag = false;
+	// switch (bSwitchFlag)
+	// {
+	// case true:
+	// 	int value;
+	// 	break;
+	// case false:
+	// 	value = 10;
+	// 	std::cout << "value = " << value << std::endl;
+	// 	break;
+	// }
 
-	try
-	{
-		objClassTmp.TestThrowException();
-	}
-	catch (const std::runtime_error& error)
-	{
-		std::cout << error.what() << std::endl;
-	}
+	// try
+	// {
+	// 	objClassTmp.TestThrowException();
+	// }
+	// catch (const std::runtime_error& error)
+	// {
+	// 	std::cout << error.what() << std::endl;
+	// }
 
-	PopBackArray(GetArray1());
-	PopBackArray(GetArray2());
-	PopBackArray(GetArray3());
-	PopBackArray(GetArray4());
+	// PopBackArray(GetArray1());
+	// PopBackArray(GetArray2());
+	// PopBackArray(GetArray3());
+	// PopBackArray(GetArray4());
 
-	std::cout << "=============================" << std::endl;
-	int arrayInts1[GetArraySize(2)];
-	int iValue = 1;
-	int sizeValue = GetArraySize(iValue);
-	std::cout << sizeValue << std::endl;
+	// std::cout << "=============================" << std::endl;
+	// int arrayInts1[GetArraySize(2)];
+	// int iValue = 1;
+	// int sizeValue = GetArraySize(iValue);
+	// std::cout << sizeValue << std::endl;
 
-	std::cout << "=============================" << std::endl;
-	Func1* func = GetFunc();
-	std::cout << UseBigger("Hello", " World!", func) << std::endl;
+	// std::cout << "=============================" << std::endl;
+	// Func1* func = GetFunc();
+	// std::cout << UseBigger("Hello", " World!", func) << std::endl;
     
-    std::cout << "=============================" << std::endl;
-    constexpr Debug io_sub(false, true, false);
-    if (io_sub.Any())
-    {
-        std::cerr << "Print some error message." << std::endl;
-    }
+    // std::cout << "=============================" << std::endl;
+    // constexpr Debug io_sub(false, true, false);
+    // if (io_sub.Any())
+    // {
+    //     std::cerr << "Print some error message." << std::endl;
+    // }
     
-	std::cout << "=============================" << std::endl;
-	HasPtr pHasPtr1("Hello", 1);
-	HasPtr pHasPtr2("World", 2);
-	HasPtr pHasPtr3("Joy", 5);
-	HasPtr pHasPtr4("Yang", 3);
+	// std::cout << "=============================" << std::endl;
+	// HasPtr pHasPtr1("Hello", 1);
+	// HasPtr pHasPtr2("World", 2);
+	// HasPtr pHasPtr3("Joy", 5);
+	// HasPtr pHasPtr4("Yang", 3);
 
 
-	std::cout << "=============================" << std::endl;
-	std::vector<HasPtr> vecHasPtrs = { pHasPtr2, pHasPtr4, pHasPtr1, pHasPtr3, pHasPtr4 };
-	std::cout << "=============================" << std::endl;
-	using std::sort;
-	std::cout << "=================================" << std::endl;
-	sort(vecHasPtrs.begin(), vecHasPtrs.end());
-	std::cout << "=================================" << std::endl;
-	for (const HasPtr& hasPtr : vecHasPtrs)
-	{
-		std::cout << hasPtr << std::endl;
-	}
-	std::cout << "====================================" << std::endl;
-	std::vector<int> vecs;
-	std::cout << vecs.capacity() << ", " << vecs.size() << std::endl;
+	// std::cout << "=============================" << std::endl;
+	// std::vector<HasPtr> vecHasPtrs = { pHasPtr2, pHasPtr4, pHasPtr1, pHasPtr3, pHasPtr4 };
+	// std::cout << "=============================" << std::endl;
+	// using std::sort;
+	// std::cout << "=================================" << std::endl;
+	// sort(vecHasPtrs.begin(), vecHasPtrs.end());
+	// std::cout << "=================================" << std::endl;
+	// for (const HasPtr& hasPtr : vecHasPtrs)
+	// {
+	// 	std::cout << hasPtr << std::endl;
+	// }
+	// std::cout << "====================================" << std::endl;
+	// std::vector<int> vecs;
+	// std::cout << vecs.capacity() << ", " << vecs.size() << std::endl;
 
-	ClassX x;
-	ClassX xi = std::move(x);
+	// ClassX x;
+	// ClassX xi = std::move(x);
 
-	ClassY y;
-	ClassY yi = std::move(y);
+	// ClassY y;
+	// ClassY yi = std::move(y);
 
-	std::string s1 = "Hello", s2 = "World";
-	auto n = (s1 + s2).find("o");
-	s1 + s2 = "Wow";
+	// std::string s1 = "Hello", s2 = "World";
+	// auto n = (s1 + s2).find("o");
+	// s1 + s2 = "Wow";
 
-	struct Divide
-	{
-		int operator()(int lhs, int rhs) { return lhs / rhs; }
-	};
+	// struct Divide
+	// {
+	// 	int operator()(int lhs, int rhs) { return lhs / rhs; }
+	// };
 
-	std::cout << "=========================================" << std::endl;
-	std::function<int(int, int)> funcDivide = Divide();
-	std::function<int(int, int)> funcMod = [](int lhs, int rhs) { return lhs % rhs; };
-	std::unordered_map<std::string, std::function<int(int, int)>> mapOperations;
-	mapOperations.emplace("+", Add);
-	mapOperations.emplace("%", funcMod);
-	mapOperations.emplace("/", funcDivide);
-	std::cout << mapOperations["+"](10, 5) << " " << mapOperations["/"](9, 3) << " " << mapOperations["%"](15, 4) << std::endl;
+	// std::cout << "=========================================" << std::endl;
+	// std::function<int(int, int)> funcDivide = Divide();
+	// std::function<int(int, int)> funcMod = [](int lhs, int rhs) { return lhs % rhs; };
+	// std::unordered_map<std::string, std::function<int(int, int)>> mapOperations;
+	// mapOperations.emplace("+", Add);
+	// mapOperations.emplace("%", funcMod);
+	// mapOperations.emplace("/", funcDivide);
+	// std::cout << mapOperations["+"](10, 5) << " " << mapOperations["/"](9, 3) << " " << mapOperations["%"](15, 4) << std::endl;
 
-	std::cout << "==============================================" << std::endl;
-	SmallInt value = 10;
-	if (value)
-	{
-		std::cout << "cast to bool" << std::endl;
-	}
-	std::cout << value + 23 << std::endl;
+	// std::cout << "==============================================" << std::endl;
+	// SmallInt value = 10;
+	// if (value)
+	// {
+	// 	std::cout << "cast to bool" << std::endl;
+	// }
+	// std::cout << value + 23 << std::endl;
 
-	Person person1(1001, "Hello");
-	Person person2(1002, "World");
-	Student student1(1003, 9001, "Welcome");
-	Student student2(1004, 9002, "Student");
+	// Person person1(1001, "Hello");
+	// Person person2(1002, "World");
+	// Student student1(1003, 9001, "Welcome");
+	// Student student2(1004, 9002, "Student");
 
-	Person* pPer1 = &person1, * pPer2 = &student1;
+	// Person* pPer1 = &person1, * pPer2 = &student1;
 
-	pPer1->MemFunc();
-	pPer2->MemFunc();
+	// pPer1->MemFunc();
+	// pPer2->MemFunc();
 
-	// student1.MemFunc(); // 错误，继承与基类的MemFunc函数，由于派生类中定义了同名函数，但参数列表不一致，导致基类中的MemFunc函数被隐藏，可通过添加基类域调用。
-	student1.MemFunc(); // 正确，通过添加基类的域调用被隐藏的函数
-	student2.MemFunc(1);
+	// // student1.MemFunc(); // 错误，继承与基类的MemFunc函数，由于派生类中定义了同名函数，但参数列表不一致，导致基类中的MemFunc函数被隐藏，可通过添加基类域调用。
+	// student1.MemFunc(); // 正确，通过添加基类的域调用被隐藏的函数
+	// student2.MemFunc(1);
 
-	std::cout << "=============================" << std::endl;
-	Person person3;
-	Student student3;
-	std::cout << "=============================" << std::endl;
+	// std::cout << "=============================" << std::endl;
+	// Person person3;
+	// Student student3;
+	// std::cout << "=============================" << std::endl;
 
-	FriendPerson friends;
-	friends.PrintID(person1);
-	// friends.PrintID(student2);
-	friends.PrintStudentID(student1);
+	// FriendPerson friends;
+	// friends.PrintID(person1);
+	// // friends.PrintID(student2);
+	// friends.PrintStudentID(student1);
 
 	std::cin.get();
 
