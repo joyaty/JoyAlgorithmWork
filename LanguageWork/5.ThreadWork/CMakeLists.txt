@@ -16,10 +16,12 @@ Source/Main.cpp
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
     set(ALL_FILES ${ALL_FILES}
         Source/Platform/Windows/ThreadWork.cpp
+        Source/STL/ThreadWork.cpp
     )
-else(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+else(CMAKE_SYSTEM_NAME MATCHES "Darwin" OR CMAKE_SYSTEM_NAME MATCHES "Linux")
     set(ALL_FILES ${ALL_FILES}
         Source/Platform/MacOS/ThreadWork.cpp
+        Source/STL/ThreadWork.cpp
     )
 endif()
 
