@@ -10,5 +10,4 @@ int main()
 {
     // TestThreadFunc();
     TestSTLThreadFunc();
-    std::cin.get();
 }
