@@ -11,7 +11,7 @@ static void RunOnThread1()
     }
 }
 
-static void RunOnThread2(int value) 
+static void RunOnThread2(int value)
 {
     for (int i = 0; i < 10; ++i)
     {
@@ -21,7 +21,7 @@ static void RunOnThread2(int value)
     }
 }
 
-static void RunOnThread3(int* value) 
+static void RunOnThread3(int* value)
 {
     for (int i = 0; i < 10; ++i)
     {
@@ -44,7 +44,7 @@ static void RunOnThread4(int& value)
 class ClassA
 {
 public:
-    void RunOnThread() 
+    void RunOnThread()
     {
         for (int i = 0; i < 10; ++i)
         {
@@ -61,7 +61,7 @@ public:
 class ClassW
 {
 public:
-    void operator()() 
+    void operator()()
     {
         for (int i = 0; i < 10; ++i)
         {
@@ -78,20 +78,20 @@ public:
 void TestSTLThreadFunc()
 {
     std::thread myThread1 = std::thread(RunOnThread1);
-    int         value1     = 0;
+    int         value1    = 0;
     int         value2    = 0;
-    int         value3     = 0;
+    int         value3    = 0;
     std::thread myThread2 = std::thread(RunOnThread2, value1);
-    std::thread myThread3  = std::thread(RunOnThread3, &value2);
-    std::thread myThread4  = std::thread(RunOnThread4, std::ref(value3));
-       
-    ClassA      instA{};
-    std::thread myThread5 = std::thread(&ClassA::RunOnThread, std::ref(instA));
-    ClassA      instB{};
-    std::thread myThread6 = std::thread(&ClassA::RunOnThread, &instB);
+    std::thread myThread3 = std::thread(RunOnThread3, &value2);
+    std::thread myThread4 = std::thread(RunOnThread4, std::ref(value3));
 
-    ClassW instW1{};
-    ClassW instW2{};
+    ClassA      instA1{};
+    std::thread myThread5 = std::thread(&ClassA::RunOnThread, std::ref(instA1));
+    ClassA      instA2{};
+    std::thread myThread6 = std::thread(&ClassA::RunOnThread, &instA2);
+
+    ClassW      instW1{};
+    ClassW      instW2{};
     std::thread myThread7 = std::thread(instW1);
     std::thread myThread8 = std::thread(std::ref(instW2));
 
@@ -107,8 +107,8 @@ void TestSTLThreadFunc()
     std::cout << "value1 = " << value1 << std::endl;
     std::cout << "value2 = " << value2 << std::endl;
     std::cout << "value3 = " << value3 << std::endl;
-    std::cout << "instA.value = " << instA.value << std::endl;
-    std::cout << "instB.value = " << instB.value << std::endl;
+    std::cout << "instA1.value = " << instA1.value << std::endl;
+    std::cout << "instA2.value = " << instA2.value << std::endl;
 
     std::cout << "instW1.value = " << instW1.value << std::endl;
     std::cout << "instW2.value = " << instW2.value << std::endl;
