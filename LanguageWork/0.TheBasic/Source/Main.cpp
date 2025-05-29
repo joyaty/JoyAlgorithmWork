@@ -477,6 +477,7 @@ long long factorial(int n)
 
 
 void UnitTest_JoyString();
+void UniTest_VirutalInherit();
 
 int main()
 {
@@ -738,8 +739,10 @@ int main()
     // friends.PrintID(person1);
     // // friends.PrintID(student2);
     // friends.PrintStudentID(student1);
-
-    UnitTest_JoyString();
+    // 单元测试 - C风格字符串自定义封装
+    // UnitTest_JoyString();
+    // 单元测试 - VirtualInherit
+    UniTest_VirutalInherit();
 
     std::cin.get();
 
