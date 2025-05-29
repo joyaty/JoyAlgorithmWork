@@ -23,11 +23,11 @@ namespace Joy
     JoyString::JoyString(const JoyString& srcString)
         : Joy::JoyString()
     {
-        m_pRawStr = new char(srcString.Length() + 1);
+        m_pRawStr = new char[srcString.Length() + 1];
         strcpy(m_pRawStr, srcString.m_pRawStr);
     }
 
-    JoyString::JoyString(JoyString&& srcString)
+    JoyString::JoyString(JoyString&& srcString) noexcept
         : Joy::JoyString()
     {
         this->m_pRawStr     = srcString.m_pRawStr;
@@ -37,8 +37,11 @@ namespace Joy
     JoyString::~JoyString()
     {
         std::cout << "JoyString::~JoyString -- " << m_InstID << std::endl;
-        delete[] m_pRawStr;
-        m_pRawStr = nullptr;
+        if (m_pRawStr != nullptr)
+        {
+            delete[] m_pRawStr;
+            m_pRawStr = nullptr;
+        }
     }
 
     bool JoyString::operator==(const JoyString& srcString)
@@ -67,11 +70,11 @@ namespace Joy
             this->m_pRawStr = nullptr;
         }
         // 拷贝目标字符串数据
-        this->m_pRawStr = new char(srcString.Length() + 1);
+        this->m_pRawStr = new char[srcString.Length() + 1];
         strcpy(m_pRawStr, srcString.m_pRawStr);
     }
 
-    void JoyString::operator=(JoyString&& srcString)
+    void JoyString::operator=(JoyString&& srcString) noexcept
     {
         if (*this == srcString)
         {
@@ -113,7 +116,7 @@ void UnitTest_JoyString()
         std::cout << "str3 = " << str3 << ", str3 length = " << str3.Length() << std::endl;
 
         JoyString str4(std::move(str2));
-        std::cout << "str2 = " << str2 << ", str2 length = " << str2.Length() << std::endl;
+        std::cout << "str2 = " << str2 << ", str2 length = " << str2.Length() << std::endl; // move之后，不应该访问move后的对象，这里仅做演示
         std::cout << "str4 = " << str4 << ", str4 length = " << str4.Length() << std::endl;
 
         JoyString str5;
@@ -123,7 +126,7 @@ void UnitTest_JoyString()
 
         JoyString str6;
         str6 = std::move(str3);
-        std::cout << "str3 = " << str3 << ", str3 length = " << str3.Length() << std::endl;
+        std::cout << "str3 = " << str3 << ", str3 length = " << str3.Length() << std::endl; // move之后，不应该访问move后的对象，这里仅做演示
         std::cout << "str6 = " << str6 << ", str6 length = " << str6.Length() << std::endl;
     }
 }

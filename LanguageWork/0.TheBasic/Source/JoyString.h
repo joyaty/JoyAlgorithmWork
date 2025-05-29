@@ -15,7 +15,7 @@ namespace Joy
         // 拷贝构造
         JoyString(const JoyString& srcString);
         // 移动构造
-        JoyString(JoyString&& srcString);
+        JoyString(JoyString&& srcString) noexcept;
         // 析构
         virtual ~JoyString();
 
@@ -29,7 +29,7 @@ namespace Joy
         // 重写赋值运算符 - 拷贝版本
         void operator=(const JoyString& srcString);
         // 重写赋值运算符 - 移动版本
-        void operator=(JoyString&& srcString);
+        void operator=(JoyString&& srcString) noexcept;
 
     public:
         // 友元函数申明，用于输出
