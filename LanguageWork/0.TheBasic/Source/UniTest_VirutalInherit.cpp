@@ -36,7 +36,7 @@ namespace Joy
             void Show() const override { std::cout << "This is Laptop class." << std::endl; }
             virtual void Display() const override
             {
-                 std::cout << "This is Device class from Display." << std::endl;
+                 std::cout << "This is Laptop class from Display." << std::endl;
              }
 
         public:
@@ -55,7 +55,7 @@ namespace Joy
             void Show() const override { std::cout << "This is Tabletop class." << std::endl; }
             //virtual void Display() const
             //{
-            //    std::cout << "This is Device class from Display." << std::endl;
+            //    std::cout << "This is Tabletop class from Display." << std::endl;
             //}
 
         public:
@@ -74,7 +74,7 @@ namespace Joy
             void Show() const override { std::cout << "This is DeskTop class." << std::endl; }
             void Display() const override
             {
-                std::cout << "This is Device class from Display." << std::endl;
+                std::cout << "This is DeskTop class from Display." << std::endl;
             }
 
         public:
@@ -185,7 +185,18 @@ void UniTest_VirutalInherit()
     std::unique_ptr<DeskTop> pDeskTop = std::make_unique<DeskTop>(2);
     int                      size4    = sizeof(*pDeskTop);
 
+    void** pVTable = *reinterpret_cast<void***>(pDeskTop.get());
+    using ShowFuncPtr = void(*)(Device*);
+    ShowFuncPtr pFunc1 = reinterpret_cast<ShowFuncPtr>(pVTable[0]);
+    pFunc1(pDeskTop.get());
+    ShowFuncPtr pFunc2 = reinterpret_cast<ShowFuncPtr>(pVTable[1]);
+    pFunc2(pDeskTop.get());
+
     std::cout << "UniTest_VirutalInherit" << std::endl;
+    // 6c 2c d0 b0 f7 7f 00 00
+    // 0x00007ff7b0d02c6c
+    // 78 2c d0 b0 f7 7f 00 00
+    // 0x00007ff7b0d02c78
 }
 
 #pragma endregion
