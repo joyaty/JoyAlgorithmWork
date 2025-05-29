@@ -34,7 +34,7 @@ namespace Joy
 
         public:
             void Show() const override { std::cout << "This is Laptop class." << std::endl; }
-             virtual void Display() const
+            virtual void Display() const override
             {
                  std::cout << "This is Device class from Display." << std::endl;
              }
@@ -72,7 +72,7 @@ namespace Joy
 
         public:
             void Show() const override { std::cout << "This is DeskTop class." << std::endl; }
-            virtual void Display() const
+            void Display() const override
             {
                 std::cout << "This is Device class from Display." << std::endl;
             }
