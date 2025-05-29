@@ -26,7 +26,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     add_definitions(/wd"4819")
 endif()
 
-add_compile_options("-fstandalone-debug")
+# add_compile_options("-fstandalone-debug")
 
 # 添加数据结构和算法学习子项目路径
 add_subdirectory(${PROJECT_SOURCE_DIR}/AlgorithmWork/0.HelloAlgorithm)

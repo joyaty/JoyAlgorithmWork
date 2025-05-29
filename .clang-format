@@ -206,7 +206,7 @@ MacroBlockEnd: ''
 MaxEmptyLinesToKeep: 10
 
 # 命名空间的缩进: None, Inner(缩进嵌套的命名空间中的内容), All
-# NamespaceIndentation: Inner
+NamespaceIndentation: All
 
 # 使用ObjC块时缩进宽度
 ObjCBlockIndentWidth: 4

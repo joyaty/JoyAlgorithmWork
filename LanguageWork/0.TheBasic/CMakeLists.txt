@@ -11,6 +11,8 @@ set(SUB_PROJECT_NAME 0.TheBasic)
 # 将所有源码设置到ALL_FILES变量上
 set(ALL_FILES 
 Source/Main.cpp
+Source/JoyString.h
+Source/JoyString.cpp
 )
 
 ## 调用外部cmake定义的宏，将源文件按文件加分组
