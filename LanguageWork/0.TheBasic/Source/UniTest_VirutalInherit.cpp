@@ -1,3 +1,4 @@
+
 // 多态与续表 || 菱形继承与虚继承(基于虚基表实现) - 单元测试
 #include <iostream>
 #include <memory>
@@ -153,6 +154,23 @@ namespace Joy
         public:
             int m_Convertible;
         };
+        
+        // 内存对齐测试Struct1
+        struct AlignmentsStruct1
+        {
+            int nValue;
+            bool bValue;
+            int nValue2;
+            bool bValue2;
+        };
+        // 内存对齐测试Struct2
+        struct AlignmentsStruct2
+        {
+            int p1;
+            bool bValue;
+            bool p2;
+            int nValue;
+        };
 
     }   // namespace UnitTest
 }   // namespace Joy
@@ -187,16 +205,15 @@ void UniTest_VirutalInherit()
 
     void** pVTable = *reinterpret_cast<void***>(pDeskTop.get());
     using ShowFuncPtr = void(*)(Device*);
-    ShowFuncPtr pFunc1 = reinterpret_cast<ShowFuncPtr>(pVTable[0]);
+    ShowFuncPtr pFunc1 = reinterpret_cast<ShowFuncPtr>(*pVTable); // 第0个索引位置的函数指针 == pVTable[0]
     pFunc1(pDeskTop.get());
-    ShowFuncPtr pFunc2 = reinterpret_cast<ShowFuncPtr>(pVTable[1]);
+    ShowFuncPtr pFunc2 = reinterpret_cast<ShowFuncPtr>(*(pVTable + 1)); // 第1个索引位置的函数指针 == pVTable[1]
     pFunc2(pDeskTop.get());
 
+    // 合理的成员定义顺序可以减少内存！
+    std::cout << "sizeof(struct1) = " << sizeof(AlignmentsStruct1) << ", sizeof(struct2)" << sizeof(AlignmentsStruct2) << std::endl;
+
     std::cout << "UniTest_VirutalInherit" << std::endl;
-    // 6c 2c d0 b0 f7 7f 00 00
-    // 0x00007ff7b0d02c6c
-    // 78 2c d0 b0 f7 7f 00 00
-    // 0x00007ff7b0d02c78
 }
 
 #pragma endregion
