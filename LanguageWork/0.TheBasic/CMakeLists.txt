@@ -13,6 +13,8 @@ set(ALL_FILES
 Source/Main.cpp
 Source/JoyString.h
 Source/JoyString.cpp
+Source/JoyUniquePointer.h
+Source/JoyUniquePointer.cpp
 Source/UniTest_VirutalInherit.cpp
 )
 

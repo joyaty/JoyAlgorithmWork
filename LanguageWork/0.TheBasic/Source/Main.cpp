@@ -476,8 +476,9 @@ long long factorial(int n)
 }
 
 
-void UnitTest_JoyString();
-void UniTest_VirutalInherit();
+extern void UnitTest_JoyString();
+extern void UniTest_VirutalInherit();
+extern void UnitTest_JoyUniquePointer();
 
 int main()
 {
@@ -742,7 +743,9 @@ int main()
     // 单元测试 - C风格字符串自定义封装
     // UnitTest_JoyString();
     // 单元测试 - VirtualInherit
-    UniTest_VirutalInherit();
+    // UniTest_VirutalInherit();
+    // 单元测试 - 智能指针封装
+    UnitTest_JoyUniquePointer();
 
     std::cin.get();
 
