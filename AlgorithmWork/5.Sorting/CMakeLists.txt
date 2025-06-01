@@ -1,5 +1,5 @@
 ## 最小CMake版本要求
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 
 # 包含cmake文件
 include("${CMAKE_SOURCE_DIR}/CMake/CMakeMacro.cmake")

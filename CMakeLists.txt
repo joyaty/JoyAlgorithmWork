@@ -1,5 +1,5 @@
 # 最小CMake版本需求
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 
 ## 解决方案名
 project(JoyAlgorithmWork)

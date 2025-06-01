@@ -5,7 +5,7 @@ void TestCppIOLibraryWork();
 
 int main()
 {
-	std::cout<< "Hello IO Library" << std::endl;
+	std::cout<< "Hello IO Library, 11111" << std::endl;
 	TestCppIOLibraryWork();
 	std::cin.get();
 	return 0;

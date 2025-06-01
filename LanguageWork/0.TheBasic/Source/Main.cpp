@@ -478,12 +478,12 @@ long long factorial(int n)
 
 extern void UnitTest_JoyString();
 extern void UniTest_VirutalInherit();
-extern void UnitTest_JoyUniquePointer();
+
 
 int main()
 {
-    int n = 10;
-    std::cout << n << "!=" << factorial(n) << std::endl;
+//    int n = 10;
+//    std::cout << n << "!=" << factorial(n) << std::endl;
 
     // int* (*a[5])(int, char*);
 
@@ -744,8 +744,7 @@ int main()
     // UnitTest_JoyString();
     // 单元测试 - VirtualInherit
     // UniTest_VirutalInherit();
-    // 单元测试 - 智能指针封装
-    UnitTest_JoyUniquePointer();
+
 
     std::cin.get();
 

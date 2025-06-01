@@ -64,6 +64,11 @@ namespace Joy
             m_RawPointer             = pSrcPointer.m_RawPointer;
             pSrcPointer.m_RawPointer = nullptr;
         }
+        // 重写解引用操作，实现与裸指针相同的解引用操作
+        T& operator*() const
+        {
+            return *m_RawPointer;
+        }
 
     private:
         // 原始裸指针
