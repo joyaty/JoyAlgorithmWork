@@ -4,7 +4,7 @@
 namespace Joy
 {
     // 唯一所有权智能指针，自动释放所指向的内存区域
-    template<typename T> class JoyUniquePointer
+    template<typename T> class JoyUniquePointer final
     {
     public:
         // 默认构造函数
@@ -31,11 +31,11 @@ namespace Joy
             pSrcPointer.m_RawPointer = nullptr;
         }
         // 析构函数，释放指针指向的内存区域
-        virtual ~JoyUniquePointer() { Release(); }
+        ~JoyUniquePointer() { Release(); }
 
     public:
         // 获取原始裸指针
-        T* Get() const;
+        T* Get() const { return m_RawPointer; }
 
     private:
         void Release()
@@ -65,10 +65,9 @@ namespace Joy
             pSrcPointer.m_RawPointer = nullptr;
         }
         // 重写解引用操作，实现与裸指针相同的解引用操作
-        T& operator*() const
-        {
-            return *m_RawPointer;
-        }
+        T& operator*() const { return *m_RawPointer; }
+        // 重写指针操作，允许通过指针调用成员或方法
+        T* operator->() const { return m_RawPointer; }
 
     private:
         // 原始裸指针
