@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <memory>
+#include <cstdlib>
+
 using Joy::JoyUniquePointer;
 
 class TestCaseClass
@@ -43,6 +45,22 @@ std::ostream& operator<<(std::ostream& out, const TestCaseClass& instance)
     return out;
 }
 
+class TestCaseClass2
+{
+public:
+    TestCaseClass2()
+        : b(100)
+        , c(1000)
+        , d(10000)
+    {}
+
+private:
+    int  a[1000];
+    int  b;
+    int  c;
+    bool d;
+};
+
 void UnitTest_JoyUniquePointer()
 {
     {
@@ -61,6 +79,24 @@ void UnitTest_JoyUniquePointer()
         std::cout << *pTestCase2 << std::endl;
         std::cout << *pTestCase3 << std::endl;
         std::cout << *pTestCase4 << std::endl;
+    }
+
+    {
+        // Dangerous code.
+        long long*           pTestMalloc = (long long*)malloc(1);
+        *pTestMalloc = 88888ll;
+        TestCaseClass2* pTestCase2  = new (pTestMalloc) TestCaseClass2();
+        std::cout << "sizeof(*pTestCase2) = " << sizeof(*pTestCase2) << std::endl;
+        void* pTestRelloc = realloc(pTestMalloc, 8);
+        std::cout << "Malloc = " << pTestMalloc << ", Realloc = " << pTestRelloc << ", pTestCase2 = " << pTestCase2 << std::endl;
+        TestCaseClass2* pTestCase3 = new (pTestRelloc) TestCaseClass2();
+        free(pTestRelloc);
+
+        void*           pTestMalloc2 = malloc(2);
+        int* pInt = (int*)pTestMalloc2;
+        int* pInt2 = (int*)pTestMalloc2 + 1;
+        int* pInt3 = (int*)pTestMalloc2 + 6;
+        free(pTestMalloc2);
     }
     std::cout << "UnitTest_JoyUniquePointer" << std::endl;
 }
