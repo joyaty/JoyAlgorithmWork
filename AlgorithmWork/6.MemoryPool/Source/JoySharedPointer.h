@@ -69,7 +69,7 @@ namespace Joy
         // 重载拷贝赋值运算符
         JoySharedPointer& operator=(const JoySharedPointer& pShared)
         {
-            if (this == pShared)
+            if (this == &pShared)
             {   // 相同指针，不操作
                 return *this;
             }
@@ -88,7 +88,7 @@ namespace Joy
         // 重载移动赋值运算符
         JoySharedPointer& operator=(JoySharedPointer&& pShared) noexcept
         {
-            if (this == pShared)
+            if (this == &pShared)
             {   // 相同指针，不操作
                 return *this;
             }
