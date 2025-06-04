@@ -29,6 +29,14 @@ endif()
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/source-charset:utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/execution-charset:utf-8>")
 
+add_compile_options(
+    -Wdeprecated
+    -Wextra-semi
+    -Wshadow
+    -Wconversion
+    -Wsign-conversion
+)
+
 # add_compile_options("-fstandalone-debug")
 
 # 添加数据结构和算法学习子项目路径

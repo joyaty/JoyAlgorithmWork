@@ -12,6 +12,8 @@ set(SUB_PROJECT_NAME 6.MemoryPool)
 set(ALL_FILES 
 Source/JoyUniquePointer.cpp
 Source/JoyUniquePointer.h
+Source/JoySharedPointer.cpp
+Source/JoySharedPointer.h
 Source/Main.cpp
 )
 
