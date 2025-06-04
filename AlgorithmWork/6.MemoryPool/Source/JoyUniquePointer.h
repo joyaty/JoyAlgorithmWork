@@ -63,6 +63,7 @@ namespace Joy
             // 转移原始指针的所有权
             m_RawPointer             = pSrcPointer.m_RawPointer;
             pSrcPointer.m_RawPointer = nullptr;
+            return *this;
         }
         // 重写解引用操作，实现与裸指针相同的解引用操作
         T& operator*() const { return *m_RawPointer; }

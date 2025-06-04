@@ -71,7 +71,7 @@ namespace Joy
         {
             if (this == pShared)
             {   // 相同指针，不操作
-                return;
+                return *this;
             }
 
             if (m_pRawResource != nullptr)
@@ -83,13 +83,14 @@ namespace Joy
             m_pControlBlock = pShared.m_pControlBlock;
             // 引用计数+1
             Retain();
+            return *this;
         }
         // 重载移动赋值运算符
         JoySharedPointer& operator=(JoySharedPointer&& pShared) noexcept
         {
             if (this == pShared)
             {   // 相同指针，不操作
-                return;
+                return *this;
             }
             if (m_pRawResource != nullptr)
             {   // 原有资源不为空，释放占用
@@ -101,6 +102,7 @@ namespace Joy
             // 释放被移动指针的所有权
             pShared.m_pRawResource  = nullptr;
             pShared.m_pControlBlock = nullptr;
+            return *this;
         }
 
         // 重写解引用操作，实现与裸指针相同的效果
