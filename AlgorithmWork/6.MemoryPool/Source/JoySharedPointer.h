@@ -39,7 +39,7 @@ namespace Joy
             Retain();
         }
 
-        JoySharedPointer(JoySharedPointer&& pShared)
+        JoySharedPointer(JoySharedPointer&& pShared) noexcept
             : m_pRawResource(pShared.m_pRawResource)
             , m_pControlBlock(pShared.m_pControlBlock)
         {
@@ -85,7 +85,7 @@ namespace Joy
             Retain();
         }
         // 重载移动赋值运算符
-        JoySharedPointer& operator=(JoySharedPointer&& pShared)
+        JoySharedPointer& operator=(JoySharedPointer&& pShared) noexcept
         {
             if (this == pShared)
             {   // 相同指针，不操作
