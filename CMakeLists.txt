@@ -29,13 +29,15 @@ endif()
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/source-charset:utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/execution-charset:utf-8>")
 
-add_compile_options(
-    -Wdeprecated
-    -Wextra-semi
-    -Wshadow
-    -Wconversion
-    -Wsign-conversion
-)
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    add_compile_options(
+        -Wdeprecated
+        -Wextra-semi
+        -Wshadow
+        -Wconversion
+        -Wsign-conversion
+    )
+endif()
 
 # add_compile_options("-fstandalone-debug")
 
