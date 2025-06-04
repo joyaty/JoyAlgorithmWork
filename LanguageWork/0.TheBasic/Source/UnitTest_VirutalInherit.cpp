@@ -179,7 +179,7 @@ namespace Joy
 
 using namespace Joy::UnitTest;
 
-void UniTest_VirutalInherit()
+void UnitTest_VirutalInherit()
 {
     std::unique_ptr<Convertible> pConvertible = std::make_unique<Convertible>(0);
     void*                        p0           = &pConvertible->Laptop::m_SerialCode;

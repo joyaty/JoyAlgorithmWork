@@ -13,7 +13,8 @@ set(ALL_FILES
 Source/Main.cpp
 Source/JoyString.h
 Source/JoyString.cpp
-Source/UniTest_VirutalInherit.cpp
+Source/UnitTest_VirutalInherit.cpp
+Source/UnitTest_Callback.cpp
 )
 
 ## 调用外部cmake定义的宏，将源文件按文件加分组

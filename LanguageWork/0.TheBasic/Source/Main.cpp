@@ -477,7 +477,8 @@ long long factorial(int n)
 
 
 extern void UnitTest_JoyString();
-extern void UniTest_VirutalInherit();
+extern void UnitTest_VirutalInherit();
+extern void UnitTest_Callback();
 
 
 int main()
@@ -744,6 +745,9 @@ int main()
     // UnitTest_JoyString();
     // 单元测试 - VirtualInherit
     // UniTest_VirutalInherit();
+
+    // 单元测试 - Callback
+    UnitTest_Callback();
 
 
     std::cin.get();
