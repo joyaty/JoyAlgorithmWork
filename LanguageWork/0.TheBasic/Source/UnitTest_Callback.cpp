@@ -14,13 +14,13 @@ namespace Joy
         template<typename T> class CustomComparator
         {
         public:
-            bool operator()(const T& lhs, const T& rhs) { return lhs >= rhs; }
+            bool operator()(const T& lhs, const T& rhs) { return lhs > rhs; }
 
-            bool CompareLowerFunc(const T& lhs, const T& rhs) { return lhs >= rhs; }
+            bool CompareLowerFunc(const T& lhs, const T& rhs) { return lhs > rhs; }
 
             bool CompareUpperFunc(const T& lhs, const T& rhs)
             {
-                return !CompareLowerFunc(lhs, rhs);
+                return lhs < rhs;
             }
         };
 
@@ -59,12 +59,12 @@ namespace Joy
 
         template<typename T> bool CompareLowerFunc(const T& lhs, const T& rhs)
         {
-            return lhs >= rhs;
+            return lhs > rhs;
         }
 
         template<typename T> bool CompareUpperFunc(const T& lhs, const T& rhs)
         {
-            return !CompareLowerFunc(lhs, rhs);
+            return lhs < rhs;
         }
 
         template<typename T>
@@ -96,14 +96,11 @@ struct X
 
 void UnitTest_Callback()
 {
-    void (X::*pmf)(int);   // 一个类成员函数指针变量pmf的定义
-    pmf = &X::f;           // 类成员函数指针变量pmf被赋值
-
-    X ins, *p;
-    p = &ins;
-    (ins.*pmf)(101);   // 对实例ins，调用成员函数指针变量pmf所指的函数
-    (p->*pmf)(102);    // 对p所指的实例，调用成员函数指针变量pmf所指的函数
-
+    // 注意!
+    // std中的比较器需要符合严格弱序规则(strict weak ordering)
+    // 1. compare(a, a) = false; // 反自反性
+    // 2. compare(a, b) = true, then compare(b, a) = false // 反对称性
+    // 3. compare(a, b) = true && compare(b, c) = true, then compare(a, c) = true // 传递性
     int arr[10] = {99, 5, 85, 25, 26, 31, 55, 3, 5, 3};
     // 1. 使用仿函数对象作为回调
     std::sort(std::begin(arr), std::end(arr), CustomComparator<int>());
