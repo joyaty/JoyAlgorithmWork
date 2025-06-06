@@ -1,10 +1,13 @@
 
 #include <algorithm>
+#include <chrono>
 #include <functional>
 #include <iostream>
 #include <iterator>
 #include <memory>
 #include <ostream>
+#include <ratio>
+#include <thread>
 
 namespace Joy
 {
@@ -18,10 +21,7 @@ namespace Joy
 
             bool CompareLowerFunc(const T& lhs, const T& rhs) { return lhs > rhs; }
 
-            bool CompareUpperFunc(const T& lhs, const T& rhs)
-            {
-                return lhs < rhs;
-            }
+            bool CompareUpperFunc(const T& lhs, const T& rhs) { return lhs < rhs; }
         };
 
         // 测试用例数据类
@@ -162,7 +162,7 @@ void UnitTest_Callback()
     std::cout << std::endl;
     // 7. 使用函数指针绑定类成员函数作为回调
     CompareCallBackClassFunc classFuncPtr = &CustomComparator<int>::CompareLowerFunc;
-    bool ret = (compareObj.*classFuncPtr)(5, 10);
+    bool                     ret          = (compareObj.*classFuncPtr)(5, 10);
     // std::sort(std::begin(arr), std::end(arr), (compareObj.*classFuncPtr));
     // std::cout << "After func pointer with class func:" << std::endl;
     // std::for_each(std::begin(arr),
@@ -172,22 +172,39 @@ void UnitTest_Callback()
     // std::cout << std::endl;
     std::cout << "====================================" << std::endl;
 
-    // 测试shared_ptr + lambda,避免lamda执行时，指针指向的内存区域被释放
+    // 测试shared_ptr +
+    // lambda,避免lamda执行时，指针指向的内存区域被释放，lambda捕获的shared_ptr会拷贝一次，增加一次引用计数
     std::cout << "shared_ptr + lambda" << std::endl;
-    std::shared_ptr<TestCaseStruct> pIntValue = std::make_shared<TestCaseStruct>(100);
+    std::thread testThread{};
     {
-        std::cout << "引用计数0:" << pIntValue.use_count() << ", " << pIntValue << std::endl;
-        auto callback1 = [pIntValue]()
+        std::shared_ptr<TestCaseStruct> pTestCaseStruct = std::make_shared<TestCaseStruct>(10);
+        std::cout << "outter pTestCaseStruct Address = " << &pTestCaseStruct << std::endl;
+        std::cout << "before create Lambda, ref_count = " << pTestCaseStruct.use_count()
+                  << std::endl;
+        auto callbackLambda = [pTestCaseStruct]() -> void
         {
-            ++(*pIntValue);
-            std::cout << "引用计数4:" << pIntValue.use_count() << ", " << pIntValue << std::endl;
+            std::cout << "inner pTestCaseStruct Address = " << &pTestCaseStruct << std::endl;
+            std::cout << "before apply Lambda, ref count = " << pTestCaseStruct.use_count()
+                      << std::endl;
+            std::this_thread::sleep_for(std::chrono::milliseconds(5000));   // 线程休眠5秒
+            ++(*pTestCaseStruct);
+            std::cout << "after apply Lambda, ref_count = " << pTestCaseStruct.use_count()
+                      << std::endl;
+            std::cout << "after apply Lambda, value = " << pTestCaseStruct << std::endl;
         };
-        std::cout << "引用计数1:" << pIntValue.use_count() << ", " << pIntValue << std::endl;
-        pIntValue.reset();
-        callback1();
-        std::cout << "引用计数2:" << pIntValue.use_count() << ", " << pIntValue << std::endl;
+        std::cout << "before call Lambda, ref_count = " << pTestCaseStruct.use_count() << std::endl;
+        callbackLambda();
+        std::cout << "after call Lambda, ref_count = " << pTestCaseStruct.use_count()
+                  << std::endl;   // ref_count = 2，Lambda按值捕获智能指针，智能指针拷贝，引用计数+1
+        std::cout << "after call Lambda, value = " << pTestCaseStruct
+                  << std::endl;   // value = 11,
+                                  // lambda修改了指针指向内存的值，外部指针执行相同地址，一样被修改
+        testThread = std::thread(callbackLambda);
+        std::cout << "after create Thread, ref_count = " << pTestCaseStruct.use_count()
+                  << std::endl;   // ref_cout = 3
+                                  // 线程捕获Lambda，其中Lambda捕获的智能指针被拷贝一份，引用计数+1
     }
-    std::cout << "引用计数3:" << pIntValue.use_count() << std::endl;
+    testThread.join();   // 附加到主线程，主线程阻塞，等待线程执行完毕。
 }
 
 #pragma endregion
