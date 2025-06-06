@@ -6,7 +6,6 @@
 #include <iterator>
 #include <memory>
 #include <ostream>
-#include <ratio>
 #include <thread>
 
 namespace Joy
@@ -86,13 +85,6 @@ using Joy::UnitTest_Callback::CompareUpperFunc;
 
 using CompareCallBackClassFunc = bool (CustomComparator<int>::*)(const int&, const int&);
 using CompareCallBackFunc      = bool (*)(const int&, const int&);
-
-struct X
-{
-    void f(int value) { std::cout << value << std::endl; }
-    int  a;
-};
-
 
 void UnitTest_Callback()
 {

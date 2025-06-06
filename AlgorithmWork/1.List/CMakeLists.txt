@@ -17,6 +17,8 @@ set(ALL_FILES
 Source/Main.cpp
 Source/JoyList/JoyVector.cpp
 Source/JoyList/JoyVector.h
+Source/JoyList/JoyList.cpp
+Source/JoyList/JoyList.h
 )
 
 ## 调用外部cmake定义的宏，将源文件按文件加分组

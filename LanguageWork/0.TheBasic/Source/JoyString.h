@@ -23,7 +23,7 @@ namespace Joy
 
     public:
         // 获取字符串长度
-        int Length() const { return m_pRawStr == nullptr ? 0 : strlen(m_pRawStr); }
+        int Length() const { return m_pRawStr == nullptr ? 0 : static_cast<int>(strlen(m_pRawStr)); }
 
     public:
         // 重载 == 运算符，判断字符串是否相等
