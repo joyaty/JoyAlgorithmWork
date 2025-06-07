@@ -3,22 +3,31 @@
  * 自定义List数据结构，双向链表
  */
 
-#include "JoyList.h"
-#include <algorithm>
 
 #pragma region 单元测试 - 自定义 List 数据结构，双向链表
 
+#include "JoyList.h"
+#include <algorithm>
 #include <iostream>
 #include <list>
 
-using Joy::JoyList;
-
-// 打印列表辅助输出仿函数
-template<typename T> class PrintList
+namespace Joy
 {
-public:
-    void operator()(const T& value) const { std::cout << value << " "; }
-};
+    namespace UnitTest_JoyList
+    {
+        // 打印列表辅助输出仿函数
+        template<typename T>
+        class PrintList
+        {
+        public:
+            void operator()(const T& value) const { std::cout << value << " "; }
+        };
+
+    }   // namespace UnitTest_JoyList
+}   // namespace Joy
+
+using Joy::JoyList;
+using Joy::UnitTest_JoyList::PrintList;
 
 void UnitTest_JoyList()
 {
