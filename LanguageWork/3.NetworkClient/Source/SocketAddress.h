@@ -6,6 +6,8 @@
 #if __linux__
 #    include <netinet/in.h>
 #    include <sys/socket.h>
+#elif _WIN32
+#    include <WinSock2.h>
 #endif
 
 namespace Joy
