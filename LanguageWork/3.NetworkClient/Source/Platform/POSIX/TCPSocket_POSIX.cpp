@@ -44,7 +44,7 @@ namespace Joy
         }
     }
 
-    int TCPSocket::Connect(const SocketAddress& sockaddr)
+    int TCPSocket::Connect(const SocketAddress& sockaddr) const
     {
         int ret = connect(m_Socket, &sockaddr.m_Address, static_cast<socklen_t>(sockaddr.GetSize()));
         if (ret != 0)
@@ -54,7 +54,7 @@ namespace Joy
         return ret;
     }
 
-    int TCPSocket::Send(const void* inSendBuffer, size_t inLen)
+    int TCPSocket::Send(const void* inSendBuffer, size_t inLen) const
     {
         ssize_t ret = send(m_Socket, inSendBuffer, inLen, 0);
         if (ret == -1)
@@ -64,7 +64,7 @@ namespace Joy
         return static_cast<int>(ret);
     }
 
-    int TCPSocket::Recv(void* inRecvBuffer, size_t inLen)
+    int TCPSocket::Recv(void* inRecvBuffer, size_t inLen) const
     {
         ssize_t ret = recv(m_Socket, inRecvBuffer, inLen, 0);
         if (ret == -1)
@@ -75,7 +75,7 @@ namespace Joy
     }
 
     // 停止Socket
-    void TCPSocket::Shutdown()
+    void TCPSocket::Shutdown() const
     {
         int ret = shutdown(m_Socket, SHUT_RD);
         if (ret == -1)
@@ -88,6 +88,7 @@ namespace Joy
     void TCPSocket::Close()
     {
         close(m_Socket);
+        m_Socket = -1;
     }
 
 }   // namespace Joy
