@@ -1,0 +1,95 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cmake",
+			"label": "CMake: build All",
+			"command": "build",
+			"targets": [
+				"all"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"detail": "CMake template build task"
+		},
+		{
+			"type": "cmake",
+			"label": "CMake: build 1.List",
+			"command": "build",
+			"targets": [
+				"1.List"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"detail": "CMake template build task"
+		},
+		{
+			"type": "cmake",
+			"label": "CMake: build 3.NetworkClient",
+			"command": "build",
+			"targets": [
+				"3.NetworkClient"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"detail": "CMake template build task"
+		},
+		{
+			"type": "cmake",
+			"label": "CMake: build 6.MemoryPool",
+			"command": "build",
+			"targets": [
+				"6.MemoryPool"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"detail": "CMake template build task"
+		},
+		{
+			"type": "cmake",
+			"label": "CMake: build 0.TheBasic",
+			"command": "build",
+			"targets": [
+				"0.TheBasic"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"detail": "CMake template build task"
+		},
+		{
+			"type": "cmake",
+			"label": "CMake: configure",
+			"command": "configure",
+			"problemMatcher": [],
+			"detail": "CMake template configure task",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	],
+	"inputs": [
+		{
+			"id": "targetName",
+			"type": "pickString",
+			"description": "选择要编译的目标",
+			"options": [
+				"0.TheBasic",
+				"6.MemoryPool",
+			],
+			"default": "6.MemoryPool",
+		},
+		{
+			"id": "buildType",
+			"type": "pickString",
+			"description": "选择构建类型",
+			"options": [
+				"Debug",
+				"Release",
+				"MinSizeRel",
+				"RelWithDebInfo",
+			],
+			"default": "Debug"
+		}
+	]
+}

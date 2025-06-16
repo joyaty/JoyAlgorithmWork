@@ -1,9 +1,8 @@
-#include <cstdint>
-#include <iostream>
 
-int TestSocketFunc();
+// 单元测试 - TCPSocket封装
+extern void UnitTest_TCPSocket();
 
 int main()
 {
-	return TestSocketFunc();
+	UnitTest_TCPSocket();
 }

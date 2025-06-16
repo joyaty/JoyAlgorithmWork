@@ -16,6 +16,8 @@ Source/Serialization/ByteSwap.h
 Source/Serialization/Reflection.h
 Source/Gameplay/GameObject.h
 Source/Gameplay/GameObject.h
+Source/SocketAddress.h
+Source/TCPSocket.h
 Source/Main.cpp
 )
 # 不同系统平台API差异，各自实现
@@ -23,9 +25,14 @@ if(CMAKE_SYSTEM_NAME MATCHES "Windows")
     set(ALL_FILES ${ALL_FILES}
         Source/Platform/Windows/TestSocket.cpp
     )
-else(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
     set(ALL_FILES ${ALL_FILES}
         Source/Platform/MacOS/TestSocket.cpp
+    )
+elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
+    set(ALL_FILES ${ALL_FILES}
+        Source/Platform/POSIX/SocketAddress.cpp
+        Source/Platform/POSIX/TCPSocket_POSIX.cpp
     )
 endif()
 

@@ -1,0 +1,44 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug 0.TheBasic",
+            "program": "${workspaceFolder}/build/LanguageWork/0.TheBasic/0.TheBasic",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "CMake: build 0.TheBasic"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug 3.NetworkClient",
+            "program": "${workspaceFolder}/build/LanguageWork/3.NetworkClient/3.NetworkClient",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "CMake: build 3.NetworkClient"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug 1.List",
+            "program": "${workspaceFolder}/build/AlgorithmWork/1.List/1.List",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "CMake: build 1.List"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug 6.MemoryPool",
+            "program": "${workspaceFolder}/build/AlgorithmWork/6.MemoryPool/6.MemoryPool",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "CMake: build 6.MemoryPool"
+        }
+    ]
+}
