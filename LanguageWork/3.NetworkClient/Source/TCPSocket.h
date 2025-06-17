@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include <cstddef>
 #if _WIN32
 #    include <WinSock2.h>
@@ -35,7 +37,23 @@ namespace Joy
         // 关闭Socket
         void Close();
 
+    public:
+        // 设置内核接收缓冲区大小
+        void SetRecvBufferSize(int inBufferSize) const;
+        // 获取内核接收缓冲山大小
+        int GetRecvBufferSize() const;
+        // 设置内核发送缓冲区大小
+        void SetSendBufferSize(int inBufferSize) const;
+        // 获取内核发送缓冲山大小
+        int GetSendBufferSize() const;
+        // 设置是否开启Nagle算法
+        void SetNoDelay(bool isNodelay) const;
+        // Nagle算法开启状态
+        bool IsNoDelay() const;
+        // 设置socket为非阻塞模式
+        void SetNoBlockingMode(bool isShouldBeNonBlocking) const;
+
     private:
-         SocketType m_Socket;
+        SocketType m_Socket;
     };
 }   // namespace Joy

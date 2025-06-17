@@ -19,6 +19,10 @@ Source/Gameplay/GameObject.h
 Source/SocketAddress.h
 Source/TCPSocket.h
 Source/Main.cpp
+Source/NetworkService.cpp
+Source/NetworkService.h
+Source/CircleBuffer.cpp
+Source/CircleBuffer.h
 )
 # 不同系统平台API差异，各自实现
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")

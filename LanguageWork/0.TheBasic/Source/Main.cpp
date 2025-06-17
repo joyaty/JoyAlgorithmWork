@@ -2,6 +2,7 @@
 #include <cstring>
 #include <functional>
 #include <iostream>
+#include <queue>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
@@ -407,7 +408,8 @@ int Add(int lhs, int rhs)
     return lhs + rhs;
 }
 
-template<typename T1, typename T2> auto TestFun(T1 a, T2 b) -> decltype(a + b)
+template<typename T1, typename T2>
+auto TestFun(T1 a, T2 b) -> decltype(a + b)
 {
     return a + b;
 }
@@ -483,8 +485,8 @@ extern void UnitTest_Callback();
 
 int main()
 {
-//    int n = 10;
-//    std::cout << n << "!=" << factorial(n) << std::endl;
+    //    int n = 10;
+    //    std::cout << n << "!=" << factorial(n) << std::endl;
 
     // int* (*a[5])(int, char*);
 
@@ -747,8 +749,20 @@ int main()
     // UniTest_VirutalInherit();
 
     // 单元测试 - Callback
-    UnitTest_Callback();
+    // UnitTest_Callback();
 
+    std::queue<int> myQueue{};
+    myQueue.push(1);
+    myQueue.push(2);
+    myQueue.push(3);
+    myQueue.push(4);
+    myQueue.push(5);
+    myQueue.push(6);
+
+    std::cout << myQueue.front() << ", " << myQueue.back() << std::endl;
+    myQueue.pop();
+    myQueue.push(7);
+    std::cout << myQueue.front() << ", " << myQueue.back() << std::endl;
 
     std::cin.get();
 
