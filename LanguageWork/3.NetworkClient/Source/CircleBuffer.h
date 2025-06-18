@@ -3,6 +3,7 @@
 
 #include <atomic>
 #include <cstddef>
+#include <cstdint>
 #include <mutex>
 #include <queue>
 
@@ -18,10 +19,79 @@ namespace Joy
     public:
         // 获取环形缓冲区有效数据长度
         size_t GetBufferSize() const;
-        // 数据写入缓冲区
-        void Write(char* pData, size_t dataSize);
-        // 缓冲区读出数据
-        void Read(char* pData, size_t& dataSize);
+
+        /**
+         * @brief 数据写入缓冲区
+         * 
+         * @param pData [In] 写入缓冲区的数据地址
+         * @param dataSize [In] 写入的数据长度
+         */
+        void Write(const char* pData, size_t dataSize);
+        
+        /**
+         * @brief 读取一个字节，转换为int8_t
+         * 
+         * @return int8_t
+         */
+        int8_t ReadInt8();
+
+        /**
+         * @brief 读取一个字节，转换为uint8_t
+         * 
+         * @return uint8_t
+         */
+        uint8_t ReadUInt8();
+
+        /**
+         * @brief 读取两个字节，转换为int16_t
+         * 
+         * @return int16_t 
+         */
+        int16_t ReadInt16();
+
+        /**
+         * @brief 读取两个字节，转换为uint16_t
+         * 
+         * @return uint16_t 
+         */
+        uint16_t ReadUInt16();
+
+        /**
+         * @brief 读取4个字节，转换为int32_t
+         * 
+         * @return int32_t 
+         */
+        int32_t ReadInt32();
+
+        /**
+         * @brief 读取4个字节，转换为uint32_t
+         * 
+         * @return uint32_t 
+         */
+        uint32_t ReadUInt32();
+
+        /**
+         * @brief 读取8字节，转换为int64_t
+         * 
+         * @return int64_t 
+         */
+        int64_t ReadInt64();
+
+        /**
+         * @brief 读取8字节，转换为uint64_t
+         * 
+         * @return uint64_t 
+         */
+        uint64_t ReadUInt64();
+
+        /**
+         * @brief 读取指定长度的缓冲区数据，拷贝到指针指向位置
+         * 
+         * @param pData [In, Out] 数据写入的位置
+         * @param offset [In] 数据写入偏移
+         * @param readLength [In, Out] 数据读取长度，In-预期读取长度，Out-实际读取长度(假如缓冲区数据不足读取)
+         */
+        void Read(char* pData, size_t offset, size_t& readLength);
 
     private:
         // 工作buffer队列尾部添加新的缓冲块

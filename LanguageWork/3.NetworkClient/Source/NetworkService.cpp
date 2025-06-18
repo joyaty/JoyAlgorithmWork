@@ -3,6 +3,7 @@
 #include "CircleBuffer.h"
 #include "SocketAddress.h"
 #include "TCPSocket.h"
+#include <chrono>
 #include <cstdint>
 #include <memory>
 #include <thread>
@@ -29,13 +30,34 @@ namespace Joy
         }
     }
 
+    void NetworkService::Stop()
+    {
+
+    }
+
+    void NetworkService::SendMessage(const std::string& inMessage)
+    {
+        int size = static_cast<int>(inMessage.length());
+
+        // m_SendBuffer.Write(char *pData, size_t dataSize)
+    }
+
     // 网络消息发送线程执行
     void NetworkService::RunOnSendThread()
     {
-        while (m_IsConnected)
-        {
-        }
+        // while (m_IsConnected)
+        // {
+        //     if (m_SendBuffer.GetBufferSize() != 0)
+        //     {
+        //         char* pData = nullptr;
+        //         size_t nDataSize = 0;
+        //         m_SendBuffer.Read(pData, nDataSize);
+        //     }
+        //     // 休眠10毫秒
+        //     std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        // }
     }
 
 
 }   // namespace Joy
+

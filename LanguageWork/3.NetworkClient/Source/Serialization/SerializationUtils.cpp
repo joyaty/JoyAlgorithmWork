@@ -26,6 +26,11 @@ void OutputMemoryStream::Write(const void* inData, size_t inByteCount)
 	m_Head = resultHead;
 }
 
+void OutputMemoryStream::Reset()
+{
+	m_Head = 0;
+}
+
 // ================================================================================
 
 void InputMemoryStream::Read(void* outData, uint32_t inByteCount)
