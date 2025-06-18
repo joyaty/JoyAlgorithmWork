@@ -1,11 +1,11 @@
 
-#include "TCPSocket.h"
 #include "SocketAddress.h"
+#include "TCPSocket.h"
 #include <iostream>
 
 namespace Joy
 {
-	TCPSocket::TCPSocket()
+    TCPSocket::TCPSocket()
         : m_Socket(INVALID_SOCKET)
     {
         int ret = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -32,6 +32,10 @@ namespace Joy
         int ret = connect(m_Socket, &address.m_Address, address.GetSize());
         if (ret == SOCKET_ERROR)
         {
+            if (WSAGetLastError() == WSAEWOULDBLOCK)
+            {
+                return 0;
+            }
             std::cerr << "Error: TCPSocket::Connect, " << WSAGetLastError() << std::endl;
         }
         return ret;
@@ -75,7 +79,90 @@ namespace Joy
         closesocket(m_Socket);
         m_Socket = INVALID_SOCKET;
     }
-}
+
+    // 设置内核接收缓冲区大小
+    void TCPSocket::SetRecvBufferSize(int inBufferSize) const
+    {
+        int ret = setsockopt(m_Socket, SOL_SOCKET, SO_RCVBUF, reinterpret_cast<const char*>(&inBufferSize), sizeof(inBufferSize));
+        if (ret == SOCKET_ERROR)
+        {
+            std::cerr << "Error! TCPSocket::SetRecvBufferSize, " << WSAGetLastError() << std::endl;
+        }
+    }
+
+    // 获取内核接收缓冲区大小
+    int TCPSocket::GetRecvBufferSize() const
+    {
+        int optValue    = 0;
+        int optValueLen = sizeof(optValue);
+        int ret         = getsockopt(m_Socket, SOL_SOCKET, SO_RCVBUF, reinterpret_cast<char*>(&optValue), &optValueLen);
+        if (ret == SOCKET_ERROR)
+        {
+            std::cerr << "Error! TCPSocket::GetRecvBufferSize, " << WSAGetLastError() << std::endl;
+            return 0;
+        }
+        return optValue;
+    }
+
+    // 设置内核发送缓冲区大小
+    void TCPSocket::SetSendBufferSize(int inBufferSize) const
+    {
+        int ret = setsockopt(m_Socket, SOL_SOCKET, SO_SNDBUF, reinterpret_cast<const char*>(&inBufferSize), sizeof(inBufferSize));
+        if (ret == SOCKET_ERROR)
+        {
+            std::cerr << "Error! TCPSocket::SetSendBufferSize, " << WSAGetLastError() << std::endl;
+        }
+    }
+
+    // 获取内核发送缓冲区大小
+    int TCPSocket::GetSendBufferSize() const
+    {
+        int optValue    = 0;
+        int optValueLen = sizeof(optValue);
+        int ret         = getsockopt(m_Socket, SOL_SOCKET, SO_SNDBUF, reinterpret_cast<char*>(&optValue), &optValueLen);
+        if (ret == SOCKET_ERROR)
+        {
+            std::cerr << "Error! TCPSocket::GetSendBufferSize, " << WSAGetLastError() << std::endl;
+            return 0;
+        }
+        return optValue;
+    }
+
+    // 设置是否开启Nagle算法
+    void TCPSocket::SetNoDelay(bool isNodelay) const
+    {
+        int noDelayTag = isNodelay ? 1 : 0;
+        int ret        = setsockopt(m_Socket, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(&noDelayTag), sizeof(noDelayTag));
+        if (ret != 0)
+        {
+            std::cerr << "Error! TCPSocket::SetNoDelay, " << WSAGetLastError() << std::endl;
+        }
+    }
+
+    // Nagle算法开启状态
+    bool TCPSocket::IsNoDelay() const
+    {
+        int isNodelay   = 0;
+        int optValueLen = sizeof(int);
+        int ret         = getsockopt(m_Socket, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<char*>(&isNodelay), &optValueLen);
+        if (ret != 0)
+        {
+            std::cerr << "Error! TCPSocket::IsNoDelay, " << WSAGetLastError() << std::endl;
+        }
+        return isNodelay == 1;
+    }
+
+    // 设置socket为非阻塞模式
+    void TCPSocket::SetNoBlockingMode(bool isShouldBeNonBlocking) const
+    {
+        u_long arg = isShouldBeNonBlocking ? 1 : 0;
+        int    ret = ioctlsocket(m_Socket, FIONBIO, &arg);
+        if (ret == SOCKET_ERROR)
+        {
+            std::cerr << "Error! TCPSocket::SetNoBlockingMode, " << WSAGetLastError() << std::endl;
+        }
+    }
+}   // namespace Joy
 
 #pragma region 单元测试 - TCPSocket
 
@@ -89,6 +176,7 @@ static void UnitTest_RunOnSubThread()
 {
     SocketAddress address("192.168.17.65", 8089);
     TCPSocket     socket{};
+    socket.SetNoBlockingMode(true);
     socket.Connect(address);
     std::this_thread::sleep_for(std::chrono::milliseconds(5000));
     socket.Shutdown();
