@@ -87,7 +87,7 @@ namespace Joy
         int8_t value{};
         size_t readSize = sizeof(int8_t);
         Read(reinterpret_cast<char*>(&value), 0, readSize);
-        return reinterpret_cast<int8_t>(value);
+        return value;
     }
 
     uint8_t CircleBuffer::ReadUInt8()
@@ -95,7 +95,7 @@ namespace Joy
         uint8_t value{};
         size_t  readSize = sizeof(uint8_t);
         Read(reinterpret_cast<char*>(&value), 0, readSize);
-        return reinterpret_cast<uint8_t>(value);
+        return value;
     }
 
     int16_t CircleBuffer::ReadInt16()
@@ -103,7 +103,7 @@ namespace Joy
         int16_t value{};
         size_t  readSize = sizeof(int16_t);
         Read(reinterpret_cast<char*>(&value), 0, readSize);
-        return reinterpret_cast<int16_t>(value);
+        return value;
     }
 
     uint16_t CircleBuffer::ReadUInt16()
@@ -111,7 +111,7 @@ namespace Joy
         uint16_t value{};
         size_t   readSize = sizeof(uint16_t);
         Read(reinterpret_cast<char*>(&value), 0, readSize);
-        return reinterpret_cast<uint16_t>(value);
+        return value;
     }
 
     int32_t CircleBuffer::ReadInt32()
@@ -119,7 +119,7 @@ namespace Joy
         int32_t value{};
         size_t  readSize = sizeof(int32_t);
         Read(reinterpret_cast<char*>(&value), 0, readSize);
-        return reinterpret_cast<int32_t>(value);
+        return value;
     }
 
     uint32_t CircleBuffer::ReadUInt32()
@@ -127,7 +127,7 @@ namespace Joy
         uint32_t value{};
         size_t   readSize = sizeof(uint32_t);
         Read(reinterpret_cast<char*>(&value), 0, readSize);
-        return reinterpret_cast<uint32_t>(value);
+        return value;
     }
 
     int64_t CircleBuffer::ReadInt64()
@@ -135,7 +135,7 @@ namespace Joy
         int64_t value{};
         size_t  readSize = sizeof(int64_t);
         Read(reinterpret_cast<char*>(&value), 0, readSize);
-        return reinterpret_cast<int64_t>(value);
+        return value;
     }
 
     uint64_t CircleBuffer::ReadUInt64()
@@ -143,7 +143,7 @@ namespace Joy
         uint64_t value{};
         size_t   readSize = sizeof(uint64_t);
         Read(reinterpret_cast<char*>(&value), 0, readSize);
-        return reinterpret_cast<uint64_t>(value);
+        return value;
     }
 
     void CircleBuffer::Read(char* pData, size_t offset, size_t& readLength)
@@ -158,7 +158,7 @@ namespace Joy
         while (alreadyCopySize < readLength)
         {
             size_t n                  = readLength - alreadyCopySize;   // 本次需要读取的长度
-            size_t chunkRemainingSize = m_ChunkSize - m_HeadIndex;      // 当前缓冲块剩余可读取长度
+            size_t chunkRemainingSize = m_ChunkSize - tempHead;         // 当前缓冲块剩余可读取长度
             if (n <= chunkRemainingSize)
             {   // 当前缓冲块内可全部读完数据
                 std::memcpy(pData + offset + alreadyCopySize, m_WorkBuffer.front() + tempHead, n);
@@ -285,7 +285,7 @@ static void RunOnReadThread()
         {   // 解析包体阶段
             if (buffer.GetBufferSize() >= packetBodyLength)
             {
-                std::unique_ptr<char[]> pData = std::make_unique<char[]>(packetBodyLength);   // 多申请一个空间，作为字符串结束标志位'\0';
+                std::unique_ptr<char[]> pData = std::make_unique<char[]>(packetBodyLength + 1);   // 多申请一个空间，作为字符串结束标志位'\0';
                 pData[packetBodyLength] = '\0';
                 buffer.Read(pData.get(), 0, packetBodyLength);
 
@@ -324,9 +324,8 @@ static void RunOnWriteThread()
 void UnitTest_CircleBuffer()
 {
     std::thread writeThread(&RunOnWriteThread);   
-    writeThread.join();
-    
     std::thread readThread(&RunOnReadThread);
+    writeThread.join();
     readThread.join();
 }
 
