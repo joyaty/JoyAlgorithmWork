@@ -17,8 +17,33 @@ namespace Joy
         ~CircleBuffer();
 
     public:
-        // 获取环形缓冲区有效数据长度
+        /**
+         * @brief 获取环形缓冲区有效数据长度
+         * 
+         * @return size_t 
+         */
         size_t GetBufferSize() const;
+        
+        /**
+         * @brief 获取可写入位置指针
+         * 
+         * @return void* 
+         */
+        void* GetWritePtr() const;
+        
+        /**
+         * @brief 获取当前可写入的缓冲区长度
+         * 
+         * @return size_t 
+         */
+        size_t GetCanWriteLength() const;
+
+        /**
+         * @brief 移动数据读取游标，用于发送线程，数据被部分发送的情况
+         * 
+         * @param offset 
+         */
+        void MoveHeadIndex(int offset);
 
         /**
          * @brief 数据写入缓冲区
@@ -93,10 +118,24 @@ namespace Joy
          */
         void Read(char* pData, size_t offset, size_t& readLength);
 
+        /**
+         * @brief 读取(当前缓冲块)全部数据，用于发送子线程
+         * 
+         * @param pData 
+         * @param dataSize 
+         */
+        void ReadToEnd(char* pData, size_t& dataSize);
+
     private:
-        // 工作buffer队列尾部添加新的缓冲块
+        /**
+         * @brief 工作buffer队列尾部添加新的缓冲块
+         * 
+         */
         void AddLast();
-        // 移除工作buffer队列头部的缓冲块
+        /**
+         * @brief 移除工作buffer队列头部的缓冲块
+         * 
+         */
         void RemoveFirst();
 
     private:

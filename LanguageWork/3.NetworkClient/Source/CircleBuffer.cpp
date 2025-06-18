@@ -52,6 +52,16 @@ namespace Joy
         return length;
     }
 
+    void* CircleBuffer::GetWritePtr() const
+    {
+        return m_WorkBuffer.back() + m_TailIndex;
+    }
+
+    size_t CircleBuffer::GetCanWriteLength() const
+    {
+        return m_ChunkSize - m_TailIndex;
+    }
+
     void CircleBuffer::Write(const char* pData, size_t dataSize)
     {
         size_t tempTail        = m_TailIndex;
@@ -177,6 +187,37 @@ namespace Joy
         m_HeadIndex = tempHead;
     }
 
+    void CircleBuffer::ReadToEnd(char* pData, size_t& dataSize)
+    {
+        size_t tempHead   = m_HeadIndex;
+        size_t bufferSize = GetBufferSize();   // 待读取的数据长度
+        if (bufferSize == 0)
+        {   // 无数据
+            pData    = nullptr;
+            dataSize = 0;
+            return;
+        }
+        size_t readRemainingSize = m_ChunkSize - tempHead;   // 当前缓冲块剩余可读取空间
+        if (bufferSize <= readRemainingSize)
+        {   // 数据块未跨缓冲块，全部读取
+            pData    = m_WorkBuffer.front() + tempHead;
+            dataSize = bufferSize;
+            tempHead += dataSize;
+        }
+        else
+        {   // 待读取的数据跨缓冲块，先读取当前缓冲块的数据，后续数据等待下次读取
+            pData    = m_WorkBuffer.front() + tempHead;
+            dataSize = readRemainingSize;
+            tempHead += dataSize;
+        }
+        if (tempHead == m_ChunkSize)
+        {   // 头部缓冲块已全部读完，移除放入空闲等待复用
+            RemoveFirst();
+            tempHead = 0;
+        }
+        m_HeadIndex = tempHead;
+    }
+
     void CircleBuffer::AddLast()
     {
         bool hasFreeBuffer = false;
@@ -211,10 +252,10 @@ namespace Joy
 
 #include "Serialization/SerializationUtils.h"
 #include <iostream>
+#include <memory>
 #include <string>
 #include <thread>
 #include <vector>
-#include <memory>
 
 using Joy::CircleBuffer;
 
@@ -286,12 +327,12 @@ static void RunOnReadThread()
             if (buffer.GetBufferSize() >= packetBodyLength)
             {
                 std::unique_ptr<char[]> pData = std::make_unique<char[]>(packetBodyLength + 1);   // 多申请一个空间，作为字符串结束标志位'\0';
-                pData[packetBodyLength] = '\0';
+                pData[packetBodyLength]       = '\0';
                 buffer.Read(pData.get(), 0, packetBodyLength);
 
                 std::string data(pData.get());
                 std::cout << "Receive -> " << data << std::endl;
-                readStage = 0; // 当前消息包读取完成，解析下一个消息包
+                readStage = 0;   // 当前消息包读取完成，解析下一个消息包
             }
             else
             {
@@ -306,7 +347,7 @@ static void RunOnReadThread()
 
 static void RunOnWriteThread()
 {
-    std::vector<std::string> msgs{"Hello", "World", "", "你好吗"};
+    std::vector<std::string> msgs{"Hello", "World", "", "你好吗,呀哈哈哈哈哈哈啊哈哈哈哈哈哈哈哈哈哈"};
     for (size_t i = 0; i < msgs.size(); ++i)
     {
         UnitTestPacket packet{};
@@ -323,7 +364,7 @@ static void RunOnWriteThread()
 
 void UnitTest_CircleBuffer()
 {
-    std::thread writeThread(&RunOnWriteThread);   
+    std::thread writeThread(&RunOnWriteThread);
     std::thread readThread(&RunOnReadThread);
     writeThread.join();
     readThread.join();
