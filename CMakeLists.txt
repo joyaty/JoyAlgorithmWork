@@ -10,7 +10,7 @@ project(JoyAlgorithmWork)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # CPP版本
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 ## 添加UNICODE/_UNICODE宏 使用unicode字符集
 add_definitions(-DUNICODE -D_UNICODE)

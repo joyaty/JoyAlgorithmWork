@@ -1,10 +1,10 @@
 
 #pragma once
 
+#include <atomic>
 #include <cstddef>
 #include <mutex>
 #include <queue>
-#include <stdatomic.h>
 
 namespace Joy
 {
@@ -37,9 +37,9 @@ namespace Joy
         // 每个缓冲块的大小
         size_t m_ChunkSize;
         // 数据段头索引偏移，仅读取线程操作
-        atomic_size_t m_HeadIndex;
+        std::atomic<size_t> m_HeadIndex;
         // 数据段尾索引偏移，仅写入线程操作
-        atomic_size_t m_TailIndex;
+        std::atomic<size_t> m_TailIndex;
 
     private:
         // 队列操作锁，用于队列操作多线程安全
