@@ -22,6 +22,16 @@ inline static int GetErrorCode()
 
 namespace Joy
 {
+    void TCPSocket::NativeStartup()
+    {
+        // do nothing for linux.
+    }
+    
+    void TCPSocket::NativeCleanup()
+    {
+        // do nothing for linux.
+    }
+
     TCPSocket::TCPSocket()
         : m_Socket(-1)
     {
