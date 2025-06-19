@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <mutex>
 #include <queue>
+#include <string>
 
 namespace Joy
 {
@@ -102,7 +103,12 @@ namespace Joy
          */
         uint64_t ReadUInt64();
            
-
+        /**
+         * @brief 读取指定长度的缓冲区数据，拷贝到std::string字符串
+         * 
+         * @param str 
+         * @param readLength 
+         */
         void ReadString(std::string& str, size_t& readLength);
 
         /**
