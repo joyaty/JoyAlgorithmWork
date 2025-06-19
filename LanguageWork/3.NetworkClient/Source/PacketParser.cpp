@@ -61,12 +61,11 @@ namespace Joy
             {   // 解析包体阶段
                 if (recvBuffer.GetBufferSize() >= m_nCurrentPackBodySize)
                 {
-                    char pData[m_nCurrentPackBodySize + 1];   // 多申请一个空间，作为字符串结束标志位'\0'
-                    pData[m_nCurrentPackBodySize] = '\0';
-                    recvBuffer.Read(pData, 0, m_nCurrentPackBodySize);
+                    std::string msg;   
+                    recvBuffer.ReadString(msg, m_nCurrentPackBodySize);
                     {
                         std::lock_guard<std::mutex> lock_guard(m_Mutex);
-                        GetBack().emplace(std::string(pData));   // 完整消息包体数据写入到后缓冲中
+                        GetBack().emplace(msg);   // 完整消息包体数据写入到后缓冲中
                     }
                     m_eParseStep = EnumParseStep::kStepParseHeader;   // 当前消息包读取完成，解析下一个消息包
                 }

@@ -101,6 +101,9 @@ namespace Joy
          * @return uint64_t 
          */
         uint64_t ReadUInt64();
+           
+
+        void ReadString(std::string& str, size_t& readLength);
 
         /**
          * @brief 读取指定长度的缓冲区数据，拷贝到指针指向位置

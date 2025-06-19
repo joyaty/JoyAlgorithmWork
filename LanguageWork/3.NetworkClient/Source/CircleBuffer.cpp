@@ -156,6 +156,43 @@ namespace Joy
         return value;
     }
 
+    void CircleBuffer::ReadString(std::string& str, size_t& readLength)
+    {
+        size_t tempHead   = m_HeadIndex;
+        size_t bufferSize = GetBufferSize();   // 环形缓冲区中可读取的数据长度
+        if (readLength > bufferSize)
+        {   // 缓冲区中的可读取数据不足，修正到可读取长度
+            readLength = bufferSize;
+        }
+        size_t alreadyCopySize = 0;
+        while (alreadyCopySize < readLength)
+        {
+            size_t n                  = readLength - alreadyCopySize;   // 本次需要读取的长度
+            size_t chunkRemainingSize = m_ChunkSize - tempHead;         // 当前缓冲块剩余可读取长度
+            if (n <= chunkRemainingSize)
+            {   // 当前缓冲块内可全部读完数据
+                //std::memcpy(pData + offset + alreadyCopySize, m_WorkBuffer.front() + tempHead, n);
+                str.insert(str.length(), m_WorkBuffer.front() + tempHead, n);
+                tempHead += n;
+                alreadyCopySize += n;
+            }
+            else
+            {   // 当前缓冲块数据不足读取全部，读完剩余空间，移动到一下缓冲块
+                //std::memcpy(pData + offset + alreadyCopySize, m_WorkBuffer.front() + tempHead, chunkRemainingSize);
+                str.insert(str.length(), m_WorkBuffer.front() + tempHead, chunkRemainingSize);
+                alreadyCopySize += chunkRemainingSize;
+                RemoveFirst();
+                tempHead = 0;
+            }
+        }
+        // 数据全部读取完，更新数据头部索引
+        m_HeadIndex = tempHead;
+
+
+        str.insert(str.length(), m_WorkBuffer.front() + m_HeadIndex, GetBufferSize());
+        
+    }
+
     void CircleBuffer::Read(char* pData, size_t offset, size_t& readLength)
     {
         size_t tempHead   = m_HeadIndex;

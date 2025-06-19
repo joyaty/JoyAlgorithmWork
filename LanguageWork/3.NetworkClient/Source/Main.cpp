@@ -11,7 +11,7 @@ extern void UnitTest_NetworkService();
 int main()
 {
 	// UnitTest_TCPSocket();
-	// UnitTest_CircleBuffer();
+	 UnitTest_CircleBuffer();
 	// UnitTest_MessageDefine();
-	UnitTest_NetworkService();
+	//UnitTest_NetworkService();
 }

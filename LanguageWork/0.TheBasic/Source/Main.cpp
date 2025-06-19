@@ -751,18 +751,24 @@ int main()
     // 单元测试 - Callback
     // UnitTest_Callback();
 
-    std::queue<int> myQueue{};
-    myQueue.push(1);
-    myQueue.push(2);
-    myQueue.push(3);
-    myQueue.push(4);
-    myQueue.push(5);
-    myQueue.push(6);
+    //std::queue<int> myQueue{};
+    //myQueue.push(1);
+    //myQueue.push(2);
+    //myQueue.push(3);
+    //myQueue.push(4);
+    //myQueue.push(5);
+    //myQueue.push(6);
 
-    std::cout << myQueue.front() << ", " << myQueue.back() << std::endl;
-    myQueue.pop();
-    myQueue.push(7);
-    std::cout << myQueue.front() << ", " << myQueue.back() << std::endl;
+    //std::cout << myQueue.front() << ", " << myQueue.back() << std::endl;
+    //myQueue.pop();
+    //myQueue.push(7);
+    //std::cout << myQueue.front() << ", " << myQueue.back() << std::endl;
+
+    std::string strDest{};
+    const char* strSrc = "Hello World!";
+    strDest.insert(strDest.length(), strSrc + 2, 4);
+    strDest.insert(strDest.length(), strSrc + 7, 3);
+    std::cout << strDest << std::endl;
 
     std::cin.get();
 

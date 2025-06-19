@@ -27,10 +27,10 @@ Source/PacketParser.cpp
 Source/PacketParser.h
 Source/nlohmann/json_fwd.hpp
 Source/nlohmann/json.hpp
-Source/Message/MessageDefine.cpp
-Source/Message/MessageDefine.h
-Source/Gameplay/BallVO.cpp
-Source/Gameplay/BallVO.h
+# Source/Message/MessageDefine.cpp
+# Source/Message/MessageDefine.h
+# Source/Gameplay/BallVO.cpp
+# Source/Gameplay/BallVO.h
 )
 # 不同系统平台API差异，各自实现
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
