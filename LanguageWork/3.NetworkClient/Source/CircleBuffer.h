@@ -39,13 +39,6 @@ namespace Joy
         size_t GetCanWriteLength() const;
 
         /**
-         * @brief 移动数据读取游标，用于发送线程，数据被部分发送的情况
-         * 
-         * @param offset 
-         */
-        void MoveHeadIndex(int offset);
-
-        /**
          * @brief 数据写入缓冲区
          * 
          * @param pData [In] 写入缓冲区的数据地址
@@ -119,12 +112,19 @@ namespace Joy
         void Read(char* pData, size_t offset, size_t& readLength);
 
         /**
-         * @brief 读取(当前缓冲块)全部数据，用于发送子线程
+         * @brief 抓取(当前缓冲块)全部数据(数据头索引不偏移，后续需配合Move操作)，用于发送子线程
          * 
          * @param pData 
          * @param dataSize 
          */
-        void ReadToEnd(char* pData, size_t& dataSize);
+        void PeekToEnd(void** pData, size_t& dataSize);
+
+        /**
+         * @brief 移动数据头索引偏移，只允许向后移动。(配合Peek操作使用)
+         * 
+         * @param offset 
+         */
+        void MoveHeadTo(size_t offset);
 
     private:
         /**

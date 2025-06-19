@@ -187,7 +187,7 @@ namespace Joy
         m_HeadIndex = tempHead;
     }
 
-    void CircleBuffer::ReadToEnd(char* pData, size_t& dataSize)
+    void CircleBuffer::PeekToEnd(void** pData, size_t& dataSize)
     {
         size_t tempHead   = m_HeadIndex;
         size_t bufferSize = GetBufferSize();   // 待读取的数据长度
@@ -200,20 +200,32 @@ namespace Joy
         size_t readRemainingSize = m_ChunkSize - tempHead;   // 当前缓冲块剩余可读取空间
         if (bufferSize <= readRemainingSize)
         {   // 数据块未跨缓冲块，全部读取
-            pData    = m_WorkBuffer.front() + tempHead;
-            dataSize = bufferSize;
+            *pData = (m_WorkBuffer.front() + tempHead);
+            dataSize          = bufferSize;
             tempHead += dataSize;
         }
         else
         {   // 待读取的数据跨缓冲块，先读取当前缓冲块的数据，后续数据等待下次读取
-            pData    = m_WorkBuffer.front() + tempHead;
+            *pData   = m_WorkBuffer.front() + tempHead;
             dataSize = readRemainingSize;
             tempHead += dataSize;
         }
-        if (tempHead == m_ChunkSize)
-        {   // 头部缓冲块已全部读完，移除放入空闲等待复用
+        // if (tempHead == m_ChunkSize)
+        // {   // 头部缓冲块已全部读完，移除放入空闲等待复用
+        //     RemoveFirst();
+        //     tempHead = 0;
+        // }
+        // m_HeadIndex = tempHead;
+    }
+
+    void CircleBuffer::MoveHeadTo(size_t offset)
+    {
+        size_t tempHead = m_HeadIndex;
+        tempHead += offset;
+        while (tempHead > m_ChunkSize)
+        {
             RemoveFirst();
-            tempHead = 0;
+            tempHead -= m_ChunkSize;
         }
         m_HeadIndex = tempHead;
     }
