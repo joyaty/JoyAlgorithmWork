@@ -5,6 +5,21 @@
 
 namespace Joy
 {
+    void TCPSocket::NativeStartup()
+    {
+        WSAData wsaData;
+        if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+        {
+            std::cerr << "Failture to init WSA" << std::endl;
+            return;
+        }
+    }
+
+    void TCPSocket::NativeCleanup()
+    {
+        WSACleanup();
+    }
+
     TCPSocket::TCPSocket()
         : m_Socket(INVALID_SOCKET)
     {

@@ -26,6 +26,10 @@ namespace Joy
         ~TCPSocket();
 
     public:
+        static void NativeStartup();
+        static void NativeCleanup();
+
+    public:
         // 连接远端
         int Connect(const SocketAddress& address) const;
         // 发送数据(可能阻塞)
