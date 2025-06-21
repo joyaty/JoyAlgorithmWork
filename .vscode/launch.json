@@ -16,11 +16,29 @@
         {
             "type": "lldb",
             "request": "launch",
+            "name": "Debug 2.TextQuery",
+            "program": "${workspaceFolder}/build/LanguageWork/2.TextQuery/2.TextQuery",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "CMake: build 2.TextQuery"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
             "name": "Debug 3.NetworkClient",
             "program": "${workspaceFolder}/build/LanguageWork/3.NetworkClient/3.NetworkClient",
             "args": [],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "CMake: build 3.NetworkClient"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug 7.LogModule",
+            "program": "${workspaceFolder}/build/LanguageWork/7.LogModule/7.LogModule",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "CMake: build 7.LogModule"
         },
         {
             "type": "lldb",

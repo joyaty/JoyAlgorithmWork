@@ -25,17 +25,6 @@
 		},
 		{
 			"type": "cmake",
-			"label": "CMake: build 3.NetworkClient",
-			"command": "build",
-			"targets": [
-				"3.NetworkClient"
-			],
-			"group": "build",
-			"problemMatcher": [],
-			"detail": "CMake template build task"
-		},
-		{
-			"type": "cmake",
 			"label": "CMake: build 6.MemoryPool",
 			"command": "build",
 			"targets": [
@@ -51,6 +40,39 @@
 			"command": "build",
 			"targets": [
 				"0.TheBasic"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"detail": "CMake template build task"
+		},
+		{
+			"type": "cmake",
+			"label": "CMake: build 2.TextQuery",
+			"command": "build",
+			"targets": [
+				"2.TextQuery"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"detail": "CMake template build task"
+		},
+		{
+			"type": "cmake",
+			"label": "CMake: build 3.NetworkClient",
+			"command": "build",
+			"targets": [
+				"3.NetworkClient"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"detail": "CMake template build task"
+		},
+		{
+			"type": "cmake",
+			"label": "CMake: build 7.LogModule",
+			"command": "build",
+			"targets": [
+				"7.LogModule"
 			],
 			"group": "build",
 			"problemMatcher": [],

@@ -1,10 +1,15 @@
 #include <algorithm>
+#include <chrono>
+#include <cstdio>
 #include <cstring>
 #include <functional>
 #include <iostream>
+#include <ostream>
 #include <queue>
+#include <random>
 #include <stdexcept>
 #include <string>
+#include <thread>
 #include <unordered_map>
 #include <vector>
 
@@ -751,24 +756,51 @@ int main()
     // 单元测试 - Callback
     // UnitTest_Callback();
 
-    //std::queue<int> myQueue{};
-    //myQueue.push(1);
-    //myQueue.push(2);
-    //myQueue.push(3);
-    //myQueue.push(4);
-    //myQueue.push(5);
-    //myQueue.push(6);
+    // std::queue<int> myQueue{};
+    // myQueue.push(1);
+    // myQueue.push(2);
+    // myQueue.push(3);
+    // myQueue.push(4);
+    // myQueue.push(5);
+    // myQueue.push(6);
 
-    //std::cout << myQueue.front() << ", " << myQueue.back() << std::endl;
-    //myQueue.pop();
-    //myQueue.push(7);
-    //std::cout << myQueue.front() << ", " << myQueue.back() << std::endl;
+    // std::cout << myQueue.front() << ", " << myQueue.back() << std::endl;
+    // myQueue.pop();
+    // myQueue.push(7);
+    // std::cout << myQueue.front() << ", " << myQueue.back() << std::endl;
 
-    std::string strDest{};
-    const char* strSrc = "Hello World!";
-    strDest.insert(strDest.length(), strSrc + 2, 4);
-    strDest.insert(strDest.length(), strSrc + 7, 3);
-    std::cout << strDest << std::endl;
+    // std::string strDest{};
+    // const char* strSrc = "Hello World!";
+    // strDest.insert(strDest.length(), strSrc + 2, 4);
+    // strDest.insert(strDest.length(), strSrc + 7, 3);
+    // std::cout << strDest << std::endl;
+
+
+    // auto testFlushFunc = []()
+    // {
+    //     for (int i = 0; i < 100; ++i)
+    //     {
+    //         // std::cout << "\r Progress: " << i << std::flush;
+    //         printf("\r Progress: %d", i + 1);
+    //         fflush(stdout);
+    //         std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    //     }
+    //     printf("\n");
+    //     printf("Completion! \n");
+    //     // std::cout << std::endl;
+    // };
+    // {
+    //     std::thread flushOutThread(testFlushFunc);
+    //     flushOutThread.detach();
+    // }
+
+    std::random_device rd{};
+    std::mt19937       randomGen(rd());
+    std::uniform_real_distribution<float> distribution(0, 1);
+    for (int i = 0; i < 100; ++i)
+    {
+        std::cout << "random value:" << distribution(randomGen) << std::endl;
+    }
 
     std::cin.get();
 
